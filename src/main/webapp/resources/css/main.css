@@ -1,0 +1,370 @@
+@font-face {
+    font-family: Houschka;
+    src: url("../HouschkaHead/HouschkaHead-Medium.otf") format("opentype");
+}
+
+body{
+    background-color: #eeeeee;
+    color: #ffffff;
+
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+
+    font-family: Houschka;
+}
+
+button{
+    font-family: Houschka;
+}
+
+#page{
+    height: 100%;
+    width: 100%;
+}
+
+#header{
+
+    z-index: 5 !important;
+
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+
+}
+
+.logo{
+    background-color: rgb(239, 30, 30);
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+
+    width: 100%;
+    min-width: 1000px;
+    height: 66px;
+}
+
+.logo-Adecco-name{
+    padding: 0.5em 1em 0;
+    float:left;
+}
+
+.logo-client-name{
+    float:right;
+}
+
+#overLogo {
+    background-color: #231f20;
+    font-size: 12px;
+
+    height: 40px;
+
+    padding: 0.5em 0;
+
+    min-width: 1000px;
+    max-width: 100%;
+}
+
+#menu{
+    float: left;
+    text-align: left;
+
+    margin-top: 0.4em;
+    margin-left: 1%;
+    width: 23%;
+    height: 25px;
+
+    font-size: 2em;
+    opacity: 0.8;
+}
+
+#menu:hover{
+    opacity: 0.5;
+}
+
+#title{
+    float: left;
+    text-align: center;
+
+    width: 50%;
+    font-size: 28px;
+}
+
+#user-data{
+    float: left;
+    text-align: center;
+
+    line-height: 20px;
+
+    width: 14%;
+
+    border-left: 2px groove grey;
+    border-right: 2px groove grey;
+
+    opacity: 0.8;
+}
+
+#logOut{
+    float: left;
+    text-align: center;
+
+    width: 10%;
+
+    height: 40px;
+
+    font-size: 16px;
+    font-weight: normal;
+
+    border: none;
+    background: none;
+
+    padding: 0;
+}
+
+#logOut input, #logOut form{
+    float: left;
+    text-align: center !important;
+
+    width: 100%;
+
+    font-size: 16px;
+    font-weight: normal;
+
+    border: none;
+    background: none;
+
+    padding-top: 0.3em;
+    margin: 0;
+    font-family: Houschka;
+
+    color: white;
+
+    opacity: 0.9;
+}
+
+#logOut:hover{
+    opacity: 0.5;
+}
+
+#menu-bar{
+    z-index: 4;
+    opacity: 0.9;
+
+    position: fixed !important;
+    top: 118px !important;
+    left: 0 !important;
+
+    height: 430px;
+    width: 150px;
+
+    border-bottom: 1px solid rgb(239, 30, 30);
+    border-right: 1px solid rgb(239, 30, 30);
+
+    border-bottom-right-radius:  20px;
+
+    background: white;
+    color: rgb(239, 30, 30);
+
+    display: none;
+}
+
+#menu-bar form{
+    margin: 10px;
+    text-align: center;
+}
+
+#menu-bar input{
+    clear: both;
+
+    border: none;
+    border-bottom: 1px solid rgb(191, 29, 29);
+
+    background: none;
+
+    color: rgb(239, 30, 30);
+    font-size: 18px;
+    text-align: center;
+
+    width: 80%;
+
+    margin: 10px;
+    padding-bottom: 5px;
+}
+
+.main-container{
+    background-color: #ffffff;
+    color: #111;
+
+    margin: 2% auto 2% auto !important;
+
+    padding-top: 20px;
+
+    width: 70%;
+    min-width: 960px !important;
+    border-radius: 10px;
+
+    opacity: 1;
+}
+
+.chapter-title{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.chapter-border{
+    border: 2px solid rgb(239, 30, 30);
+    border-radius: 5px;
+
+    padding: 10px;
+    margin: 0 20px 40px 20px;
+
+    width: auto;
+    height: auto;
+
+    color: #999999;
+    background: #efefef;
+}
+
+.chapter-border-line{
+    float: left;
+    width: 100%;
+}
+
+.chapter-border-line-half{
+    float: left;
+    width: 50%;
+    height: auto;
+}
+
+.chapter-border-tile{
+    float: left;
+    padding: 10px;
+
+    font-size: 18px;
+}
+
+.chapter-border-tile-data{
+    float: left;
+    padding: 10px;
+
+    font-weight: bold;
+    font-size: 18px;
+
+    color: #111111;
+}
+
+.footer{
+    min-width: 1000px;
+
+    background-color: #394448;
+    color: white;
+
+    <!-- Wysokosc tego elemetnu: 128px -->
+
+    z-index: 5 !important;
+}
+
+.links{
+    max-width: 1200px;
+    width: 85%;
+
+    margin: 0.5em auto;
+}
+
+.footer-links{
+    float: left;
+    display: block;
+
+    box-sizing: border-box;
+
+    letter-spacing: -.5px;
+}
+
+.footer-link-tile{
+    float: left;
+
+    width: 20%;
+
+    margin: 0.5em 0.5em;
+
+    box-sizing: border-box;
+
+    font-size: 16px;
+    text-align: center;
+}
+
+.social-tile{
+    min-width: 25em !important;
+    max-width: 25em !important;
+
+    min-height: 25px !important;
+    max-height: 25px !important;
+
+    border: none;
+
+    padding-top: 0 !important;
+
+    font-size: 150%;
+}
+
+a:link, a:active, a:visited{
+    color: white;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #aaaaaa;
+}
+
+.bz-assign{
+    text-align: center;
+    background: #231f20;
+    opacity: 0.5;
+
+    height: 1.5em;
+    width: 100%;
+
+    margin: 1em auto 0;
+
+    padding: 0.5em 0;
+}
+
+input{
+    font-family: Houschka;
+}
+
+input:hover{
+    opacity: 0.5;
+}
+
+input[type=submit], input[type=reset], input[type=button]{
+    float: right;
+
+    text-align: center;
+    background-color: rgb(239, 3, 0);
+    color: #ffffff;
+
+    line-height: 1.8em;
+    font-size: 1.1em;
+
+    margin: 0 5px;
+
+    border-radius: 1em;
+}
+
+.input-information{
+    border-radius: 0.5em;
+
+    height: 3em;
+    width: 50%;
+
+    margin: 0.5em 0;
+}

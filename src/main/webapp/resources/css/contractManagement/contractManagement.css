@@ -1,0 +1,93 @@
+#localization-selection{
+
+}
+
+#contracts-support table{
+    width: 90%;
+    margin: 0 auto 40px;
+
+    border: 2px solid rgb(239, 30, 30);
+    border-radius: 1em;
+}
+
+#contracts-support th{
+    background-color: grey;
+    border-radius: 0.5em;
+    padding: 5px;
+}
+
+#contracts-support td{
+    text-align: center;
+    border-right: grey;
+    color: grey;
+}
+
+#contracts-view table{
+    width: 96%;
+    margin: 20px auto;
+
+    border-bottom: 2px solid rgb(239, 30, 30);
+}
+
+#contracts-view table caption, .contractsOptions .caption{
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+
+    text-align: center;
+}
+
+#contracts-view th{
+    background-color: grey;
+    border-radius: 0.5em;
+    padding: 5px;
+}
+
+#contracts-view td{
+    background-color: white;
+    color: black;
+    border-radius: 0.25em;
+    padding: 5px;
+    text-align: center;
+}
+
+#contracts-view td .actionCell {
+    text-align: center;
+    padding: 0;
+}
+
+
+td .input-information{
+    text-align: center;
+    height: 2em;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.contractsOptions{
+    background-color: #efefef !important;
+    padding: 10px auto !important;
+}
+
+.contractsOptions .record-data{
+    float: left;
+    width: 33%;
+    height: 75px;
+    margin-top: 10px;
+
+    color: grey;
+    text-align: center;
+
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+
+    vertical-align: center;
+}
+
+.contractsOptions .record-data  input[type=button]{
+    border-radius: 0.5em;
+    float: none;
+    width: 70%;
+
+    margin: 15px 5%;
+}

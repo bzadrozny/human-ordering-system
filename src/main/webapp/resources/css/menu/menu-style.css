@@ -1,0 +1,39 @@
+.menu-cart-box{
+    width: 100% !important;
+    height: auto !important;
+    min-height: 300px !important;
+    min-width: 1000px !important;
+}
+
+.menu-button{
+    height: 300px;
+
+    width:20%;
+
+    float: left;
+}
+
+.menu-description{
+    height: 50px;
+
+    width:40%;
+
+    margin:125px 0;
+    float: left;
+
+    font-size: 18px;
+}
+
+.menu-cart-box input[type=submit],
+.menu-cart-box form {
+    float: none !important;
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+
+    background: none !important;
+    border: none !important;
+
+    text-align: center !important;
+    font-size: 32px;
+}

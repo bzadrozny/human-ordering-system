@@ -1,0 +1,94 @@
+#order-list-title{
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+table{
+    width: 100%;
+
+    border: 1px solid #eeeeee;
+    table-layout: fixed;
+}
+
+th{
+    background-color: rgb(239, 3, 0);
+    color: #ffffff;
+
+    line-height: 1.8em;
+    font-size: 1.1em;
+
+    border-radius: 0.5em;
+
+    padding: 0 5px;
+}
+
+td{
+    word-wrap: break-word;
+}
+
+td input[type=submit]{
+
+    float: none;
+
+    font-family: Houschka;
+    text-align: center;
+    background-color: #999999;
+    color: #ffffff;
+
+    border-radius: 0.5em;
+    box-shadow: none;
+
+    margin: 10px;
+
+    opacity: 0.8;
+    line-height: 1.8em;
+
+    font-size: 1.1em;
+}
+
+tr{
+    text-align: center;
+    color: #111;
+}
+
+tr:nth-child(even){
+    background-color: #eeeeee;
+    border-color: #ffffff;
+}
+
+tr:nth-child(odd){
+    background-color: #ffffff;
+    border-color: #eeeeee;
+}
+
+#overview td, #filter-form td{
+    border-radius: 0.5em;
+    padding: 10px;
+}
+
+.bottom-cell{
+    width: 70%;
+    margin-left: 15%;
+
+    padding-top: 2%;
+
+}
+
+#filter-form td{
+    font-weight: bold;
+
+    color: #D80000;
+}
+
+.roll-up-button{
+    width: 2em!important;
+    height: 2em!important;
+    border-radius: 1em!important;
+    font-size: 20px!important;
+    font-weight: bold!important;
+    float: none!important;
+}
