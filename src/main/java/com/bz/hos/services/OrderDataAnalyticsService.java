@@ -58,12 +58,12 @@ public class OrderDataAnalyticsService extends Thread{
 //        return 2*60*1000L;
 
         //Accurate Analytic in period of
-        int days = 1;
+        final int days = 1;
 
         //At clock:
-        int hour = 1;
-        int minutes = 1;
-        int seconds = 1;
+        final int hour = 1;
+        final int minutes = 1;
+        final int seconds = 1;
 
         return  + 1000*60*60*24L* days
                 + 1000*60*60L* hour
