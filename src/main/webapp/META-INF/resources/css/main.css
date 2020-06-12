@@ -86,6 +86,14 @@ button{
     opacity: 0.5;
 }
 
+#logo{
+    float: left;
+    text-align: center;
+    letter-spacing: 5px;
+    width: 75%;
+    font-size: 44px;
+}
+
 #title{
     float: left;
     text-align: center;

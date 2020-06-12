@@ -22,9 +22,9 @@ public class LoginService {
 
         if (initialized) return;
         else {
-            BazaDanych.getUserList().put("bartlomiej.zadrozny@adecco.com", new UserTable("bartlomiej.zadrozny@adecco.com", "Bartlomiej", "Zadrozny", "haslo", "manager", true, "Adecco", true, "bartlomiej.zadrozny@adecco.com", "bartlomiej.zadrozny@adecco.com"));
-            BazaDanych.getUserList().get("bartlomiej.zadrozny@adecco.com").setModerator(true);
-            BazaDanych.getStaffList().put(0, new StaffTable(0, "bartlomiej.zadrozny@adecco.com", "bartlomiej.zadrozny@adecco.com"));
+            BazaDanych.getUserList().put("bartlomiej.zadrozny@HOS.com", new UserTable("bartlomiej.zadrozny@HOS.com", "Bartlomiej", "Zadrozny", "haslo", "manager", true, "HOS", true, "bartlomiej.zadrozny@HOS.com", "bartlomiej.zadrozny@HOS.com"));
+            BazaDanych.getUserList().get("bartlomiej.zadrozny@HOS.com").setModerator(true);
+            BazaDanych.getStaffList().put(0, new StaffTable(0, "bartlomiej.zadrozny@HOS.com", "bartlomiej.zadrozny@HOS.com"));
             initialized = true;
             if (Files.exists(Paths.get(xmlFilepath)))
                 UserServices.uploadData(xmlFilepath);

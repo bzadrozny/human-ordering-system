@@ -19,14 +19,14 @@
     <link href="<spring:url value="resources/fontello/css/fontello.css"/>" rel="stylesheet" type="text/css">
 
     <style>
-        .footer{
+        .footer {
             position: fixed !important;
             bottom: 0 !important;
             left: 0 !important;
             right: 0 !important;
         }
 
-        body{
+        body {
             background-image: url("/resources/backgrounds/login/LoginBackground.png");
             background-size: cover;
         }
@@ -36,39 +36,45 @@
 </head>
 <body>
 
-    <div id="page">
+<div id="page">
 
-        <div class="logo">
-            <a style="margin-left: 2em; float: left;" href="http://Adecco.com"><div class="logo-Adecco-name" > <img src="<spring:url value="resources/logo/Adecco.png"/>"/> </div></a>
-            <div style="clear: both"></div>
-        </div>
-
-        <div class="container">
-            <c:if test="${ requestMethod == 'GET'}">
-                <div class="loginInfo">
-                    System zamówień pracowników - Zapraszamy!
-                </div>
-            </c:if>
-            <c:if test="${ requestMethod == 'POST' }">
-                <div class="loginInfo">
-                    Niestety podano błędne dane, spróbuj ponownie!
-                </div>
-            </c:if>
-
-            <form:form method="post" action="/" modelAttribute="loginForm">
-                <div>
-                    Login: <form:input cssStyle="font-size: 16px; width: 40%; height: 2.5em;" cssClass="input-information" path="login"/>       <br/><br/>
-                    Haslo: <form:password cssStyle="font-size: 16px; width: 40%; height: 2.5em;" cssClass="input-information" path="password"/>    <br/><br/>
-                </div>
-                <div>
-                    <input style="float: none; width: 40%;" type="submit" value="Zaloguj"/>
-                </div>
-            </form:form>
-        </div>
-
-        <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
-
+    <div class="logo">
+        <a style="margin-left: 2em; float: left;" href="http://Adecco.com">
+            <div class="logo-Adecco-name">
+                <div id="logo">HOS</div>
+            </div>
+        </a>
+        <div style="clear: both"></div>
     </div>
+
+    <div class="container">
+        <c:if test="${ requestMethod == 'GET'}">
+            <div class="loginInfo">
+                System zamówień pracowników - Zapraszamy!
+            </div>
+        </c:if>
+        <c:if test="${ requestMethod == 'POST' }">
+            <div class="loginInfo">
+                Niestety podano błędne dane, spróbuj ponownie!
+            </div>
+        </c:if>
+
+        <form:form method="post" action="/" modelAttribute="loginForm">
+            <div>
+                Login: <form:input cssStyle="font-size: 16px; width: 40%; height: 2.5em;" cssClass="input-information"
+                                   path="login"/> <br/><br/>
+                Haslo: <form:password cssStyle="font-size: 16px; width: 40%; height: 2.5em;"
+                                      cssClass="input-information" path="password"/> <br/><br/>
+            </div>
+            <div>
+                <input style="float: none; width: 40%;" type="submit" value="Zaloguj"/>
+            </div>
+        </form:form>
+    </div>
+
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
+
+</div>
 
 </body>
 </html>
