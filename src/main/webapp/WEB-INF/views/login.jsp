@@ -66,7 +66,7 @@
             </form:form>
         </div>
 
-        <%@include file="../../resources/htmlElements/footer.html" %>
+        <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
     </div>
 

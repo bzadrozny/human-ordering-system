@@ -1,6 +1,6 @@
 package com.bz.hos.services;
 
-import com.bz.hos.WebApplicationSettings.controller.HomeController;
+import com.bz.hos.controller.HomeController;
 import com.bz.hos.db.BazaDanych;
 import com.bz.hos.db.LocationTable;
 import com.bz.hos.db.OrderTable;

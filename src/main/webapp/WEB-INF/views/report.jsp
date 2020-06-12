@@ -35,7 +35,7 @@
 </head>
 <body>
 
-    <%@include file="../../resources/htmlElements/header.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
     <div class="main-container" id="adeccoUserReport" style="margin-bottom: 20px !important; <c:if test="${user.role.equals('client')}">display:none;</c:if>">
 
@@ -667,7 +667,7 @@
 
     </div>
 
-    <%@include file="../../resources/htmlElements/footer.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
     <script type="text/javascript">
         function showAndHide(clickedId)

@@ -1,4 +1,4 @@
-package com.bz.hos.WebApplicationSettings.controller;
+package com.bz.hos.controller;
 
 import com.bz.hos.db.OrderTable;
 import com.bz.hos.model.CandidateEntity.Contract;
@@ -56,7 +56,7 @@ public class HomeController {
 	@Autowired
 	ContractManagementService contractService;
 
-	private static Long logOutTime = (1000L * 60L * 15L);
+	private static final Long logOutTime = (1000L * 60L * 15L);
 
 	public static String xmlFilepath = "";
 	static {

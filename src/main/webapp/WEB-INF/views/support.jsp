@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <%@include file="../../resources/htmlElements/header.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
     <div class="main-container">
 
@@ -101,7 +101,7 @@
 
     </div>
 
-    <%@include file="../../resources/htmlElements/footer.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
 </body>
 </html>

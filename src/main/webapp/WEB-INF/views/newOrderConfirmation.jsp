@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <%@include file="../../resources/htmlElements/header.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
     <div class="main-container" style="padding-bottom: 10px;">
 
@@ -168,7 +168,7 @@
 
     </div>
 
-    <%@include file="../../resources/htmlElements/footer.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
 </body>
 </html>

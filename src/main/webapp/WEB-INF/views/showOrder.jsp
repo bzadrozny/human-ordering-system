@@ -26,7 +26,7 @@
 </head>
 <body>
 
-    <%@include file="../../resources/htmlElements/header.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
     <div id="mainContainer" class="main-container" disabled="true">
 
@@ -709,7 +709,7 @@
 
     </div>
 
-    <%@include file="../../resources/htmlElements/footer.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
     <div id="shadowOnWindow" style="display: none;" onclick="hideEditeAndDeleteWindow()">  </div>
 

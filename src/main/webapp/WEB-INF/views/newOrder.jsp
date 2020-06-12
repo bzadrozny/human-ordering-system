@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <%@include file="../../resources/htmlElements/header.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
     <div class="main-container">
         <%--@elvariable id="order" type="com.bz.hos.model.NewOrderForm.NewOrder"--%>
@@ -300,7 +300,7 @@
 
     </div>
 
-    <%@include file="../../resources/htmlElements/footer.html" %>
+    <%@include file="../../META-INF/resources/htmlElements/footer.html" %>
 
 </body>
 </html>
