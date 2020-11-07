@@ -30,19 +30,33 @@ class UserController(val userService: UserService) {
     @PostMapping
     fun addUser(@RequestBody body: UserForm): UserDetailsRecord {
 
-        return UserDetailsRecord(1, "", "", "", emptyList(), emptyList())
+        return UserDetailsRecord(
+                0,
+                "login",
+                "email",
+                "N/A",
+                listOf(),
+                listOf()
+        )
     }
 
     @PutMapping
-    fun modifyUser(@RequestBody body: UserEntity): UserEntity {
+    fun modifyUser(@RequestBody body: UserEntity): UserDetailsRecord {
 
-        return UserEntity("login", "N/A", "password")
+        return UserDetailsRecord(
+                0,
+                "login",
+                "email",
+                "N/A",
+                listOf(),
+                listOf()
+        )
     }
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Long): UserEntity {
+    fun deleteUser(@PathVariable id: Long): Boolean {
 
-        return UserEntity("login", "N/A", "password")
+        return true
     }
 
 }

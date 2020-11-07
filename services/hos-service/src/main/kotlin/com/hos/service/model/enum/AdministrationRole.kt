@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.hos.service.model.exception.ResourceNotFoundException
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-enum class AdministrationUnit(val id: Int) {
+enum class AdministrationRole(val id: Int) {
 
     ADMIN(0),
     MANAGER(1),
@@ -15,11 +15,11 @@ enum class AdministrationUnit(val id: Int) {
 
     companion object {
         @JsonCreator
-        fun getByIdOrNull(@JsonProperty("id") id: Int?): AdministrationUnit? {
+        fun getByIdOrNull(@JsonProperty("id") id: Int?): AdministrationRole? {
             return id?.let { getById(id) }
         }
 
-        private fun getById(id: Int): AdministrationUnit {
+        private fun getById(id: Int): AdministrationRole {
             return values().find { it.id == id }
                     ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "Value of dictionary 'Administration Units' with id: $id does not exist")
         }

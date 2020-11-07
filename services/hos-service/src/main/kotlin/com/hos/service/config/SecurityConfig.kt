@@ -49,7 +49,8 @@ class SecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(userDetailsServiceBean())?.passwordEncoder(passwordEncoder())
+        auth?.userDetailsService(userDetailsServiceBean())
+                ?.passwordEncoder(passwordEncoder())
     }
 
     @Bean

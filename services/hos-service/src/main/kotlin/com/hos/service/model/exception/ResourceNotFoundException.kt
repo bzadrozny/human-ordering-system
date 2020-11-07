@@ -5,6 +5,6 @@ import com.hos.service.model.enum.Resource
 
 class ResourceNotFoundException(
         val resourceType: Resource,
-        private val qualifierType: QualifierType,
-        private val qualifierValue: String
+        qualifierType: QualifierType,
+        qualifierValue: String
 ) : RuntimeException("${resourceType.desc} with $qualifierType: $qualifierValue did not found")

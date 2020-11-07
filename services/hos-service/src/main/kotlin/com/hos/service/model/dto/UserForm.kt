@@ -1,15 +1,16 @@
 package com.hos.service.model.dto
 
 import com.hos.service.model.entity.AuthoritisRoleEntity
-import com.hos.service.model.enum.AdministrationUnit
+import com.hos.service.model.enum.AdministrationRole
 
-class UserForm(
-        val login: String,
-        var email: String,
-        val department: AdministrationUnit,
+class UserForm {
+    val login: String? = null
+    var email: String? = null
+    val passwrod: String? = null
+    val passwrodConfirmation: String? = null
 
-        val passwrod: String,
-        val passwrodConfirmation: String,
+    val administrationRole: AdministrationRole? = null
+    val administrationUnit: AdministrationRole? = null
+    val authorities: List<AuthoritisRoleEntity> = listOf()
 
-        val authorities: List<AuthoritisRoleEntity>
-)
+}
