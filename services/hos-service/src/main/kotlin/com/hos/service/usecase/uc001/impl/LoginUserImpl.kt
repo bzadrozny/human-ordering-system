@@ -17,10 +17,14 @@ class LoginUserImpl(
 ) : LoginUser {
 
     override fun login(login: String?, password: String?): String? {
-        if (login == null || password == null) throw ResourceNotFoundException(Resource.USER, QualifierType.LOGIN, "$login")
-        val user = userRepository.findByLogin(login).orElseThrow { ResourceNotFoundException(Resource.USER, QualifierType.LOGIN, "$login") }
-        if (!passwordEncoder.matches(password, user.passwrod)) throw  ResourceNotFoundException(Resource.USER, QualifierType.LOGIN, "$login")
-        return jwtTokenUtils.createToken(user.mapToUserDetailsRecord())
+        if (login != null && password != null) {
+            userRepository.findByLogin(login)?.let {
+                if (passwordEncoder.matches(password, it.passwrod)) {
+                    return jwtTokenUtils.createToken(it.mapToUserDetailsRecord())
+                }
+            }
+        }
+        throw ResourceNotFoundException(Resource.USER, QualifierType.LOGIN, "$login")
     }
 
 }

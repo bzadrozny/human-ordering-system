@@ -11,9 +11,9 @@ class FindUserByLoginImpl(
 ) : FindUserByLogin {
 
     override fun findUserByLogin(login: String): UserDetailsRecord? {
-        return userRepository.findByLogin(login)
-                .map { it.mapToUserDetailsRecord() }
-                .orElse(null)
+        return userRepository.findByLogin(login)?.let {
+            it.mapToUserDetailsRecord()
+        }
     }
 
 }

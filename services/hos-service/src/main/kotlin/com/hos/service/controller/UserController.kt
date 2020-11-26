@@ -1,13 +1,12 @@
 package com.hos.service.controller
 
-import com.hos.service.model.dto.UserForm
+import com.hos.service.model.form.UserForm
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
-import com.hos.service.repo.UserRepository
 import com.hos.service.service.UserService
 import org.springframework.web.bind.annotation.*
 import javax.annotation.security.RolesAllowed
@@ -18,30 +17,22 @@ class UserController(val userService: UserService) {
 
     @GetMapping
     @RolesAllowed("ADMIN")
-    fun userInfo(): List<UserBasicsRecord> {
+    fun allUsers(): List<UserBasicsRecord> {
         return userService.findAllUsers()
     }
 
     @GetMapping("/{id}")
-    fun userInfo(@PathVariable id: Long): UserDetailsRecord {
-        return userService.findUserById(id) ?: throw ResourceNotFoundException(Resource.USER, QualifierType.ID, "$id")
+    fun userDetails(@PathVariable id: Long): UserDetailsRecord? {
+        return userService.findUserById(id)
     }
 
     @PostMapping
-    fun addUser(@RequestBody body: UserForm): UserDetailsRecord {
-
-        return UserDetailsRecord(
-                0,
-                "login",
-                "email",
-                "N/A",
-                listOf(),
-                listOf()
-        )
+    fun registerUser(@RequestBody body: UserForm): UserDetailsRecord? {
+        return userService.registerUser(body)
     }
 
     @PutMapping
-    fun modifyUser(@RequestBody body: UserEntity): UserDetailsRecord {
+    fun modifyUser(@RequestBody body: UserEntity): UserDetailsRecord? {
 
         return UserDetailsRecord(
                 0,

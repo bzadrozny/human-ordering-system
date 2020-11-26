@@ -9,12 +9,17 @@ class OrganisationEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OrganisationSeqGen")
         @SequenceGenerator(name = "OrganisationSeqGen", initialValue = 1000, allocationSize = 10)
         val id: Long = -1,
-        var name: String,
-        var nip: String,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
         @OneToMany(mappedBy = "organisation", orphanRemoval = true, cascade = [CascadeType.ALL])
         val departments: MutableSet<DepartmentEntity> = mutableSetOf(),
         @OneToMany(mappedBy = "organisation", orphanRemoval = true, cascade = [CascadeType.ALL])
         val locations: MutableSet<LocationEntity> = mutableSetOf(),
+        var name: String,
+        var nip: String,
         var status: String
 ) : Serializable
 
@@ -25,12 +30,17 @@ class DepartmentEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DepartmentSeqGen")
         @SequenceGenerator(name = "DepartmentSeqGen", initialValue = 1000, allocationSize = 10)
         val id: Long = -1,
-        var name: String,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
         @ManyToOne
         @JoinColumn(name = "ORGANISATION_ID")
         val organisation: OrganisationEntity,
         @OneToMany(mappedBy = "department")
         val staff: MutableSet<UserEntity> = mutableSetOf(),
+        var name: String,
         var status: String
 ) : Serializable
 
@@ -41,28 +51,19 @@ class LocationEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LocationSeqGen")
         @SequenceGenerator(name = "LocationSeqGen", initialValue = 1000, allocationSize = 10)
         val id: Long = -1,
-        val name: String,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
         @ManyToOne
-        @JoinColumn(name = "organisation")
+        @JoinColumn(name = "ORGANISATION_ID")
         val organisation: OrganisationEntity,
         @OneToOne
-        @MapsId
+        @JoinColumn(name = "ADDRESS_ID")
         val address: AddressEntity,
-        @Column(name = "REGISTERED_OFFICE")
-        val registeredOffice: Boolean,
-        val status: String
+        var registeredOffice: Boolean,
+        var name: String,
+        var status: String
 ) : Serializable
 
-
-@Entity(name = "ADDRESS")
-class AddressEntity(
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AddressSeqGen")
-        @SequenceGenerator(name = "AddressSeqGen", initialValue = 1000, allocationSize = 10)
-        val id: Long = -1,
-        var street: String,
-        var number: String,
-        var city: String,
-        @Column(name = "POSTAL_CODE")
-        var postalCode: String
-) : Serializable

@@ -1,4 +1,4 @@
-package com.hos.service.model.dto
+package com.hos.service.model.form
 
 import com.hos.service.model.entity.AuthoritisRoleEntity
 import com.hos.service.model.enum.AdministrationRole

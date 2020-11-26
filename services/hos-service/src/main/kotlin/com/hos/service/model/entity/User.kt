@@ -14,6 +14,15 @@ class UserEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserSeqGen")
         @SequenceGenerator(name = "UserSeqGen", initialValue = 1000, allocationSize = 10)
         val id: Long = -1,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        val devices: MutableList<UserDeviceEntity> = mutableListOf(),
+        @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = [CascadeType.ALL])
+        val authorities: MutableList<AuthoritisRoleEntity> = mutableListOf(),
         @Column(unique = true)
         var login: String,
         @Column(unique = true)
@@ -21,11 +30,7 @@ class UserEntity(
         var passwrod: String,
         @ManyToOne
         @JoinColumn(name = "DEPARTMENT_ID")
-        val department: DepartmentEntity,
-        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
-        val devices: MutableList<UserDeviceEntity> = mutableListOf(),
-        @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = [CascadeType.ALL])
-        val authorities: MutableList<AuthoritisRoleEntity> = mutableListOf()
+        var department: DepartmentEntity
 ) : Serializable {
     fun mapToUserDetailsRecord(): UserDetailsRecord {
         return UserDetailsRecord(id, login, email, "N/A", devices, authorities.map { a -> a.role })
@@ -61,11 +66,15 @@ class AuthoritisRoleEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AuthRoleSeqGen")
         @SequenceGenerator(name = "AuthRoleSeqGen")
         val id: Long = -1,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
         @Column(name = "USER_ID")
         val user: Long,
-        @Column(name = "ROLE")
         @Convert(converter = AuthorityEnumConverterImpl::class)
-        var role: Authority
+        val role: Authority
 ) : Serializable
 
 
@@ -81,6 +90,11 @@ class UserDeviceEntity(
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserDevSeqGen")
         @SequenceGenerator(name = "UserDevSeqGen")
         val id: Long,
+        @Version
+        val version: Int = 0,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity(),
         @Column(name = "USER_ID")
         val user: Long,
         @Column(name = "AGENT_TYPE")

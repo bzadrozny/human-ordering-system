@@ -2,8 +2,6 @@ package com.hos.service.config
 
 import com.hos.service.security.JwtAuthorisationFilter
 import com.hos.service.security.UserDetailsServiceImpl
-import com.hos.service.service.UserService
-import com.hos.service.usecase.uc002.FindUserByLogin
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
@@ -13,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -25,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @PropertySource(value = ["classpath:security/security.properties"])
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
-        private val uc002: FindUserByLogin
+        private val userDetailsService: UserDetailsServiceImpl
 ) : WebSecurityConfigurerAdapter() {
 
     val publicURL: Array<String> = arrayOf(
@@ -49,13 +46,8 @@ class SecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(userDetailsServiceBean())
+        auth?.userDetailsService(userDetailsService)
                 ?.passwordEncoder(passwordEncoder())
-    }
-
-    @Bean
-    override fun userDetailsServiceBean(): UserDetailsService {
-        return UserDetailsServiceImpl(uc002::findUserByLogin)
     }
 
     @Bean

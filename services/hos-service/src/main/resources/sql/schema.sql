@@ -1,3 +1,10 @@
+create sequence HistoryLogSeqGen
+    START WITH 100
+    MINVALUE 1
+    MAXVALUE 1000000
+    NO CYCLE
+    INCREMENT BY 1;
+
 create sequence UserSeqGen
     START WITH 100
     MINVALUE 1
@@ -46,3 +53,33 @@ create sequence AddressSeqGen
     MAXVALUE 1000000
     NO CYCLE
     INCREMENT BY 1;
+
+create sequence CommissionSeqGen
+    START WITH 100
+    MINVALUE 1
+    MAXVALUE 1000000
+    NO CYCLE
+    INCREMENT BY 1;
+
+create sequence CommissionRecSeqGen
+    START WITH 100
+    MINVALUE 1
+    MAXVALUE 1000000
+    NO CYCLE
+    INCREMENT BY 1;
+
+create sequence ContractSeqGen
+    START WITH 100
+    MINVALUE 1
+    MAXVALUE 1000000
+    NO CYCLE
+    INCREMENT BY 1;
+
+
+create sequence CandidateSeqGen
+    START WITH 100
+    MINVALUE 1
+    MAXVALUE 1000000
+    NO CYCLE
+    INCREMENT BY 1;
+

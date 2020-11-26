@@ -1,4 +1,4 @@
-package com.hos.service.model.dto
+package com.hos.service.model.form
 
 class LoginForm {
     var login: String? = null

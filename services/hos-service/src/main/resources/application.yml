@@ -7,7 +7,8 @@ spring:
       enabled: true
       path: /h2
   datasource:
-    data-username: admin
-    data-password: password
+    username: admin
+    password: password
     url: jdbc:h2:./db/hosDB
+
 
