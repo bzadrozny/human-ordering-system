@@ -10,7 +10,6 @@ interface UserService {
 
     fun findAllUsers(): List<UserBasicsRecord>
     fun findUserById(id: Long): UserDetailsRecord?
-    fun findUserByLogin(login: String): UserDetailsRecord?
 
     fun registerUser(userForm: UserForm): UserDetailsRecord?
     fun modifyUser(userForm: UserForm): UserDetailsRecord?

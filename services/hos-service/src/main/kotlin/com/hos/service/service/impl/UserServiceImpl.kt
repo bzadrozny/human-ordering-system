@@ -1,22 +1,29 @@
 package com.hos.service.service.impl
 
+import com.hos.service.model.converter.Converter
+import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
+import com.hos.service.model.exception.ValidationException
 import com.hos.service.model.form.UserForm
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
+import com.hos.service.model.validator.FormValidator
 import com.hos.service.repo.UserRepository
 import com.hos.service.service.UserService
 import com.hos.service.usecase.uc001.LoginUser
-import com.hos.service.usecase.uc002.FindUserByLogin
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
 class UserServiceImpl(
-        val uc001: LoginUser,
-        val uc002: FindUserByLogin,
-        val userRepository: UserRepository
+        private val uc001: LoginUser,
+        private val userFormValidator: FormValidator<UserForm, UserEntity>,
+        private val userConverter: Converter<UserForm, UserEntity>,
+        private val userBasicsConverter: Converter<UserEntity, UserBasicsRecord>,
+        private val userDetailsConverter: Converter<UserEntity, UserDetailsRecord>,
+        private val userRepository: UserRepository
 ) : UserService {
 
     override fun loginUser(login: String?, password: String?): String? {
@@ -24,34 +31,52 @@ class UserServiceImpl(
     }
 
     override fun findAllUsers(): List<UserBasicsRecord> {
-        return userRepository.findAll()
-                .map { it.mapToUserBasicsRecord() }
+        return userRepository.findAll().map(userBasicsConverter::create)
     }
 
     override fun findUserById(id: Long): UserDetailsRecord? {
         return userRepository.findById(id)
-                .map { it.mapToUserDetailsRecord() }
+                .map(userDetailsConverter::create)
                 .orElseThrow { ResourceNotFoundException(Resource.USER, QualifierType.ID, "$id") }
     }
 
-    override fun findUserByLogin(login: String): UserDetailsRecord? {
-        return uc002.findUserByLogin(login)
-    }
-
+    @Transactional
     override fun registerUser(userForm: UserForm): UserDetailsRecord? {
-        TODO("Not yet implemented")
-
-        //validate
-        //save
+        userFormValidator.validateBeforeRegistration(userForm).let {
+            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
+                throw ValidationException(it)
+            }
+        }
+        return userConverter.create(userForm)
+                .let { userRepository.save(it) }
+                .let { userDetailsConverter.create(it) }
     }
 
+    @Transactional
     override fun modifyUser(userForm: UserForm): UserDetailsRecord? {
-        TODO("Not yet implemented")
+        userFormValidator.validateInitiallyModification(userForm).let {
+            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
+                throw ValidationException(it)
+            }
+        }
 
-        //get saved data
-        //merge to new instance
-        //validate
-        //save
+        val userEntity = userRepository.findById(userForm.id!!).orElseThrow {
+            ResourceNotFoundException(
+                    Resource.USER,
+                    QualifierType.ID,
+                    "${userForm.id}"
+            )
+        }
+
+        userFormValidator.validateBeforeRegisterModification(userForm, userEntity).let {
+            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
+                throw ValidationException(it)
+            }
+        }
+
+        return userConverter.merge(userForm, userEntity)
+                .let { userRepository.save(it) }
+                .let { userDetailsConverter.create(it) }
     }
 
     override fun deleteUser(userForm: UserForm): UserBasicsRecord? {
@@ -59,6 +84,5 @@ class UserServiceImpl(
 
         // change status
     }
-
 
 }

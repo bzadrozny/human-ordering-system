@@ -8,15 +8,16 @@ import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.service.UserService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.annotation.security.RolesAllowed
 
 @RestController
 @RequestMapping("user")
-class UserController(val userService: UserService) {
+class UserController(private val userService: UserService) {
 
     @GetMapping
-    @RolesAllowed("ADMIN")
+    @PreAuthorize("hasAuthority('ADMIN')")
     fun allUsers(): List<UserBasicsRecord> {
         return userService.findAllUsers()
     }
@@ -27,27 +28,23 @@ class UserController(val userService: UserService) {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
     fun registerUser(@RequestBody body: UserForm): UserDetailsRecord? {
         return userService.registerUser(body)
     }
 
     @PutMapping
-    fun modifyUser(@RequestBody body: UserEntity): UserDetailsRecord? {
-
-        return UserDetailsRecord(
-                0,
-                "login",
-                "email",
-                "N/A",
-                listOf(),
-                listOf()
-        )
+    fun modifyUser(@RequestBody body: UserForm): UserDetailsRecord? {
+        return userService.modifyUser(body)
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     fun deleteUser(@PathVariable id: Long): Boolean {
 
-        return true
+        //TODO do wymiany
+
+        return false
     }
 
 }

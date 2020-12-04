@@ -26,15 +26,15 @@ class JwtTokenUtils : Serializable {
         get() = field * 1000 * 60
 
     fun getSubjectFromToken(token: String): String {
-        return getClaimFromToken(token, Function { obj: Claims -> obj.subject })
+        return getClaimFromToken(token) { obj: Claims -> obj.subject }
     }
 
     private fun getIssuedAtDateFromToken(token: String): Date {
-        return getClaimFromToken(token, Function { obj: Claims -> obj.issuedAt })
+        return getClaimFromToken(token) { obj: Claims -> obj.issuedAt }
     }
 
     private fun getExpirationDateFromToken(token: String): Date {
-        return getClaimFromToken(token, Function { obj: Claims -> obj.expiration })
+        return getClaimFromToken(token) { obj: Claims -> obj.expiration }
     }
 
     private fun <T> getClaimFromToken(token: String, claimsResolver: Function<Claims, T>): T {

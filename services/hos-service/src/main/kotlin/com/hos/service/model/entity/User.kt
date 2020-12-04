@@ -2,8 +2,7 @@ package com.hos.service.model.entity
 
 import com.hos.service.model.converter.jpa.AuthorityEnumConverterImpl
 import com.hos.service.model.enum.Authority
-import com.hos.service.model.record.UserBasicsRecord
-import com.hos.service.model.record.UserDetailsRecord
+
 import java.io.Serializable
 import javax.persistence.*
 
@@ -21,34 +20,41 @@ class UserEntity(
         val history: HistoryLogEntity = HistoryLogEntity(),
         @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
         val devices: MutableList<UserDeviceEntity> = mutableListOf(),
-        @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = [CascadeType.ALL])
-        val authorities: MutableList<AuthoritisRoleEntity> = mutableListOf(),
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        val authorities: MutableList<AuthorityRoleEntity> = mutableListOf(),
         @Column(unique = true)
         var login: String,
         @Column(unique = true)
         var email: String,
-        var passwrod: String,
+        var password: String,
+        var name: String,
+        var surname: String,
+        var phone1: String,
+        var phone2: String? = null,
+        @ManyToOne
+        @JoinColumn(name = "SUPERIOR_ID")
+        var superior: UserEntity? = null,
+        @ManyToOne
+        @JoinTable(name = "ORGANISATION_ID")
+        var organisation: OrganisationEntity,
         @ManyToOne
         @JoinColumn(name = "DEPARTMENT_ID")
-        var department: DepartmentEntity
-) : Serializable {
-    fun mapToUserDetailsRecord(): UserDetailsRecord {
-        return UserDetailsRecord(id, login, email, "N/A", devices, authorities.map { a -> a.role })
-    }
+        var department: DepartmentEntity,
+        @ManyToOne
+        @JoinColumn(name = "LOCATION_ID")
+        var location: LocationEntity
 
-    fun mapToUserBasicsRecord(): UserBasicsRecord {
-        return UserBasicsRecord(id, login, email)
-    }
+) : Serializable {
 
     fun print(): String {
-        return "id: $id, login: $login, email: $email, pass: $passwrod, roles: ${authorities.printRoles()}, agents: ${devices.printAgents()}"
+        return "id: $id, login: $login, email: $email, pass: $password, roles: ${authorities.printRoles()}, agents: ${devices.printAgents()}"
     }
 
     private fun MutableList<UserDeviceEntity>.printAgents(): String {
         return if (isEmpty()) "null" else map { it.agentType }.reduce { acc, ob -> "$ob, $acc" }
     }
 
-    private fun MutableList<AuthoritisRoleEntity>.printRoles(): String {
+    private fun MutableList<AuthorityRoleEntity>.printRoles(): String {
         return if (isEmpty()) "null" else map { it.role.desc }.reduce { acc, ob -> "$ob, $acc" }
     }
 }
@@ -61,7 +67,7 @@ class UserEntity(
             UniqueConstraint(columnNames = ["USER_ID", "ROLE"])
         ]
 )
-class AuthoritisRoleEntity(
+class AuthorityRoleEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AuthRoleSeqGen")
         @SequenceGenerator(name = "AuthRoleSeqGen")
@@ -71,8 +77,9 @@ class AuthoritisRoleEntity(
         @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         @JoinColumn(name = "HISTORY_LOG_ID")
         val history: HistoryLogEntity = HistoryLogEntity(),
-        @Column(name = "USER_ID")
-        val user: Long,
+        @ManyToOne
+        @JoinColumn(name = "USER_ID")
+        val user: UserEntity,
         @Convert(converter = AuthorityEnumConverterImpl::class)
         val role: Authority
 ) : Serializable

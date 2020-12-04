@@ -1,16 +1,27 @@
 package com.hos.service.model.form
 
-import com.hos.service.model.entity.AuthoritisRoleEntity
-import com.hos.service.model.enum.AdministrationRole
+import com.hos.service.model.enum.Authority
 
 class UserForm {
-    val login: String? = null
-    var email: String? = null
-    val passwrod: String? = null
-    val passwrodConfirmation: String? = null
 
-    val administrationRole: AdministrationRole? = null
-    val administrationUnit: AdministrationRole? = null
-    val authorities: List<AuthoritisRoleEntity> = listOf()
+    val id: Long? = null
+    val login: String? = null
+    val email: String? = null
+    val password: String? = null
+
+    val name: String? = null
+    val surname: String? = null
+    val phone1: String? = null
+    val phone2: String? = null
+
+    val superior: Long? = null
+
+    val organisation: Long? = null
+    val department: Long? = null
+    val location: Long? = null
+
+    val authorities: List<Authority>? = null
+
+    val acceptWarning: Boolean = false
 
 }

@@ -1,11 +1,9 @@
 package com.hos.service
 
-import com.hos.service.model.entity.AuthoritisRoleEntity
-import com.hos.service.model.entity.DepartmentEntity
-import com.hos.service.model.entity.OrganisationEntity
-import com.hos.service.model.entity.UserEntity
+import com.hos.service.model.entity.*
 import com.hos.service.model.enum.Authority
 import com.hos.service.repo.DepartmentRepository
+import com.hos.service.repo.LocationRepository
 import com.hos.service.repo.OrganisationRepository
 import com.hos.service.repo.UserRepository
 import org.springframework.beans.factory.InitializingBean
@@ -21,6 +19,7 @@ fun main(args: Array<String>) {
 @SpringBootApplication
 class Application(
         private val organisationRepo: OrganisationRepository,
+        private val locationRepository: LocationRepository,
         private val departmentRepo: DepartmentRepository,
         private val userRepo: UserRepository
 ) {
@@ -53,23 +52,36 @@ class Application(
                     )
             )
 
-            val user = userRepo.save(
-                    UserEntity(
-                            login = adminlogin,
-                            email = adminemail,
-                            passwrod = adminpassw,
-                            department = department
+            val location = locationRepository.save(
+                    LocationEntity(
+                            name = "testLocation",
+                            organisation = organisation,
+                            registeredOffice = true,
+                            address = AddressEntity(
+                                    city = "Warsaw",
+                                    postalCode = "00000",
+                                    street = "Werbeny",
+                                    number = "2",
+                            ),
+                            status = "CREATED"
                     )
             )
 
+            val user = UserEntity(
+                    login = adminlogin,
+                    email = adminemail,
+                    password = adminpassw,
+                    name = "adminName",
+                    surname = "adminSurname",
+                    phone1 = "phone1",
+                    organisation = organisation,
+                    department = department,
+                    location = location
+            )
             user.authorities.addAll(listOf(
-                    AuthoritisRoleEntity(
-                            user = user.id,
+                    AuthorityRoleEntity(
+                            user = user,
                             role = Authority.ADMIN
-                    ),
-                    AuthoritisRoleEntity(
-                            user = user.id,
-                            role = Authority.MANAGER
                     )
             ))
             userRepo.save(user)

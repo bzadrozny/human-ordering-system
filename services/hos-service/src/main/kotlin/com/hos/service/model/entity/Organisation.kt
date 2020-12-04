@@ -59,7 +59,7 @@ class LocationEntity(
         @ManyToOne
         @JoinColumn(name = "ORGANISATION_ID")
         val organisation: OrganisationEntity,
-        @OneToOne
+        @OneToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "ADDRESS_ID")
         val address: AddressEntity,
         var registeredOffice: Boolean,

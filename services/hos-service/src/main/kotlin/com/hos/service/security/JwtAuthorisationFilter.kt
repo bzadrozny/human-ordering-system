@@ -19,14 +19,16 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Slf4j
-class JwtAuthorisationFilter : OncePerRequestFilter() {
+class JwtAuthorisationFilter(
+        private val userDetailsService: UserDetailsServiceImpl
+) : OncePerRequestFilter() {
 
     @Autowired
     private val jwtTokenUtils: JwtTokenUtils = JwtTokenUtils()
     private val log = loggerFor(javaClass)
 
     override fun doFilterInternal(req: HttpServletRequest, resp: HttpServletResponse, chain: FilterChain) {
-        val secContext = SecurityContextHolder.getContext();
+        val secContext = SecurityContextHolder.getContext()
         if (secContext.authentication != null) {
             chain.doFilter(req, resp)
             return
@@ -57,8 +59,12 @@ class JwtAuthorisationFilter : OncePerRequestFilter() {
         chain.doFilter(req, resp)
     }
 
-    private fun createAuthentication(jwtSubject: String?, jwtToken: String, authorities: List<GrantedAuthority>, req: HttpServletRequest): Authentication? {
-        val auth = UsernamePasswordAuthenticationToken(jwtSubject, jwtToken, authorities)
+    private fun createAuthentication(jwtSubject: String?, jwtToken: String, authorities: List<GrantedAuthority>, req: HttpServletRequest): Authentication {
+        val auth = UsernamePasswordAuthenticationToken(
+                userDetailsService.loadUserByUsername(jwtSubject),
+                jwtToken,
+                authorities
+        )
         auth.details = WebAuthenticationDetailsSource().buildDetails(req)
         return auth
     }

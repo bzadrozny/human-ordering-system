@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User
 
 class UserDetailsContainer(
         val id: Long? = null,
+        val organisation: Long? = null,
         username: String?,
         password: String? = null,
         authorities: List<GrantedAuthority>?
