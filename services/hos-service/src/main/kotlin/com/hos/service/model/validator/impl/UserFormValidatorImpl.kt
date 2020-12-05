@@ -4,6 +4,7 @@ import com.hos.service.model.common.Validation
 import com.hos.service.model.entity.AuthorityRoleEntity
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.Authority
+import com.hos.service.model.enum.EntityStatus
 import com.hos.service.model.enum.ValidationStatus
 import com.hos.service.model.form.UserForm
 import com.hos.service.model.validator.FormValidator
@@ -43,6 +44,7 @@ class UserFormValidatorImpl(
         validation.addValidation(validateRequiredStringWithSize(form.login, "login", 5, 50, "userForm.login"))
         validation.addValidation(validateRequiredStringWithSize(form.email, "email", 6, 50, "userForm.email"))
         validation.addValidation(validateRequiredStringWithSize(form.password, "password", 8, 20, "userForm.password"))
+        validation.addValidation(validateRequiredField(form.status, "status", "userForm.status"))
         validation.addValidation(validateRequiredStringWithSize(form.name, "name", 2, 20, "userForm.name"))
         validation.addValidation(validateRequiredStringWithSize(form.surname, "surname", 2, 20, "userForm.surname"))
         validation.addValidation(validateRequiredStringWithSize(form.phone1, "phone1", 8, 20, "userForm.phone1"))
@@ -64,6 +66,14 @@ class UserFormValidatorImpl(
             validation.addValidation(
                     "Istnieje użytkownik o podanym loginie lub adresie email",
                     "userForm.login|userForm.email",
+                    ValidationStatus.BLOCKER
+            )
+        }
+
+        if (form.status == EntityStatus.DELETED) {
+            validation.addValidation(
+                    "Nie można zarejestrować użytkownika ze statusem ${EntityStatus.DELETED.desc}",
+                    "userForm.status",
                     ValidationStatus.BLOCKER
             )
         }
@@ -104,13 +114,13 @@ class UserFormValidatorImpl(
             if (superior == null) {
                 validation.addValidation(
                         "Nie istnieje użytkownik o podanym identyfikatorze",
-                        "user.superior",
+                        "userForm.superior",
                         ValidationStatus.BLOCKER
                 )
             } else if (superior.location.organisation != organisation) {
                 validation.addValidation(
                         "Wprowadzany użytkownik musi być z tej samej organizacji co przełożony",
-                        "user.superior",
+                        "userForm.superior",
                         ValidationStatus.BLOCKER
                 )
             }
@@ -129,7 +139,7 @@ class UserFormValidatorImpl(
         if (principal.id != form.id && !isAdmin && !isDirector && !isManager) {
             validation.addValidation(
                     "Użytkownik nie jest uprawniony do modyfikacji danych konta",
-                    "user.authorities",
+                    "userForm.authorities",
                     ValidationStatus.BLOCKER
             )
             return validation
@@ -141,6 +151,9 @@ class UserFormValidatorImpl(
             validation.addValidation(validateForbiddenField(form.department, "department", "userForm.department"))
             validation.addValidation(validateForbiddenField(form.location, "location", "userForm.location"))
             validation.addValidation(validateForbiddenField(form.superior, "superior", "userForm.superior"))
+        }
+        if (!isAdmin && !isDirector && !isManager) {
+            validation.addValidation(validateForbiddenField(form.status, "status", "userForm.authorities"))
         }
 
         return validation
@@ -157,6 +170,7 @@ class UserFormValidatorImpl(
             validation.addValidation(validateElectiveStringWithSize(form.login, "login", 5, 50, "userForm.login"))
         } else {
             validation.addValidation(validateForbiddenField(form.login, "login", "userForm.login"))
+            validation.addValidation(validateElectiveFieldFromCollection(form.status, "status", listOf(EntityStatus.ACTIVE, EntityStatus.DISABLED), "userForm.status"))
         }
 
         if (principal.id == form.id || (entityIsClient && !userIsClient) || userIsAdmin) {
@@ -183,7 +197,7 @@ class UserFormValidatorImpl(
             if (form.login != entity.login) userRepository.findByLogin(form.login)
                     ?: validation.addValidation(
                             "Istnieje użytkownik o podanym loginie",
-                            "user.login",
+                            "userForm.login",
                             ValidationStatus.BLOCKER
                     )
         }
@@ -191,7 +205,7 @@ class UserFormValidatorImpl(
             if (form.email != entity.email) userRepository.findByLogin(form.email)
                     ?: validation.addValidation(
                             "Istnieje użytkownik o podanym adresie email",
-                            "user.email",
+                            "userForm.email",
                             ValidationStatus.BLOCKER
                     )
         }
@@ -202,13 +216,13 @@ class UserFormValidatorImpl(
                 if (superior == null) {
                     validation.addValidation(
                             "Nie istnieje użytkownik o podanym identyfikatorze",
-                            "user.superior",
+                            "userForm.superior",
                             ValidationStatus.BLOCKER
                     )
                 } else if (superior.organisation != entity.organisation) {
                     validation.addValidation(
                             "Wprowadzany użytkownik musi być z tej samej organiezacji co przełożony",
-                            "user.superior",
+                            "userForm.superior",
                             ValidationStatus.BLOCKER
                     )
                 }
@@ -222,7 +236,7 @@ class UserFormValidatorImpl(
                         .firstOrNull { locationEntity -> locationEntity.id == it }
                         ?: validation.addValidation(
                                 "Lokalizacja o podanym identyfikatorze nie jest dostępna dla organizacji danego konta",
-                                "user.location",
+                                "userForm.location",
                                 ValidationStatus.BLOCKER
                         )
             }
@@ -235,7 +249,7 @@ class UserFormValidatorImpl(
                         .firstOrNull { it.id == departmentId }
                         ?: validation.addValidation(
                                 "Dział o podanym identyfikatorze nie jest dostępny dla organizacji danego konta",
-                                "user.department",
+                                "userForm.department",
                                 ValidationStatus.BLOCKER
                         )
             }

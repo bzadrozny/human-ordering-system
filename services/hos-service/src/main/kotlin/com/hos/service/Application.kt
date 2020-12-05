@@ -2,6 +2,7 @@ package com.hos.service
 
 import com.hos.service.model.entity.*
 import com.hos.service.model.enum.Authority
+import com.hos.service.model.enum.EntityStatus
 import com.hos.service.repo.DepartmentRepository
 import com.hos.service.repo.LocationRepository
 import com.hos.service.repo.OrganisationRepository
@@ -71,6 +72,7 @@ class Application(
                     login = adminlogin,
                     email = adminemail,
                     password = adminpassw,
+                    status = EntityStatus.ACTIVE,
                     name = "adminName",
                     surname = "adminSurname",
                     phone1 = "phone1",

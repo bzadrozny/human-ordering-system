@@ -1,6 +1,7 @@
 package com.hos.service.model.form
 
 import com.hos.service.model.enum.Authority
+import com.hos.service.model.enum.EntityStatus
 
 class UserForm {
 
@@ -8,6 +9,7 @@ class UserForm {
     val login: String? = null
     val email: String? = null
     val password: String? = null
+    val status: EntityStatus? = null
 
     val name: String? = null
     val surname: String? = null
@@ -23,5 +25,4 @@ class UserForm {
     val authorities: List<Authority>? = null
 
     val acceptWarning: Boolean = false
-
 }

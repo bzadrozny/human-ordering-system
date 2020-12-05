@@ -1,7 +1,9 @@
 package com.hos.service.model.entity
 
 import com.hos.service.model.converter.jpa.AuthorityEnumConverterImpl
+import com.hos.service.model.converter.jpa.EntityStatusEnumConverterImpl
 import com.hos.service.model.enum.Authority
+import com.hos.service.model.enum.EntityStatus
 
 import java.io.Serializable
 import javax.persistence.*
@@ -15,18 +17,13 @@ class UserEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
-        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
-        val devices: MutableList<UserDeviceEntity> = mutableListOf(),
-        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
-        val authorities: MutableList<AuthorityRoleEntity> = mutableListOf(),
         @Column(unique = true)
         var login: String,
         @Column(unique = true)
         var email: String,
         var password: String,
+        @Convert(converter = EntityStatusEnumConverterImpl::class)
+        var status: EntityStatus,
         var name: String,
         var surname: String,
         var phone1: String,
@@ -42,10 +39,15 @@ class UserEntity(
         var department: DepartmentEntity,
         @ManyToOne
         @JoinColumn(name = "LOCATION_ID")
-        var location: LocationEntity
-
+        var location: LocationEntity,
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        val authorities: MutableList<AuthorityRoleEntity> = mutableListOf(),
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        val devices: MutableList<UserDeviceEntity> = mutableListOf(),
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable {
-
     fun print(): String {
         return "id: $id, login: $login, email: $email, pass: $password, roles: ${authorities.printRoles()}, agents: ${devices.printAgents()}"
     }

@@ -15,7 +15,7 @@ enum class Authority(val id: Int, val desc: String) {
     ADMIN(0, "Administrator"),
     DIRECTOR(1, "Director"),
     MANAGER(2, "Manager"),
-    RECRUTER(3, "Recruter"),
+    RECRUITER(3, "Recruter"),
     CLIENT(4, "Klinet"),
     ;
 

@@ -5,7 +5,7 @@ import com.hos.service.model.enum.ValidationStatus
 
 fun validateForbiddenField(field: Any?, name: String, fieldPath: String): ValidationDetails? {
     return if (field != null) ValidationDetails(
-            "Pole $name jest niedozwolone",
+            "Pole '$name' jest niedozwolone",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null
@@ -13,7 +13,7 @@ fun validateForbiddenField(field: Any?, name: String, fieldPath: String): Valida
 
 fun validateRequiredField(field: Any?, name: String, fieldPath: String): ValidationDetails? {
     return if (field == null) ValidationDetails(
-            "Pole $name wymagane",
+            "Pole '$name' wymagane",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null
@@ -29,7 +29,7 @@ fun validateRequiredFieldWarning(field: Any?, name: String, fieldPath: String): 
 
 fun validateRequiredStringWithSize(field: String?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
     return if (field == null || field.length !in min..max) ValidationDetails(
-            "Pole $name jest wymagane i musi być o długości od $min do $max",
+            "Pole '$name' jest wymagane i musi być o długości od $min do $max",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null
@@ -37,7 +37,7 @@ fun validateRequiredStringWithSize(field: String?, name: String, min: Int, max: 
 
 fun validateElectiveStringWithSize(field: String?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
     return if (field?.length !in min..max) ValidationDetails(
-            "Pole $name musi być o długości od $min do $max",
+            "Pole '$name' musi być o długości od $min do $max",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null
@@ -45,7 +45,7 @@ fun validateElectiveStringWithSize(field: String?, name: String, min: Int, max: 
 
 fun validateRequiredCollectionWithSize(field: Collection<Any>?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
     return if (field == null || field.size !in min..max) ValidationDetails(
-            "Kolekcja $name jest wymagana i musi zawierać od $min do $max elementów",
+            "Kolekcja '$name' jest wymagana i musi zawierać od $min do $max elementów",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null
@@ -53,7 +53,15 @@ fun validateRequiredCollectionWithSize(field: Collection<Any>?, name: String, mi
 
 fun validateElectiveCollectionWithSize(field: Collection<Any>?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
     return if (field?.size in min..max) ValidationDetails(
-            "Kolekcja $name jest wymagana i musi zawierać od $min do $max elementów",
+            "Kolekcja '$name' jest wymagana i musi zawierać od $min do $max elementów",
+            fieldPath,
+            ValidationStatus.BLOCKER
+    ) else null
+}
+
+fun validateElectiveFieldFromCollection(field: Any?, name: String, availableValues: List<Any>, fieldPath: String): ValidationDetails? {
+    return if (field != null && !availableValues.contains(field)) ValidationDetails(
+            "Pole '$name' nie może przyjąć wartości: '${field}'",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null

@@ -23,6 +23,7 @@ class UserEntityFromUserFormConverterImpl(
                 login = source.login!!,
                 email = source.email!!,
                 password = source.password!!,
+                status = source.status!!,
                 name = source.name!!,
                 surname = source.surname!!,
                 phone1 = source.phone1!!,
@@ -45,6 +46,7 @@ class UserEntityFromUserFormConverterImpl(
         source.login?.let { target.login = it }
         source.email?.let { target.email = it }
         source.password?.let { target.password = it }
+        source.status?.let { target.status = it }
         source.name?.let { target.name = it }
         source.surname?.let { target.surname = it }
         source.phone1?.let { target.phone1 = it }
