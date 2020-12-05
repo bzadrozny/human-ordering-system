@@ -6,7 +6,7 @@ import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.exception.ValidationException
-import com.hos.service.model.form.UserForm
+import com.hos.service.model.form.user.UserForm
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.model.validator.FormValidator

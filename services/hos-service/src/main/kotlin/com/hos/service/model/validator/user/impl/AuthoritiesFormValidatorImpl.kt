@@ -1,4 +1,4 @@
-package com.hos.service.model.validator.impl
+package com.hos.service.model.validator.user.impl
 
 import com.hos.service.model.common.Validation
 import com.hos.service.model.entity.AuthorityRoleEntity

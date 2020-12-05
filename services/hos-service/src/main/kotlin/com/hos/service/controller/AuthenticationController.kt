@@ -1,6 +1,6 @@
 package com.hos.service.controller
 
-import com.hos.service.model.form.LoginForm
+import com.hos.service.model.form.login.LoginForm
 import com.hos.service.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

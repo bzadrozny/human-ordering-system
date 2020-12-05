@@ -1,6 +1,6 @@
 package com.hos.service.service
 
-import com.hos.service.model.form.UserForm
+import com.hos.service.model.form.user.UserForm
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
 

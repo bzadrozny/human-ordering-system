@@ -1,16 +1,11 @@
 package com.hos.service.controller
 
-import com.hos.service.model.form.UserForm
-import com.hos.service.model.entity.UserEntity
-import com.hos.service.model.enum.QualifierType
-import com.hos.service.model.enum.Resource
-import com.hos.service.model.exception.ResourceNotFoundException
+import com.hos.service.model.form.user.UserForm
 import com.hos.service.model.record.UserBasicsRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.service.UserService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import javax.annotation.security.RolesAllowed
 
 @RestController
 @RequestMapping("user")
@@ -48,8 +43,3 @@ class UserController(private val userService: UserService) {
     }
 
 }
-
-
-
-
-

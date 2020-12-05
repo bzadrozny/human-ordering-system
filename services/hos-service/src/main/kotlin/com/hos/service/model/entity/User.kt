@@ -17,13 +17,13 @@ class UserEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
+        @Convert(converter = EntityStatusEnumConverterImpl::class)
+        var status: EntityStatus,
         @Column(unique = true)
         var login: String,
         @Column(unique = true)
         var email: String,
         var password: String,
-        @Convert(converter = EntityStatusEnumConverterImpl::class)
-        var status: EntityStatus,
         var name: String,
         var surname: String,
         var phone1: String,
@@ -76,14 +76,14 @@ class AuthorityRoleEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
         @ManyToOne
         @JoinColumn(name = "USER_ID")
         val user: UserEntity,
         @Convert(converter = AuthorityEnumConverterImpl::class)
-        val role: Authority
+        val role: Authority,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
 
 
@@ -101,13 +101,13 @@ class UserDeviceEntity(
         val id: Long,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
         @Column(name = "USER_ID")
         val user: Long,
         @Column(name = "AGENT_TYPE")
         val agentType: String,
         @Column(name = "IP_ADDRESS")
-        val ipAddress: String
+        val ipAddress: String,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
