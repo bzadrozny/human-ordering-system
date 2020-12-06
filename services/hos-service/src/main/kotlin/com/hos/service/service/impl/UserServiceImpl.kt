@@ -7,7 +7,7 @@ import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.exception.ValidationException
 import com.hos.service.model.form.user.UserForm
-import com.hos.service.model.record.UserBasicsRecord
+import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.model.validator.FormValidator
 import com.hos.service.repo.UserRepository
@@ -21,7 +21,7 @@ class UserServiceImpl(
         private val uc001: LoginUser,
         private val userFormValidator: FormValidator<UserForm, UserEntity>,
         private val userConverter: Converter<UserForm, UserEntity>,
-        private val userBasicsConverter: Converter<UserEntity, UserBasicsRecord>,
+        private val userBasicConverter: Converter<UserEntity, UserBasicRecord>,
         private val userDetailsConverter: Converter<UserEntity, UserDetailsRecord>,
         private val userRepository: UserRepository
 ) : UserService {
@@ -30,8 +30,8 @@ class UserServiceImpl(
         return uc001.login(login, password)
     }
 
-    override fun findAllUsers(): List<UserBasicsRecord> {
-        return userRepository.findAll().map(userBasicsConverter::create)
+    override fun findAllUsers(): List<UserBasicRecord> {
+        return userRepository.findAll().map(userBasicConverter::create)
     }
 
     override fun findUserById(id: Long): UserDetailsRecord? {
@@ -79,10 +79,8 @@ class UserServiceImpl(
                 .let { userDetailsConverter.create(it) }
     }
 
-    override fun deleteUser(userForm: UserForm): UserBasicsRecord? {
+    override fun deleteUser(userForm: UserForm): UserBasicRecord? {
         TODO("Not yet implemented")
-
-        // change status
     }
 
 }

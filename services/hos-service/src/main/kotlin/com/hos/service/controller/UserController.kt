@@ -1,7 +1,7 @@
 package com.hos.service.controller
 
 import com.hos.service.model.form.user.UserForm
-import com.hos.service.model.record.UserBasicsRecord
+import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.service.UserService
 import org.springframework.security.access.prepost.PreAuthorize
@@ -13,7 +13,7 @@ class UserController(private val userService: UserService) {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    fun allUsers(): List<UserBasicsRecord> {
+    fun allUsers(): List<UserBasicRecord> {
         return userService.findAllUsers()
     }
 
