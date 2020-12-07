@@ -6,26 +6,28 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.hos.service.model.exception.ResourceNotFoundException
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-enum class EntityStatus(val id: Int, val desc: String) {
+enum class CommissionDecision(val id: Int, val desc: String) {
 
-    ACTIVE(0, "Aktywny"),
-    DISABLED(1, "Nieaktywny"),
-    DELETED(2, "Usunięty");
+    ACCEPTED(0, "Zaakceptowano"),
+    MODIFIED(1, "Zmodyfikowano"),
+    REJECTED(2, "Odrzucono");
 
     companion object {
         @JvmStatic
         @JsonCreator //https://github.com/FasterXML/jackson-module-kotlin/issues/75
-        fun creator(@JsonProperty("id") id: String): EntityStatus {
+        fun creator(@JsonProperty("id") id: String): CommissionDecision {
             return getById(id.toInt())
         }
 
-        fun getByIdOrNull(id: Int?): EntityStatus? {
+        fun getByIdOrNull(@JsonProperty("id") id: Int?): CommissionDecision? {
             return id?.let { getById(id.toInt()) }
         }
 
-        private fun getById(id: Int): EntityStatus {
+        private fun getById(id: Int): CommissionDecision {
             return values().find { it.id == id }
-                    ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "'UserStatus' with id: $id does not exist")
+                    ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "'CommissionDecision' with id: $id does not exist")
         }
     }
+
+
 }

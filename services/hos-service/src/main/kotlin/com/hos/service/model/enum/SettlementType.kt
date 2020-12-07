@@ -14,9 +14,13 @@ enum class SettlementType(val id: Int, val desc: String) {
     PER_JOB(2, "/contract");
 
     companion object {
+        @JvmStatic
+        @JsonCreator //https://github.com/FasterXML/jackson-module-kotlin/issues/75
+        fun creator(@JsonProperty("id") id: String): SettlementType {
+            return getById(id.toInt())
+        }
 
-        @JsonCreator
-        fun getByIdOrNull(@JsonProperty("id") id: Int?): SettlementType? {
+        fun getByIdOrNull(id: Int?): SettlementType? {
             return id?.let { getById(id) }
         }
 
@@ -24,7 +28,6 @@ enum class SettlementType(val id: Int, val desc: String) {
             return values().find { it.id == id }
                     ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "Dictionary '${this::class.simpleName}' with id: $id does not exist")
         }
-
     }
 
 }

@@ -11,17 +11,17 @@ class CandidateEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
-        @OneToMany(mappedBy = "candidate")
-        val contracts: MutableSet<ContractEntity>,
-        @OneToOne
-        @JoinColumn(name = "ADDRESS_ID")
-        val address: AddressEntity,
         var name: String,
         var surname: String,
         var phone: String,
         var email: String,
-        var approvment: Boolean,
+        var identificationNumber: String,
+        @OneToOne
+        @JoinColumn(name = "ADDRESS_ID")
+        val address: AddressEntity,
+        @OneToMany(mappedBy = "candidate")
+        val contracts: MutableSet<ContractEntity>,
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable

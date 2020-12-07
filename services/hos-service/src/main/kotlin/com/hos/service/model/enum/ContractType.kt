@@ -12,9 +12,13 @@ enum class ContractType(val id: Int, val desc: String) {
     ORDER_CONTRACT(1, "Umowa zlecenie");
 
     companion object {
+        @JvmStatic
+        @JsonCreator //https://github.com/FasterXML/jackson-module-kotlin/issues/75
+        fun creator(@JsonProperty("id") id: String): ContractType {
+            return getById(id.toInt())
+        }
 
-        @JsonCreator
-        fun getByIdOrNull(@JsonProperty("id") id: Int?): ContractType? {
+        fun getByIdOrNull(id: Int?): ContractType? {
             return id?.let { getById(id) }
         }
 
@@ -22,7 +26,6 @@ enum class ContractType(val id: Int, val desc: String) {
             return values().find { it.id == id }
                     ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "Dictionary '${this::class.simpleName}' with id: $id does not exist")
         }
-
     }
 
 }

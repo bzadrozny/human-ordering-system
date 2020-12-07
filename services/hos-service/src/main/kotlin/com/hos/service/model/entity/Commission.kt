@@ -1,9 +1,8 @@
 package com.hos.service.model.entity
 
-import com.hos.service.model.enum.ContractType
-import com.hos.service.model.enum.OrderRecordStatus
-import com.hos.service.model.enum.OrderStatus
-import com.hos.service.model.enum.SettlementType
+import com.hos.service.converter.jpa.impl.CommissionStatusEnumConverterImpl
+import com.hos.service.converter.jpa.impl.EntityStatusEnumConverterImpl
+import com.hos.service.model.enum.*
 import java.io.Serializable
 import java.time.LocalDate
 import javax.persistence.*
@@ -16,11 +15,12 @@ class CommissionEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
-        @OneToMany(mappedBy = "commission")
-        val recordEntities: MutableSet<OrderRecordEntity> = mutableSetOf(),
+        val orderDate: LocalDate?,
+        val decisionDate: LocalDate?,
+        val completedDate: LocalDate?,
+        var description: String?,
+        @Convert(converter = CommissionStatusEnumConverterImpl::class)
+        var status: CommissionStatus,
         @ManyToOne
         @JoinColumn(name = "PRINCIPAL_ID")
         var principal: UserEntity,
@@ -30,61 +30,40 @@ class CommissionEntity(
         @ManyToOne
         @JoinColumn(name = "LOCATION_ID")
         var location: LocationEntity,
-        var description: String,
-        var status: OrderStatus
+        @OneToMany(mappedBy = "commission")
+        val records: MutableSet<CommissionRecordEntity> = mutableSetOf(),
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
 
 @Entity(name = "COMMISSION_RECORD")
-class OrderRecordEntity(
+class CommissionRecordEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CommissionRecSeqGen")
         @SequenceGenerator(name = "CommissionRecSeqGen", initialValue = 1000, allocationSize = 10)
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
-        @ManyToOne
-        @JoinColumn(name = "COMMISSION_ID")
-        val commission: CommissionEntity,
         var jobName: String,
         var ordered: Int,
-        var accepted: Int,
+        var acceptedOrdered: Int,
         var recruited: Int,
         var startDate: LocalDate,
+        var acceptedStartDate: LocalDate,
         var endDate: LocalDate,
         var wageRateMin: Float,
         var wageRateMax: Float,
         var settlementType: SettlementType,
-        var status: OrderRecordStatus,
-        var description: String
-) : Serializable
-
-@Entity(name = "CONTRACT")
-class ContractEntity(
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ContractSeqGen")
-        @SequenceGenerator(name = "ContractSeqGen", initialValue = 1000, allocationSize = 10)
-        val id: Long = -1,
-        @Version
-        val version: Int = 0,
+        var description: String,
+        @Convert(converter = CommissionStatusEnumConverterImpl::class)
+        var status: CommissionRecordStatus,
+        @OneToMany(mappedBy = "commissionRecord")
+        val contracts: MutableSet<ContractEntity> = mutableSetOf(),
+        @ManyToOne
+        @JoinColumn(name = "COMMISSION_ID")
+        val commission: CommissionEntity,
         @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
-        @ManyToOne
-        @JoinColumn(name = "COMMISSION_RECORD_ID")
-        val commissionRecord: OrderRecordEntity,
-        @ManyToOne
-        @JoinColumn(name = "RECRUITER_ID")
-        val recruiter: UserEntity,
-        @ManyToOne
-        @JoinColumn(name = "CANDIDATE_ID")
-        val candidate: CandidateEntity,
-        var contractDate: LocalDate,
-        var startDate: LocalDate,
-        var endDate: LocalDate,
-        var salary: Float,
-        var contractType: ContractType,
-        var description: String
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
