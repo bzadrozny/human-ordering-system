@@ -1,7 +1,7 @@
 package com.hos.service.model.entity
 
-import com.hos.service.model.converter.jpa.AuthorityEnumConverterImpl
-import com.hos.service.model.converter.jpa.EntityStatusEnumConverterImpl
+import com.hos.service.converter.jpa.impl.AuthorityEnumConverterImpl
+import com.hos.service.converter.jpa.impl.EntityStatusEnumConverterImpl
 import com.hos.service.model.enum.Authority
 import com.hos.service.model.enum.EntityStatus
 
@@ -40,9 +40,9 @@ class UserEntity(
         @ManyToOne
         @JoinColumn(name = "LOCATION_ID")
         var location: LocationEntity,
-        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = [CascadeType.ALL])
         val authorities: MutableList<AuthorityRoleEntity> = mutableListOf(),
-        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = [CascadeType.ALL])
+        @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = [CascadeType.ALL])
         val devices: MutableList<UserDeviceEntity> = mutableListOf(),
         @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         @JoinColumn(name = "HISTORY_LOG_ID")

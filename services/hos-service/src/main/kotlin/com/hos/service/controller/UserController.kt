@@ -1,6 +1,6 @@
 package com.hos.service.controller
 
-import com.hos.service.model.form.user.UserForm
+import com.hos.service.model.form.UserForm
 import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.service.UserService
@@ -28,18 +28,9 @@ class UserController(private val userService: UserService) {
         return userService.registerUser(body)
     }
 
-    @PutMapping
-    fun modifyUser(@RequestBody body: UserForm): UserDetailsRecord? {
+    @PutMapping("{id}")
+    fun modifyUser(@PathVariable id: Long, @RequestBody body: UserForm): UserDetailsRecord? {
         return userService.modifyUser(body)
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    fun deleteUser(@PathVariable id: Long): Boolean {
-
-        //TODO do wymiany
-
-        return false
     }
 
 }

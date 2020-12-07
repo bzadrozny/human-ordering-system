@@ -41,7 +41,7 @@ class Application(
                     OrganisationEntity(
                             name = "Buffalo project",
                             nip = "92409812409124098",
-                            status = "CREATED"
+                            status = EntityStatus.ACTIVE
                     )
             )
 
@@ -49,7 +49,7 @@ class Application(
                     DepartmentEntity(
                             name = "Management",
                             organisation = organisation,
-                            status = "CREATED"
+                            status = EntityStatus.ACTIVE
                     )
             )
 
@@ -64,7 +64,7 @@ class Application(
                                     street = "Werbeny",
                                     number = "2",
                             ),
-                            status = "CREATED"
+                            status = EntityStatus.ACTIVE
                     )
             )
 

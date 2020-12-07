@@ -1,6 +1,6 @@
 package com.hos.service.usecase.uc001.impl
 
-import com.hos.service.model.converter.Converter
+import com.hos.service.converter.Converter
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource

@@ -1,6 +1,6 @@
 package com.hos.service.security
 
-import com.hos.service.model.converter.Converter
+import com.hos.service.converter.Converter
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.Authority
 import com.hos.service.model.record.UserDetailsRecord
@@ -25,7 +25,7 @@ class UserDetailsServiceImpl(
                 ?.let {
                     UserDetailsContainer(
                             it.id,
-                            it.organisation,
+                            it.organisation.id,
                             it.login,
                             it.password,
                             it.grantedAuthorities()

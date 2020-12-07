@@ -10,8 +10,11 @@ enum class Resource(val id: Int, val desc: String) {
 
     USER(0, "User"),
     ENUM(1, "Enum"),
-    ADMINISTRATION_UNIT(2, "Administration unit"),
-    LOCALISATION(3, "Localisation");
+    ORGANISATION(2, "Organisation"),
+    ADMINISTRATION_UNIT(3, "Administration unit"),
+    LOCATION(4, "Location"),
+    DEPARTMENT(5, "Department"),
+    ;
 
 
     companion object {

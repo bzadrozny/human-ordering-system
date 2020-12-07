@@ -36,7 +36,7 @@ fun validateRequiredStringWithSize(field: String?, name: String, min: Int, max: 
 }
 
 fun validateElectiveStringWithSize(field: String?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
-    return if (field?.length !in min..max) ValidationDetails(
+    return if (field != null && field.length !in min..max) ValidationDetails(
             "Pole '$name' musi być o długości od $min do $max",
             fieldPath,
             ValidationStatus.BLOCKER
@@ -51,9 +51,25 @@ fun validateRequiredCollectionWithSize(field: Collection<Any>?, name: String, mi
     ) else null
 }
 
-fun validateElectiveCollectionWithSize(field: Collection<Any>?, name: String, min: Int, max: Int, fieldPath: String): ValidationDetails? {
-    return if (field?.size in min..max) ValidationDetails(
-            "Kolekcja '$name' jest wymagana i musi zawierać od $min do $max elementów",
+fun validateRequiredCollectionWithSize(field: Collection<Any>?, name: String, min: Int, fieldPath: String): ValidationDetails? {
+    return if (field == null || field.size < min) ValidationDetails(
+            "Kolekcja '$name' jest wymagana i musi zawierać co najmniej $min elementów",
+            fieldPath,
+            ValidationStatus.BLOCKER
+    ) else null
+}
+
+fun validateElectiveCollectionWithSize(field: Collection<Any>?, name: String, min: Int, fieldPath: String): ValidationDetails? {
+    return if (field != null && field.size < min) ValidationDetails(
+            "Kolekcja '$name' jest wymagana i musi zawierać co najmniej $min elementów",
+            fieldPath,
+            ValidationStatus.BLOCKER
+    ) else null
+}
+
+fun validateRequiredFieldFromCollection(field: Any?, name: String, availableValues: List<Any>, fieldPath: String): ValidationDetails? {
+    return if (field == null || !availableValues.contains(field)) ValidationDetails(
+            "Pole '$name' jest wymagane nie może przyjąć wartości: '${field}'",
             fieldPath,
             ValidationStatus.BLOCKER
     ) else null

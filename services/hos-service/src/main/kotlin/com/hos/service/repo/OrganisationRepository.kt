@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface OrganisationRepository : JpaRepository<OrganisationEntity, Long>
+interface OrganisationRepository : JpaRepository<OrganisationEntity, Long> {
+
+    fun findByNameAndNip(name: String?, nip: String?): OrganisationEntity?
+
+}

@@ -1,15 +1,15 @@
 package com.hos.service.service.impl
 
-import com.hos.service.model.converter.Converter
+import com.hos.service.converter.Converter
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.exception.ValidationException
-import com.hos.service.model.form.user.UserForm
+import com.hos.service.model.form.UserForm
 import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
-import com.hos.service.model.validator.FormValidator
+import com.hos.service.validator.FormValidator
 import com.hos.service.repo.UserRepository
 import com.hos.service.service.UserService
 import com.hos.service.usecase.uc001.LoginUser
@@ -42,10 +42,11 @@ class UserServiceImpl(
 
     @Transactional
     override fun registerUser(userForm: UserForm): UserDetailsRecord? {
+        userFormValidator.validateInitiallyBeforeRegistration(userForm).let {
+            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) throw ValidationException(it)
+        }
         userFormValidator.validateBeforeRegistration(userForm).let {
-            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
-                throw ValidationException(it)
-            }
+            if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) throw ValidationException(it)
         }
         return userConverter.create(userForm)
                 .let { userRepository.save(it) }
@@ -54,12 +55,11 @@ class UserServiceImpl(
 
     @Transactional
     override fun modifyUser(userForm: UserForm): UserDetailsRecord? {
-        userFormValidator.validateInitiallyModification(userForm).let {
+        userFormValidator.validateInitiallyBeforeModification(userForm).let {
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
                 throw ValidationException(it)
             }
         }
-
         val userEntity = userRepository.findById(userForm.id!!).orElseThrow {
             ResourceNotFoundException(
                     Resource.USER,
@@ -67,20 +67,14 @@ class UserServiceImpl(
                     "${userForm.id}"
             )
         }
-
-        userFormValidator.validateBeforeRegisterModification(userForm, userEntity).let {
+        userFormValidator.validateBeforeModification(userForm, userEntity).let {
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
                 throw ValidationException(it)
             }
         }
-
         return userConverter.merge(userForm, userEntity)
                 .let { userRepository.save(it) }
                 .let { userDetailsConverter.create(it) }
-    }
-
-    override fun deleteUser(userForm: UserForm): UserBasicRecord? {
-        TODO("Not yet implemented")
     }
 
 }

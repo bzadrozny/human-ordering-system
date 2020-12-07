@@ -1,5 +1,7 @@
 package com.hos.service.model.entity
 
+import com.hos.service.converter.jpa.impl.EntityStatusEnumConverterImpl
+import com.hos.service.model.enum.EntityStatus
 import java.io.Serializable
 import javax.persistence.*
 
@@ -11,16 +13,17 @@ class OrganisationEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
+        var name: String,
+        var nip: String,
+        @Convert(converter = EntityStatusEnumConverterImpl::class)
+        var status: EntityStatus,
         @OneToMany(mappedBy = "organisation", orphanRemoval = true, cascade = [CascadeType.ALL])
         val departments: MutableSet<DepartmentEntity> = mutableSetOf(),
         @OneToMany(mappedBy = "organisation", orphanRemoval = true, cascade = [CascadeType.ALL])
         val locations: MutableSet<LocationEntity> = mutableSetOf(),
-        var name: String,
-        var nip: String,
-        var status: String
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
 
 
@@ -32,16 +35,17 @@ class DepartmentEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
+        var name: String,
+        @Convert(converter = EntityStatusEnumConverterImpl::class)
+        var status: EntityStatus,
         @ManyToOne
         @JoinColumn(name = "ORGANISATION_ID")
         val organisation: OrganisationEntity,
         @OneToMany(mappedBy = "department")
         val staff: MutableSet<UserEntity> = mutableSetOf(),
-        var name: String,
-        var status: String
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
 
 
@@ -53,17 +57,18 @@ class LocationEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
-        @JoinColumn(name = "HISTORY_LOG_ID")
-        val history: HistoryLogEntity = HistoryLogEntity(),
+        var name: String,
+        @Convert(converter = EntityStatusEnumConverterImpl::class)
+        var status: EntityStatus,
+        var registeredOffice: Boolean,
         @ManyToOne
         @JoinColumn(name = "ORGANISATION_ID")
         val organisation: OrganisationEntity,
         @OneToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "ADDRESS_ID")
         val address: AddressEntity,
-        var registeredOffice: Boolean,
-        var name: String,
-        var status: String
+        @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+        @JoinColumn(name = "HISTORY_LOG_ID")
+        val history: HistoryLogEntity = HistoryLogEntity()
 ) : Serializable
 
