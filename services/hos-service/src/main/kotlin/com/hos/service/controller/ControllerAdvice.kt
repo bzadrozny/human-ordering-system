@@ -1,5 +1,6 @@
 package com.hos.service.controller
 
+import com.hos.service.model.exception.NotAuthorizedException
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.exception.ValidationException
 import com.hos.service.model.record.ExceptionRecord
@@ -11,6 +12,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class ControllerAdvice {
+
+    @ExceptionHandler(NotAuthorizedException::class)
+    fun notAuthorized(exception: NotAuthorizedException): ResponseEntity<ExceptionRecord> {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionRecord(exception.localizedMessage, exception.resourceType, HttpStatus.FORBIDDEN))
+    }
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun resourceNotFound(exception: ResourceNotFoundException): ResponseEntity<ExceptionRecord> {

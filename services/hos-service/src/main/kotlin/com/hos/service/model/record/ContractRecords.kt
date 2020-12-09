@@ -18,7 +18,7 @@ data class ContractDetailsRecord(
         val contractType: ContractType,
         val salary: Float,
         val recruiter: UserBasicRecord,
-        val candidate: CandidateBasicRecord,
-        val description: String,
-        val approved: Boolean
+        val candidate: CandidateBasicRecord?,
+        val description: String?,
+        val approved: Boolean?
 )

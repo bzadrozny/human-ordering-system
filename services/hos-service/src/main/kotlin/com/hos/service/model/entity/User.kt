@@ -59,6 +59,13 @@ class UserEntity(
     private fun MutableList<AuthorityRoleEntity>.printRoles(): String {
         return if (isEmpty()) "null" else map { it.role.desc }.reduce { acc, ob -> "$ob, $acc" }
     }
+
+    fun isAdmin(): Boolean = authorities.any { it.role == Authority.ADMIN }
+    fun isDirector(): Boolean = authorities.any { it.role == Authority.DIRECTOR }
+    fun isManager(): Boolean = authorities.any { it.role == Authority.MANAGER }
+    fun isClient(): Boolean = authorities.any { it.role == Authority.CLIENT }
+    fun isRecruiter(): Boolean = authorities.any { it.role == Authority.RECRUITER }
+
 }
 
 

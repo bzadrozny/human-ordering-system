@@ -1,4 +1,4 @@
-package com.hos.service.repo
+package com.hos.service.repository
 
 import com.hos.service.model.entity.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository

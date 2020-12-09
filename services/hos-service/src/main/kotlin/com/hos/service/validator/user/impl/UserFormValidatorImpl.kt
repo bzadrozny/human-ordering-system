@@ -8,13 +8,11 @@ import com.hos.service.model.enum.EntityStatus
 import com.hos.service.model.enum.ValidationStatus
 import com.hos.service.model.form.UserForm
 import com.hos.service.validator.FormValidator
-import com.hos.service.repo.OrganisationRepository
-import com.hos.service.repo.UserRepository
-import com.hos.service.security.UserDetailsContainer
+import com.hos.service.repository.OrganisationRepository
+import com.hos.service.repository.UserRepository
 import com.hos.service.utils.*
 import com.hos.service.utils.validateRequiredStringWithSize
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 @Component
@@ -25,9 +23,9 @@ class UserFormValidatorImpl(
 ) : FormValidator<UserForm, UserEntity> {
 
     override fun validateInitiallyBeforeRegistration(form: UserForm): Validation {
-        val validation = Validation("UserForm")
+        val validation = Validation("userForm")
 
-        validation.addValidation(validateForbiddenField(form.id, "login", "id"))
+        validation.addValidation(validateForbiddenField(form.id, "id", "id"))
         validation.addValidation(validateRequiredStringWithSize(form.login, "login", 5, 50, "login"))
         validation.addValidation(validateRequiredStringWithSize(form.password, "password", 8, 20, "password"))
         validation.addValidation(validateRequiredField(form.personal, "personal", "personal"))
@@ -62,9 +60,9 @@ class UserFormValidatorImpl(
         return validation
     }
 
-    override fun validateBeforeRegistration(form: UserForm): Validation {
-        val validation = Validation("UserForm")
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
+    override fun validateComplexBeforeRegistration(form: UserForm): Validation {
+        val validation = Validation("userForm")
+        val user = getCurrentUser()
         val personal = form.personal!!
         val administrative = form.administrative!!
 
@@ -91,7 +89,7 @@ class UserFormValidatorImpl(
                         ValidationStatus.WARNING
                 )
             }
-            if (principal.organisation != organisation.id && administrative.authorities!!.any { it != Authority.CLIENT }) {
+            if (user.organisation != organisation.id && administrative.authorities!!.any { it != Authority.CLIENT }) {
                 validation.addValidation(
                         "Konta z innych organizacji mogą posiadać jedynie uprawnienia klienckie",
                         "administrative.organisation",
@@ -144,13 +142,10 @@ class UserFormValidatorImpl(
     }
 
     override fun validateInitiallyBeforeModification(form: UserForm): Validation {
-        val validation = Validation("UserForm")
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val isAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
-        val isDirector = principal.authorities.any { it.authority == Authority.DIRECTOR.name }
-        val isManager = principal.authorities.any { it.authority == Authority.MANAGER.name }
+        val validation = Validation("userForm")
+        val user = getCurrentUser()
 
-        if (principal.id != form.id && !isAdmin && !isDirector && !isManager) {
+        if (user.id != form.id && !user.isAdmin() && !user.isDirector() && !user.isManager()) {
             validation.addValidation(
                     "Użytkownik nie jest uprawniony do modyfikacji danych konta",
                     "userForm.authorities",
@@ -160,38 +155,36 @@ class UserFormValidatorImpl(
         }
 
         validation.addValidation(validateRequiredField(form.id, "id", "id"))
-        if (isAdmin) {
+        if (user.isAdmin()) {
             validation.addValidation(validateElectiveStringWithSize(form.login, "login", 5, 50, "login"))
         } else {
             validation.addValidation(validateForbiddenField(form.login, "login", "login"))
-            if (isDirector || isManager) {
+            if (user.isDirector() || user.isManager()) {
                 validation.addValidation(validateElectiveFieldFromCollection(form.status, "status", listOf(EntityStatus.ACTIVE, EntityStatus.DISABLED), "status"))
             } else {
                 validation.addValidation(validateForbiddenField(form.status, "status", "status"))
             }
         }
-        if (!isAdmin && !isDirector) {
+        if (!user.isAdmin() && !user.isDirector()) {
             validation.addValidation(validateForbiddenField(form.administrative, "administrative", "administrative"))
         }
 
         return validation
     }
 
-    override fun validateBeforeModification(form: UserForm, entity: UserEntity): Validation {
-        val validation = Validation("UserForm")
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val userIsAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
-        val userIsClient = principal.authorities.any { it.authority == Authority.CLIENT.name }
+    override fun validateComplexBeforeModification(form: UserForm, entity: UserEntity): Validation {
+        val validation = Validation("userForm")
+        val user = getCurrentUser()
         val entityIsClient = entity.authorities.any { it.role == Authority.CLIENT }
 
-        if (principal.id == form.id || (entityIsClient && !userIsClient) || userIsAdmin) {
+        if (user.id == form.id || (entityIsClient && !user.isClient()) || user.isAdmin()) {
             validation.addValidation(validateElectiveStringWithSize(form.password, "password", 8, 20, "password"))
             form.personal?.let {
-                validation.addValidation(validateElectiveStringWithSize(it.name, "name", 2, 20, "personal.name"))
-                validation.addValidation(validateElectiveStringWithSize(it.surname, "surname", 2, 20, "personal.surname"))
-                validation.addValidation(validateElectiveStringWithSize(it.phone1, "phone1", 8, 20, "personal.phone1"))
-                validation.addValidation(validateElectiveStringWithSize(it.phone2, "phone2", 8, 20, "personal.phone2"))
-                validation.addValidation(validateElectiveStringWithSize(it.email, "email", 6, 50, "personal.email"))
+                validation.addValidation(validateRequiredStringWithSize(it.name, "name", 2, 20, "personal.name"))
+                validation.addValidation(validateRequiredStringWithSize(it.surname, "surname", 2, 20, "personal.surname"))
+                validation.addValidation(validateRequiredStringWithSize(it.phone1, "phone1", 8, 20, "personal.phone1"))
+                validation.addValidation(validateRequiredStringWithSize(it.phone2, "phone2", 8, 20, "personal.phone2"))
+                validation.addValidation(validateRequiredStringWithSize(it.email, "email", 6, 50, "personal.email"))
             }
         } else {
             validation.addValidation(validateForbiddenField(form.password, "password", "userForm.password"))

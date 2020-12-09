@@ -7,10 +7,11 @@ import java.time.LocalDate
 
 data class CommissionBasicRecord(
         val id: Long,
-        val orderDate: LocalDate,
+        val orderDate: LocalDate?,
         val status: CommissionStatus,
         val organisation: String,
-        val threaten: Boolean
+        val threaten: Boolean,
+        val organisationId: Long
 )
 
 data class CommissionDetailsRecord(
@@ -22,7 +23,7 @@ data class CommissionDetailsRecord(
         val principal: UserBasicRecord,
         val location: LocationRecord,
         val executor: UserBasicRecord?,
-        val records: Set<CommissionRecordDetailsRecord> = mutableSetOf(),
+        val records: List<CommissionRecordDetailsRecord> = mutableListOf(),
         var description: String?
 )
 
@@ -31,14 +32,14 @@ data class CommissionRecordDetailsRecord(
         val status: CommissionRecordStatus,
         val jobName: String,
         val ordered: Int,
-        val acceptedOrdered: Int,
+        val acceptedOrdered: Int?,
         val recruited: Int,
         val startDate: LocalDate,
-        val acceptedStartDate: LocalDate,
-        val endDate: LocalDate,
+        val acceptedStartDate: LocalDate?,
+        val endDate: LocalDate?,
         val wageRateMin: Float,
         val wageRateMax: Float,
         val settlementType: SettlementType,
-        val contracts: Set<ContractBasicRecord> = mutableSetOf(),
-        val description: String
+        val contracts: List<ContractBasicRecord> = mutableListOf(),
+        val description: String?
 )

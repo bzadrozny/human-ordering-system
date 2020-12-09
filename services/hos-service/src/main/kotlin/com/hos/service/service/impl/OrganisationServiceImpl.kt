@@ -9,7 +9,7 @@ import com.hos.service.model.exception.ValidationException
 import com.hos.service.model.form.OrganisationForm
 import com.hos.service.model.record.OrganisationBasicRecord
 import com.hos.service.model.record.OrganisationDetailsRecord
-import com.hos.service.repo.OrganisationRepository
+import com.hos.service.repository.OrganisationRepository
 import com.hos.service.service.OrganisationService
 import com.hos.service.validator.FormValidator
 import org.springframework.stereotype.Service
@@ -39,7 +39,7 @@ class OrganisationServiceImpl(
         organisationFormValidator.validateInitiallyBeforeRegistration(organisationForm).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
-        organisationFormValidator.validateBeforeRegistration(organisationForm).let {
+        organisationFormValidator.validateComplexBeforeRegistration(organisationForm).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
         return organisationConverter.create(organisationForm)
@@ -59,7 +59,7 @@ class OrganisationServiceImpl(
                     "${organisationForm.id}"
             )
         }
-        organisationFormValidator.validateBeforeModification(organisationForm, organisationEntity).let {
+        organisationFormValidator.validateComplexBeforeModification(organisationForm, organisationEntity).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
         return organisationConverter.merge(organisationForm, organisationEntity)

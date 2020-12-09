@@ -13,9 +13,8 @@ enum class CommissionStatus(val id: Int, val desc: String) {
     SENT(2, ""),
     REJECTED(-1, ""),
     DELETED(-2, ""),
-    ACCEPTED(3, ""),
-    EXECUTION(4, ""),
-    COMPLETED(5, "");
+    EXECUTION(3, ""),
+    COMPLETED(4, "");
 
     companion object {
         @JvmStatic
@@ -24,6 +23,7 @@ enum class CommissionStatus(val id: Int, val desc: String) {
             return getById(id.toInt())
         }
 
+        @JsonCreator
         fun getByIdOrNull(@JsonProperty("id") id: Int?): CommissionStatus? {
             return id?.let { getById(id.toInt()) }
         }

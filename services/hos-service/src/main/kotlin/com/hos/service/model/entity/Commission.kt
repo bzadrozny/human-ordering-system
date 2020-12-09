@@ -1,8 +1,11 @@
 package com.hos.service.model.entity
 
+import com.hos.service.converter.jpa.impl.CommissionRecordStatusEnumConverterImpl
 import com.hos.service.converter.jpa.impl.CommissionStatusEnumConverterImpl
 import com.hos.service.converter.jpa.impl.EntityStatusEnumConverterImpl
+import com.hos.service.converter.jpa.impl.SettlementTypeEnumConverterImpl
 import com.hos.service.model.enum.*
+import lombok.Data
 import java.io.Serializable
 import java.time.LocalDate
 import javax.persistence.*
@@ -15,10 +18,11 @@ class CommissionEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        val orderDate: LocalDate?,
-        val decisionDate: LocalDate?,
-        val completedDate: LocalDate?,
+        var orderDate: LocalDate? = null,
+        var decisionDate: LocalDate? = null,
+        var completedDate: LocalDate? = null,
         var description: String?,
+        var decisionDescription: String? = null,
         @Convert(converter = CommissionStatusEnumConverterImpl::class)
         var status: CommissionStatus,
         @ManyToOne
@@ -26,11 +30,11 @@ class CommissionEntity(
         var principal: UserEntity,
         @ManyToOne
         @JoinColumn(name = "EXECUTOR_ID")
-        var executor: UserEntity,
+        var executor: UserEntity? = null,
         @ManyToOne
         @JoinColumn(name = "LOCATION_ID")
         var location: LocationEntity,
-        @OneToMany(mappedBy = "commission")
+        @OneToMany(mappedBy = "commission", cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         val records: MutableSet<CommissionRecordEntity> = mutableSetOf(),
         @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         @JoinColumn(name = "HISTORY_LOG_ID")
@@ -47,16 +51,17 @@ class CommissionRecordEntity(
         val version: Int = 0,
         var jobName: String,
         var ordered: Int,
-        var acceptedOrdered: Int,
-        var recruited: Int,
+        var acceptedOrdered: Int? = null,
+        var recruited: Int? = null,
         var startDate: LocalDate,
-        var acceptedStartDate: LocalDate,
-        var endDate: LocalDate,
+        var acceptedStartDate: LocalDate? = null,
+        var endDate: LocalDate?,
         var wageRateMin: Float,
         var wageRateMax: Float,
+        @Convert(converter = SettlementTypeEnumConverterImpl::class)
         var settlementType: SettlementType,
-        var description: String,
-        @Convert(converter = CommissionStatusEnumConverterImpl::class)
+        var description: String?,
+        @Convert(converter = CommissionRecordStatusEnumConverterImpl::class)
         var status: CommissionRecordStatus,
         @OneToMany(mappedBy = "commissionRecord")
         val contracts: MutableSet<ContractEntity> = mutableSetOf(),

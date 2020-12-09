@@ -36,6 +36,6 @@ class CommissionDecisionForm(
 class CommissionRecordDecisionForm(
         var id: Long? = null,
         var decision: CommissionDecision? = null,
-        var accepted: Int,
-        var startDate: LocalDate
+        var accepted: Int? = null,
+        var startDate: LocalDate? = null
 )

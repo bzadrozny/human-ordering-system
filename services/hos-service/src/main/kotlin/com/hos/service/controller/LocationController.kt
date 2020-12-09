@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 class LocationController(private val locationService: LocationService) {
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun addDepartment(@PathVariable organisationId: Long, @RequestBody form: LocationForm): OrganisationDetailsRecord? {
         val locationForm = LocationForm(
                 name = form.name,
@@ -24,7 +24,7 @@ class LocationController(private val locationService: LocationService) {
     }
 
     @PutMapping("/{locationId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun modifyDepartment(
             @PathVariable organisationId: Long,
             @PathVariable locationId: Long,

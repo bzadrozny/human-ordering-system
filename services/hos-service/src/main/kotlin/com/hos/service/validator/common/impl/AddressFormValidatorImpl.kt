@@ -25,7 +25,7 @@ class AddressFormValidatorImpl : FormValidator<AddressForm, AddressEntity> {
         return validation
     }
 
-    override fun validateBeforeRegistration(form: AddressForm): Validation {
+    override fun validateComplexBeforeRegistration(form: AddressForm): Validation {
         return Validation("locationForm")
     }
 
@@ -41,7 +41,7 @@ class AddressFormValidatorImpl : FormValidator<AddressForm, AddressEntity> {
         return validation
     }
 
-    override fun validateBeforeModification(form: AddressForm, entity: AddressEntity): Validation {
+    override fun validateComplexBeforeModification(form: AddressForm, entity: AddressEntity): Validation {
         return Validation("locationForm")
     }
 

@@ -8,10 +8,12 @@ import com.hos.service.model.exception.ResourceNotFoundException
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 enum class CommissionRecordStatus(val id: Int, val desc: String) {
 
-    ACCEPTED(0, "Zaakceptowano"),
-    MODIFIED(1, "Zmodyfikowano"),
-    REJECTED(2, "Odrzucono"),
-    DELETED(3, "Usunięto");
+    CREATED(0, "Utworzono"),
+    ACCEPTED(1, "Zaakceptowano"),
+    MODIFIED(2, "Zmodyfikowano"),
+    REJECTED(3, "Odrzucono"),
+    CANCELED(4, "Anulowano"),
+    COMPLETED(5, "Zrealizowano");
 
     companion object {
         @JvmStatic

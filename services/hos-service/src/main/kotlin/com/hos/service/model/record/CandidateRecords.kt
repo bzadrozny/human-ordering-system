@@ -15,5 +15,5 @@ data class CandidateDetailsRecord(
         val phone: String,
         val email: String,
         val identificationNumber: String,
-        val contracts: MutableSet<ContractBasicRecord> = mutableSetOf()
+        val contracts: List<ContractBasicRecord> = mutableListOf()
 )

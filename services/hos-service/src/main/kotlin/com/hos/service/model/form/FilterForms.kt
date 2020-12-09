@@ -10,7 +10,6 @@ class CommissionFilterForm(
 )
 
 class CandidatesFilterForm(
-        val id: Long? = null,
         val identificationNumber: String,
         val name: String,
         val surname: String

@@ -4,12 +4,14 @@ import com.hos.service.converter.Converter
 import com.hos.service.model.entity.AuthorityRoleEntity
 import com.hos.service.model.entity.UserEntity
 import com.hos.service.model.form.UserForm
-import com.hos.service.repo.OrganisationRepository
-import com.hos.service.repo.UserRepository
+import com.hos.service.repository.OrganisationRepository
+import com.hos.service.repository.UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
 class UserEntityFromUserFormConverterImpl(
+        private val passwordEncoder: PasswordEncoder,
         private val userRepository: UserRepository,
         private val organisationRepository: OrganisationRepository
 ) : Converter<UserForm, UserEntity> {
@@ -21,7 +23,7 @@ class UserEntityFromUserFormConverterImpl(
         val organisation = organisationRepository.getOne(administrative.organisation!!)
         val target = UserEntity(
                 login = source.login!!,
-                password = source.password!!,
+                password = passwordEncoder.encode(source.password!!),
                 status = source.status!!,
                 name = personal.name!!,
                 surname = personal.surname!!,
@@ -44,7 +46,7 @@ class UserEntityFromUserFormConverterImpl(
 
     override fun merge(source: UserForm, target: UserEntity): UserEntity {
         source.login?.let { target.login = it }
-        source.password?.let { target.password = it }
+        source.password?.let { target.password = passwordEncoder.encode(it) }
         source.status?.let { target.status = it }
 
         source.personal?.let {

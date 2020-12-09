@@ -14,6 +14,9 @@ enum class Resource(val id: Int, val desc: String) {
     ADMINISTRATION_UNIT(3, "Administration unit"),
     LOCATION(4, "Location"),
     DEPARTMENT(5, "Department"),
+    COMMISSION(6, "Commission"),
+    COMMISSION_RECORD(7, "Commission record"),
+    CONTRACT(8, "Contract"),
     ;
 
 

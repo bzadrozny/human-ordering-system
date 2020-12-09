@@ -6,6 +6,7 @@ import com.hos.service.model.enum.Authority
 import com.hos.service.model.enum.ValidationStatus
 import com.hos.service.validator.FormValidator
 import com.hos.service.security.UserDetailsContainer
+import com.hos.service.utils.getCurrentUser
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
@@ -14,25 +15,23 @@ class AuthoritiesFormValidatorImpl : FormValidator<Authority, AuthorityRoleEntit
 
     override fun validateInitiallyBeforeRegistration(form: Authority): Validation {
         val validation = Validation("authority")
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val isAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
-        val isDirector = principal.authorities.any { it.authority == Authority.DIRECTOR.name }
+        val user = getCurrentUser()
 
-        if (form == Authority.ADMIN && !isAdmin) {
+        if (form == Authority.ADMIN && !user.isAdmin()) {
             validation.addValidation(
                     "Użytkownik nie jest uprawniony nadania uprawnień Administratora",
                     "user.authorities",
                     ValidationStatus.BLOCKER
             )
         }
-        if (form == Authority.DIRECTOR && !isAdmin) {
+        if (form == Authority.DIRECTOR && !user.isAdmin()) {
             validation.addValidation(
                     "Użytkownik nie jest uprawniony nadania uprawnień Dyrektorskich",
                     "user.authorities",
                     ValidationStatus.BLOCKER
             )
         }
-        if (form == Authority.MANAGER && !isAdmin && !isDirector) {
+        if (form == Authority.MANAGER && !user.isAdmin() && !user.isDirector()) {
             validation.addValidation(
                     "Użytkownik nie jest uprawniony nadania uprawnień Managerskich",
                     "user.authorities",
@@ -43,7 +42,7 @@ class AuthoritiesFormValidatorImpl : FormValidator<Authority, AuthorityRoleEntit
         return validation
     }
 
-    override fun validateBeforeRegistration(form: Authority): Validation {
+    override fun validateComplexBeforeRegistration(form: Authority): Validation {
         return Validation("authority")
     }
 
@@ -51,7 +50,7 @@ class AuthoritiesFormValidatorImpl : FormValidator<Authority, AuthorityRoleEntit
         return validateInitiallyBeforeRegistration(form)
     }
 
-    override fun validateBeforeModification(form: Authority, entity: AuthorityRoleEntity): Validation {
+    override fun validateComplexBeforeModification(form: Authority, entity: AuthorityRoleEntity): Validation {
         return Validation("authority")
     }
 

@@ -23,13 +23,13 @@ class OrganisationController(private val organisationService: OrganisationServic
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun registerOrganisation(@RequestBody body: OrganisationForm): OrganisationDetailsRecord? {
         return organisationService.registerOrganisation(body)
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun modifyOrganisation(@PathVariable id: Long, @RequestBody body: OrganisationForm): OrganisationDetailsRecord? {
         val organisationForm = OrganisationForm(
                 id = id,

@@ -10,7 +10,7 @@ import com.hos.service.model.form.UserForm
 import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.validator.FormValidator
-import com.hos.service.repo.UserRepository
+import com.hos.service.repository.UserRepository
 import com.hos.service.service.UserService
 import com.hos.service.usecase.uc001.LoginUser
 import org.springframework.stereotype.Service
@@ -45,7 +45,7 @@ class UserServiceImpl(
         userFormValidator.validateInitiallyBeforeRegistration(userForm).let {
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) throw ValidationException(it)
         }
-        userFormValidator.validateBeforeRegistration(userForm).let {
+        userFormValidator.validateComplexBeforeRegistration(userForm).let {
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) throw ValidationException(it)
         }
         return userConverter.create(userForm)
@@ -67,7 +67,7 @@ class UserServiceImpl(
                     "${userForm.id}"
             )
         }
-        userFormValidator.validateBeforeModification(userForm, userEntity).let {
+        userFormValidator.validateComplexBeforeModification(userForm, userEntity).let {
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) {
                 throw ValidationException(it)
             }

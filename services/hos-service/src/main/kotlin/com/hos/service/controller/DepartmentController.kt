@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 class DepartmentController(private val departmentService: DepartmentService) {
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun addDepartment(@PathVariable organisationId: Long, @RequestBody form: DepartmentForm): OrganisationDetailsRecord {
         val departmentForm = DepartmentForm(
                 name = form.name,
@@ -22,7 +22,7 @@ class DepartmentController(private val departmentService: DepartmentService) {
     }
 
     @PutMapping("/{departmentId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
     fun modifyDepartment(
             @PathVariable organisationId: Long,
             @PathVariable departmentId: Long,

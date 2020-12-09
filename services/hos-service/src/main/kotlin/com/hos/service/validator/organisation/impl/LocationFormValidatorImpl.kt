@@ -42,7 +42,7 @@ class LocationFormValidatorImpl(
         return validation
     }
 
-    override fun validateBeforeRegistration(form: LocationForm): Validation {
+    override fun validateComplexBeforeRegistration(form: LocationForm): Validation {
         return Validation("departmentForm")
     }
 
@@ -57,9 +57,8 @@ class LocationFormValidatorImpl(
             validation.addValidation(addressValidator.validateInitiallyBeforeModification(it))
         }
 
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val isAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
-        if (!isAdmin) validation.addValidation(
+        val user = getCurrentUser()
+        if (!user.isAdmin()) validation.addValidation(
                 validateElectiveFieldFromCollection(
                         form.status,
                         "status",
@@ -71,7 +70,7 @@ class LocationFormValidatorImpl(
         return validation
     }
 
-    override fun validateBeforeModification(form: LocationForm, entity: OrganisationEntity): Validation {
+    override fun validateComplexBeforeModification(form: LocationForm, entity: OrganisationEntity): Validation {
         val validation = Validation("locationForm")
 
         if (form.id != null && entity.locations.none { it.id == form.id })

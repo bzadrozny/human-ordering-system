@@ -10,7 +10,7 @@ import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.exception.ValidationException
 import com.hos.service.model.form.DepartmentForm
 import com.hos.service.model.record.OrganisationDetailsRecord
-import com.hos.service.repo.OrganisationRepository
+import com.hos.service.repository.OrganisationRepository
 import com.hos.service.service.DepartmentService
 import com.hos.service.validator.FormValidator
 import org.springframework.stereotype.Service
@@ -35,7 +35,7 @@ class DepartmentServiceImpl(
                     "${form.organisation}"
             )
         }
-        departmentValidator.validateBeforeModification(form, organisation).let {
+        departmentValidator.validateComplexBeforeModification(form, organisation).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
 
@@ -59,7 +59,7 @@ class DepartmentServiceImpl(
                     "${form.organisation}"
             )
         }
-        departmentValidator.validateBeforeModification(form, organisation).let {
+        departmentValidator.validateComplexBeforeModification(form, organisation).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
 

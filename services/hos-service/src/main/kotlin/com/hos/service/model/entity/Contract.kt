@@ -1,5 +1,7 @@
 package com.hos.service.model.entity
 
+import com.hos.service.converter.jpa.impl.ContractTypeEnumConverterImpl
+import com.hos.service.converter.jpa.impl.SettlementTypeEnumConverterImpl
 import com.hos.service.model.enum.ContractType
 import java.io.Serializable
 import java.time.LocalDate
@@ -13,20 +15,21 @@ class ContractEntity(
         val id: Long = -1,
         @Version
         val version: Int = 0,
-        val code: String,
+        var code: String,
         var contractDate: LocalDate,
         var startDate: LocalDate,
         var endDate: LocalDate,
         var salary: Float,
+        @Convert(converter = ContractTypeEnumConverterImpl::class)
         var contractType: ContractType,
-        var description: String,
-        var approved: Boolean,
+        var description: String?,
+        var approved: Boolean? = false,
         @ManyToOne
         @JoinColumn(name = "RECRUITER_ID")
         val recruiter: UserEntity,
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
         @JoinColumn(name = "CANDIDATE_ID")
-        val candidate: CandidateEntity? = null,
+        var candidate: CandidateEntity? = null,
         @ManyToOne
         @JoinColumn(name = "COMMISSION_RECORD_ID")
         val commissionRecord: CommissionRecordEntity,

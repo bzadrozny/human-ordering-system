@@ -6,7 +6,7 @@ import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
 import com.hos.service.model.record.UserDetailsRecord
-import com.hos.service.repo.UserRepository
+import com.hos.service.repository.UserRepository
 import com.hos.service.security.JwtTokenUtils
 import com.hos.service.usecase.uc001.LoginUser
 import org.springframework.security.crypto.password.PasswordEncoder

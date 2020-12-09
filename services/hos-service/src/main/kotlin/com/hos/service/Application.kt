@@ -3,10 +3,10 @@ package com.hos.service
 import com.hos.service.model.entity.*
 import com.hos.service.model.enum.Authority
 import com.hos.service.model.enum.EntityStatus
-import com.hos.service.repo.DepartmentRepository
-import com.hos.service.repo.LocationRepository
-import com.hos.service.repo.OrganisationRepository
-import com.hos.service.repo.UserRepository
+import com.hos.service.repository.DepartmentRepository
+import com.hos.service.repository.LocationRepository
+import com.hos.service.repository.OrganisationRepository
+import com.hos.service.repository.UserRepository
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication

@@ -2,17 +2,14 @@ package com.hos.service.validator.organisation.impl
 
 import com.hos.service.model.common.Validation
 import com.hos.service.model.entity.OrganisationEntity
-import com.hos.service.model.enum.Authority
 import com.hos.service.model.enum.EntityStatus
 import com.hos.service.model.enum.ValidationStatus
 import com.hos.service.model.form.DepartmentForm
 import com.hos.service.model.form.LocationForm
 import com.hos.service.model.form.OrganisationForm
-import com.hos.service.repo.OrganisationRepository
-import com.hos.service.security.UserDetailsContainer
+import com.hos.service.repository.OrganisationRepository
 import com.hos.service.utils.*
 import com.hos.service.validator.FormValidator
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 @Component
@@ -28,8 +25,8 @@ class OrganisationFormValidatorImpl(
         validation.addValidation(validateForbiddenField(form.id, "id", "id"))
         validation.addValidation(validateRequiredStringWithSize(form.name, "name", 5, 50, "name"))
         validation.addValidation(validateRequiredStringWithSize(form.nip, "nip", 5, 50, "nip"))
-        validation.addValidation(validateRequiredCollectionWithSize(form.departments, "departments", 1, "departments"))
-        validation.addValidation(validateRequiredCollectionWithSize(form.locations, "locations", 1, "locations"))
+        validation.addValidation(validateRequiredCollectionWithMinSize(form.departments, "departments", 1, "departments"))
+        validation.addValidation(validateRequiredCollectionWithMinSize(form.locations, "locations", 1, "locations"))
         validation.addValidation(validateRequiredField(form.status, "status", "status"))
         if (form.status == EntityStatus.DELETED) {
             validation.addValidation(
@@ -49,7 +46,7 @@ class OrganisationFormValidatorImpl(
         return validation
     }
 
-    override fun validateBeforeRegistration(form: OrganisationForm): Validation {
+    override fun validateComplexBeforeRegistration(form: OrganisationForm): Validation {
         val validation = Validation("organisationForm")
 
         if (organisationRepository.findByNameAndNip(form.name, form.nip) != null) {
@@ -68,7 +65,7 @@ class OrganisationFormValidatorImpl(
                         ValidationStatus.BLOCKER
                 )
             } else {
-                validation.addValidation(departmentValidator.validateBeforeRegistration(department))
+                validation.addValidation(departmentValidator.validateComplexBeforeRegistration(department))
             }
         }
 
@@ -80,7 +77,7 @@ class OrganisationFormValidatorImpl(
                         ValidationStatus.BLOCKER
                 )
             } else {
-                validation.addValidation(locationValidator.validateBeforeRegistration(location))
+                validation.addValidation(locationValidator.validateComplexBeforeRegistration(location))
             }
         }
 
@@ -89,16 +86,15 @@ class OrganisationFormValidatorImpl(
 
     override fun validateInitiallyBeforeModification(form: OrganisationForm): Validation {
         val validation = Validation("organisationForm")
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val isAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
+        val user = getCurrentUser()
 
         validation.addValidation(validateRequiredField(form.id, "id", "id"))
         validation.addValidation(validateElectiveStringWithSize(form.name, "name", 5, 50, "name"))
 
-        if (isAdmin) {
+        if (user.isAdmin()) {
             validation.addValidation(validateElectiveStringWithSize(form.nip, "nip", 5, 50, "nip"))
-            validation.addValidation(validateElectiveCollectionWithSize(form.departments, "departments", 1, "departments"))
-            validation.addValidation(validateElectiveCollectionWithSize(form.locations, "locations", 1, "locations"))
+            validation.addValidation(validateElectiveCollectionWithMinSize(form.departments, "departments", 1, "departments"))
+            validation.addValidation(validateElectiveCollectionWithMinSize(form.locations, "locations", 1, "locations"))
         } else {
             validation.addValidation(validateForbiddenField(form.nip, "nip", "nip"))
             validation.addValidation(validateForbiddenField(form.departments, "departments", "departments"))
@@ -108,7 +104,7 @@ class OrganisationFormValidatorImpl(
         return validation
     }
 
-    override fun validateBeforeModification(form: OrganisationForm, entity: OrganisationEntity): Validation {
+    override fun validateComplexBeforeModification(form: OrganisationForm, entity: OrganisationEntity): Validation {
         val validation = Validation("organisationForm")
 
         if (form.name != null || form.nip != null) {
@@ -125,11 +121,11 @@ class OrganisationFormValidatorImpl(
         }
 
         form.departments?.forEach {
-            validation.addValidation(departmentValidator.validateBeforeModification(it, entity))
+            validation.addValidation(departmentValidator.validateComplexBeforeModification(it, entity))
         }
 
         form.locations?.forEach {
-            validation.addValidation(locationValidator.validateBeforeModification(it, entity))
+            validation.addValidation(locationValidator.validateComplexBeforeModification(it, entity))
         }
 
         return validation

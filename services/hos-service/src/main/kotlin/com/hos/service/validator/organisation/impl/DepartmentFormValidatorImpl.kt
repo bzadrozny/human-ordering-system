@@ -32,7 +32,7 @@ class DepartmentFormValidatorImpl : FormValidator<DepartmentForm, OrganisationEn
         return validation
     }
 
-    override fun validateBeforeRegistration(form: DepartmentForm): Validation {
+    override fun validateComplexBeforeRegistration(form: DepartmentForm): Validation {
         return Validation("departmentForm")
     }
 
@@ -43,9 +43,8 @@ class DepartmentFormValidatorImpl : FormValidator<DepartmentForm, OrganisationEn
         validation.addValidation(validateRequiredField(form.organisation, "organisation", "organisation"))
         validation.addValidation(validateElectiveStringWithSize(form.name, "name", 5, 50, "name"))
 
-        val principal = SecurityContextHolder.getContext()?.authentication?.principal as UserDetailsContainer
-        val isAdmin = principal.authorities.any { it.authority == Authority.ADMIN.name }
-        if (!isAdmin) validation.addValidation(
+        val user = getCurrentUser()
+        if (!user.isAdmin()) validation.addValidation(
                 validateElectiveFieldFromCollection(
                         form.status,
                         "status",
@@ -57,7 +56,7 @@ class DepartmentFormValidatorImpl : FormValidator<DepartmentForm, OrganisationEn
         return validation
     }
 
-    override fun validateBeforeModification(form: DepartmentForm, entity: OrganisationEntity): Validation {
+    override fun validateComplexBeforeModification(form: DepartmentForm, entity: OrganisationEntity): Validation {
         val validation = Validation("departmentForm")
 
         if (form.id != null && entity.departments.none { it.id == form.id })
