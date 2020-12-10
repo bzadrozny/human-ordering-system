@@ -4,7 +4,6 @@ import com.hos.service.model.form.LoginForm
 import com.hos.service.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 @RestController
 class AuthenticationController(
@@ -12,23 +11,14 @@ class AuthenticationController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody loginForm: LoginForm): ResponseEntity<String> {
+    fun login(@RequestBody loginForm: LoginForm): String {
         val jwtToken = userService.loginUser(loginForm.login, loginForm.password)
-        return ResponseEntity.accepted()
-                .header("Set-Cookie", "Authorization=Bearer $jwtToken")
-                .body(jwtToken)
+        return jwtToken!!
     }
 
     @PostMapping("/logout")
-    fun logout(): ResponseEntity<JvmType.Object> {
-
+    fun logout(): ResponseEntity<Any> {
         return ResponseEntity.noContent().header("test", "test").build()
     }
 
-
 }
-
-
-
-
-

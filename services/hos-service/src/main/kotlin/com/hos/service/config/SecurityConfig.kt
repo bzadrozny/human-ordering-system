@@ -28,10 +28,6 @@ class SecurityConfig(
         private val userDetailsService: UserDetailsServiceImpl
 ) : WebSecurityConfigurerAdapter() {
 
-    val publicURL: Array<String> = arrayOf(
-            "/login"
-    )
-
     override fun configure(http: HttpSecurity?) {
         http?.sessionManagement()
                 ?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -49,7 +45,7 @@ class SecurityConfig(
                 ?.logout()?.disable()
 
                 ?.authorizeRequests()
-                ?.antMatchers(*publicURL)?.permitAll()
+                ?.antMatchers("/login")?.anonymous()
                 ?.anyRequest()?.authenticated()
                 ?.and()
 
@@ -66,7 +62,7 @@ class SecurityConfig(
         config.allowCredentials = true
         config.addAllowedOrigin("*")
         config.addAllowedHeader("*")
-        config.addAllowedMethod("*")
+        listOf("GET", "POST", "PUT", "DELETE").forEach { config.addAllowedMethod(it) }
         source.registerCorsConfiguration("/**", config)
         return CorsFilter(source)
     }
@@ -78,7 +74,7 @@ class SecurityConfig(
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder(BCryptVersion.`$2Y`, 18)
+        return BCryptPasswordEncoder()
     }
 
 }
