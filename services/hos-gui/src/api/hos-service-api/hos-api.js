@@ -1,6 +1,8 @@
 export default class HosServiceApi {
 
-  static headers = {
+  static _ = new HosServiceApi()
+
+  headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
 
@@ -8,8 +10,8 @@ export default class HosServiceApi {
 
   static BASE_HOST = 'http://localhost:8080'
 
-  static createHeaders() {
-    let token = localStorage.getItem('token')
+  createHeaders() {
+    let token = localStorage.getItem('jwtToken')
     return token ? {
       ...this.headers,
       'Authorization': 'Bearer ' + token

@@ -1,0 +1,103 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    min-width: 500px;
+}
+
+@media (max-width: 900px) {
+    .login-page {
+        flex-direction: column;
+    }
+
+    .container {
+        min-width: 500px;
+        max-width: 100vw;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .hos-info {
+        flex: 1;
+    }
+
+    .hos-login {
+        flex: 1;
+    }
+
+    .login-card {
+        min-width: 90vw;
+        margin: 0;
+    }
+}
+
+@media (min-width: 900px) {
+    .login-page {
+        flex-direction: row;
+    }
+
+    .hos-info {
+        flex: 2;
+        min-height: 400px;
+    }
+
+    .hos-login {
+        flex: 1;
+    }
+
+    .login-card {
+        min-width: 300px;
+        margin: auto;
+    }
+}
+
+.hos-info {
+    color: #f5f0f0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-image: url("../resources/hos-info-background.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.hos-info-card {
+    padding: 0 15%;
+    min-height: 350px;
+}
+
+.hos-info-title-card {
+    font-size: 18px;
+    padding: 50px 15%;
+    min-height: 350px;
+    text-align: center;
+}
+
+.hos-info-desc {
+    margin: 20px;
+    text-align: left;
+}
+
+.hos-login {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card-title {
+    height: 55px;
+    text-align: center;
+    background-image: url("../resources/logo_200x50.png");
+    background-size: 125px 49px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+

@@ -1,9 +1,9 @@
-import {login as hosAPI} from '../hos-service-api'
+import {AuthApi} from '../../api/hos-service-api'
 
 export default class AuthService {
 
     static async login(loginForm) {
-        let response = await hosAPI.login(loginForm)
+        let response = await AuthApi.login(loginForm)
         let status = await response.status
         if (status === 200) {
             let token = await response.text()
@@ -14,8 +14,19 @@ export default class AuthService {
         }
     }
 
+    static async me() {
+        let response = await AuthApi.loggedInUser()
+        let status = await response.status
+        if (status === 200) {
+            return await response.json()
+        } else {
+            localStorage.removeItem("jwtToken")
+        }
+    }
+
     static logout() {
-        localStorage.removeItem("jwtToken")
+        localStorage.clear()
+        window.location.href = '/';
     }
 
 }

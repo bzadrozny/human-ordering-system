@@ -4,12 +4,19 @@ import com.hos.service.model.form.UserForm
 import com.hos.service.model.record.UserBasicRecord
 import com.hos.service.model.record.UserDetailsRecord
 import com.hos.service.service.UserService
+import com.hos.service.utils.getCurrentUser
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 class UserController(private val userService: UserService) {
+
+    @GetMapping("/me")
+    fun loggedInDetails(): UserDetailsRecord? {
+        val loggedUser = getCurrentUser()
+        return userService.findUserById(loggedUser.id!!)
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -28,7 +35,7 @@ class UserController(private val userService: UserService) {
         return userService.registerUser(body)
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     fun modifyUser(@PathVariable id: Long, @RequestBody body: UserForm): UserDetailsRecord? {
         return userService.modifyUser(body)
     }

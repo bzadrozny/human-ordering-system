@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import logo from "../../resource/logo.svg";
+import logo from "../../resources/logo.svg";
 
 
 class CommissionBoard extends Component {

@@ -1,33 +1,51 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Redirect, Switch} from "react-router-dom";
 import CommissionBoard from "../commissions/CommissionBoard";
 import AdministrationBoard from "../administartion/AdministrationBoard";
 import SettingBoard from "../settings/SettingBoard";
 import StatisticsBoard from "../statistics/StatisticsBoard";
+import AuthService from "../../services/authentication/auth-service";
 
 class Board extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            user: null
+            user: null,
+            tokenInvalidated: false
         }
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        let user = await AuthService.me()
+        if (user == null) {
+            this.setState({tokenInvalidated: true})
+        } else {
+            this.setState({user})
+        }
+    }
 
+    renderRedirect = () => {
+        if (this.state.tokenInvalidated) {
+            return <Redirect to={{
+                pathname: '/',
+                state: {tokenInvalidated: true}
+            }}/>
+        }
     }
 
     render() {
         return (
             <div>
-                <Navbar/>
+                {this.renderRedirect()}
+                <Navbar user={this.state.user}/>
                 <Router>
                     <Switch>
                         <Route path="/board/setting" component={SettingBoard}/>
                         <Route path="/board/statistic" component={StatisticsBoard}/>
                         <Route path="/board/administration" component={AdministrationBoard}/>
-                        <Route component={CommissionBoard}/>
+                        <Route path="/board/commission" component={CommissionBoard}/>
+                        <Redirect to="/"/>
                     </Switch>
                 </Router>
                 <Footer/>
@@ -37,10 +55,11 @@ class Board extends Component {
 }
 
 let Navbar = (props) => {
-
+    let user = props.user
     return (
         <div>
-            Header
+            {user ? user.email : 'dupa'}
+            <button onClick={AuthService.logout} >Logout</button>
         </div>
     )
 

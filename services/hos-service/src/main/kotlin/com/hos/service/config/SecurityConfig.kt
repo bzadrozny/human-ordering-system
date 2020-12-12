@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVe
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
 import javax.servlet.http.HttpServletResponse
@@ -39,6 +40,7 @@ class SecurityConfig(
                 }
                 ?.and()
 
+                ?.cors()?.and()
                 ?.csrf()?.disable()
                 ?.httpBasic()?.disable()
                 ?.formLogin()?.disable()
@@ -56,15 +58,15 @@ class SecurityConfig(
     }
 
     @Bean
-    fun corsFilter(): CorsFilter? {
+    fun corsConfigurationSource(): CorsConfigurationSource? {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
         config.allowCredentials = true
         config.addAllowedOrigin("*")
         config.addAllowedHeader("*")
-        listOf("GET", "POST", "PUT", "DELETE").forEach { config.addAllowedMethod(it) }
+        config.addAllowedMethod("*")
         source.registerCorsConfiguration("/**", config)
-        return CorsFilter(source)
+        return source
     }
 
     @Bean
