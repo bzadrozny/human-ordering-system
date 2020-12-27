@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import AuthService from "../../services/authentication/auth-service";
 import {Redirect} from "react-router-dom";
-import '../../style/Login.css';
+import './style/login.css';
 
 import {Alert, Button, Card, Carousel, Container, Form} from "react-bootstrap";
 
@@ -159,13 +159,13 @@ let HosLogin = (props) => {
                     <Form.Group>
                         <Form.Control
                             type='password'
-                            name="hasło"
+                            name="password"
                             placeholder="wprowadź hasło"
                             onChange={props.handleFormChange}
                             disabled={props.processLogin}
                         />
                     </Form.Group>
-                    <Button variant='outline-dark' type="submit" className='w-50 m-auto' disabled={props.processLogin}>
+                    <Button type="submit" variant='info' className='w-50 m-auto' disabled={props.processLogin}>
                         Zaloguj
                     </Button>
                 </Form>

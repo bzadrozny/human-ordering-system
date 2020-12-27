@@ -1,22 +1,41 @@
 import HosServiceApi from "./hos-api";
+import axios from 'axios';
 
 export default class Commission extends HosServiceApi {
 
-  CONTEXT_URL = '/commission'
+  static CONTEXT_URL = '/commission'
 
-  async allCommissions(filter) {
-    return await fetch(this.BASE_HOST + this.CONTEXT_URL, {
-      method: 'GET',
-      headers: this.createHeaders(),
-      body: JSON.stringify(filter)
-    });
+  static async create(form) {
+    return await axios.post(this.BASE_HOST + this.CONTEXT_URL, form, {
+      headers: this._.createHeaders()
+    })
   }
 
-  async commissionsById(id) {
+  static async edit(form) {
+    const SPEC_URL = '/' + form.id
+    return await axios.put(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, form, {
+      headers: this._.createHeaders()
+    })
+  }
+
+  static async delete(id) {
     const SPEC_URL = '/' + id
-    return await fetch(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, {
-      method: 'GET',
-      headers: this.createHeaders()
+    return await axios.delete(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, {
+      headers: this._.createHeaders()
+    })
+  }
+
+  static async allCommissions(filter) {
+    return await axios.get(this.BASE_HOST + this.CONTEXT_URL, {
+      params: filter,
+      headers: this._.createHeaders()
+    })
+  }
+
+  static async commissionsById(id) {
+    const SPEC_URL = '/' + id
+    return await axios.get(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, {
+      headers: this._.createHeaders()
     });
   }
 

@@ -13,37 +13,49 @@ import com.hos.service.usecase.uc003.DeleteCommission
 import com.hos.service.utils.getCurrentUser
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import javax.transaction.Transactional
 
 @Component
 class DeleteCommissionImpl(
-        private val commissionDetailsRecordConverter: Converter<CommissionEntity, CommissionDetailsRecord>,
-        private val commissionRepository: CommissionRepository
+    private val commissionDetailsRecordConverter: Converter<CommissionEntity, CommissionDetailsRecord>,
+    private val commissionRepository: CommissionRepository
 ) : DeleteCommission {
 
+    @Transactional
     override fun deleteCommission(id: Long): CommissionDetailsRecord {
         val commission = commissionRepository.findByIdOrNull(id)
-                ?: throw ResourceNotFoundException(Resource.COMMISSION, QualifierType.ID, "$id")
+            ?: throw ResourceNotFoundException(Resource.COMMISSION, QualifierType.ID, "$id")
 
         validateDeletion(commission)
-        commission.status = CommissionStatus.DELETED
 
-        return commission
-                .let { commissionRepository.save(it) }
+        return if (commission.status == CommissionStatus.CREATED) {
+            commissionRepository.delete(commission)
+            commission.status = CommissionStatus.DELETED
+            commissionDetailsRecordConverter.create(commission)
+        } else {
+            commission.status = CommissionStatus.DELETED
+            commission.let { commissionRepository.save(it) }
                 .let { commissionDetailsRecordConverter.create(it) }
+        }
     }
 
     private fun validateDeletion(commission: CommissionEntity) {
         val user = getCurrentUser()
         val availableUser = user.isAdmin() || user.organisation == commission.location.organisation.id
-        if (!availableUser) throw NotAuthorizedException(Resource.COMMISSION, QualifierType.ID, commission.id.toString())
+        if (!availableUser) throw NotAuthorizedException(
+            Resource.COMMISSION,
+            QualifierType.ID,
+            commission.id.toString()
+        )
 
         val validation = Validation("commission")
-        val availableStatus = commission.status in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED, CommissionStatus.REJECTED)
+        val availableStatus =
+            commission.status in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED, CommissionStatus.REJECTED)
         if (!availableStatus) {
             validation.addValidation(
-                    "Status zamówienia nie pozwala na jego usunięcie",
-                    "status",
-                    ValidationStatus.BLOCKER
+                "Status zamówienia nie pozwala na jego usunięcie",
+                "status",
+                ValidationStatus.BLOCKER
             )
         }
 

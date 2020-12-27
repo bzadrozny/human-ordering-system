@@ -18,32 +18,32 @@ import org.springframework.stereotype.Component
 
 @Component
 class CommissionFormValidatorImpl(
-        private val userRepository: UserRepository,
-        private val locationRepository: LocationRepository,
-        private val organisationRepository: OrganisationRepository,
-        private val commissionRecordValidator: FormValidator<CommissionRecordForm, CommissionEntity>
+    private val userRepository: UserRepository,
+    private val locationRepository: LocationRepository,
+    private val organisationRepository: OrganisationRepository,
+    private val commissionRecordValidator: FormValidator<CommissionRecordForm, CommissionEntity>
 ) : FormValidator<CommissionForm, CommissionEntity> {
 
     override fun validateInitiallyBeforeRegistration(form: CommissionForm): Validation {
         val validation = Validation("commissionForm")
 
         validation.addValidation(
-                validateForbiddenField(form.id, "id", "id")
+            validateForbiddenField(form.id, "id", "id")
         )
         validation.addValidation(
-                validateRequiredField(form.principal, "zamwiający", "principal")
+            validateRequiredField(form.principal, "zamwiający", "principal")
         )
         validation.addValidation(
-                validateRequiredField(form.location, "lokalizacja", "location")
+            validateRequiredField(form.location, "lokalizacja", "location")
         )
         validation.addValidation(
-                validateElectiveStringWithSize(form.description, "opis", 0, 255, "description")
+            validateElectiveStringWithSize(form.description, "opis", 0, 255, "description")
         )
         validation.addValidation(
-                validateRequiredFieldWithValue(form.status, "status", CommissionStatus.CREATED, "status")
+            validateRequiredFieldWithValue(form.status, "status", CommissionStatus.CREATED, "status")
         )
         validation.addValidation(
-                validateRequiredCollectionWithSize(form.records, "rekordy", 1, 10, "records")
+            validateRequiredCollectionWithSize(form.records, "rekordy", 1, 10, "records")
         )
         form.records?.forEach {
             validation.addValidation(commissionRecordValidator.validateInitiallyBeforeRegistration(it))
@@ -61,22 +61,25 @@ class CommissionFormValidatorImpl(
         val validation = Validation("commissionForm")
 
         validation.addValidation(
-                validateRequiredField(form.id, "id", "id")
+            validateRequiredField(form.id, "id", "id")
         )
         validation.addValidation(
-                validateRequiredField(form.principal, "zamawiający", "principal")
+            validateRequiredField(form.principal, "zamawiający", "principal")
         )
         validation.addValidation(
-                validateRequiredField(form.location, "lokalizacja", "location")
+            validateRequiredField(form.location, "lokalizacja", "location")
         )
         validation.addValidation(
-                validateElectiveStringWithSize(form.description, "opis", 0, 255, "description")
+            validateElectiveStringWithSize(form.description, "opis", 0, 255, "description")
         )
+        validation.addValidation(
+            validateRequiredCollectionWithSize(form.records, "rekordy", 1, 10, "records")
+        )
+        form.records?.forEach {
+            if (it.id == null) validation.addValidation(commissionRecordValidator.validateInitiallyBeforeRegistration(it))
+            else validation.addValidation(commissionRecordValidator.validateInitiallyBeforeModification(it))
+        }
 
-        //TODO prepare support for editing records with commission modification
-        validation.addValidation(
-                validateForbiddenField(form.records, "rekordy", "records")
-        )
         return validation
     }
 
@@ -87,35 +90,35 @@ class CommissionFormValidatorImpl(
         if (user.isAdmin()) {
             if (entity.status in listOf(CommissionStatus.DELETED, CommissionStatus.COMPLETED)) {
                 validation.addValidation(
-                        "Brak możliwości edycji zamkniętego zamówienia",
-                        "status",
-                        ValidationStatus.BLOCKER
+                    "Brak możliwości edycji zamkniętego zamówienia",
+                    "status",
+                    ValidationStatus.BLOCKER
                 )
             }
         } else if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED)) {
             validation.addValidation(
-                    "Brak możliwości edycji procesowanego lub zakończonego zamówienia",
-                    "status",
-                    ValidationStatus.BLOCKER
+                "Brak możliwości edycji procesowanego lub zakończonego zamówienia",
+                "status",
+                ValidationStatus.BLOCKER
             )
         }
 
         val availableStatuses = mutableListOf(entity.status)
-                .let {
-                    if (user.isAdmin())
-                        it.add(CommissionStatus.DELETED)
-                    it
-                }
-        validation.addValidation(validateRequiredFieldFromCollection(
+        validation.addValidation(
+            validateRequiredFieldFromCollection(
                 form.status,
                 "status",
                 availableStatuses,
                 "status"
-        ))
+            )
+        )
 
+        if (validation.hasBlocker()) return validation
+        validation.addValidation(validateComplexCommon(form))
 
-        if (!validation.hasBlocker()) {
-            validation.addValidation(validateComplexCommon(form))
+        if (validation.hasBlocker()) return validation
+        form.records?.forEach {
+            validation.addValidation(commissionRecordValidator.validateComplexBeforeModification(it, entity))
         }
 
         return validation
@@ -125,35 +128,28 @@ class CommissionFormValidatorImpl(
         val validation = Validation("commissionForm")
         val user = getCurrentUser()
 
+        val principal = userRepository.findByIdOrNull(form.principal)
+        if (principal == null || (!user.isAdmin() && principal.id != user.id)) {
+            validation.addValidation(
+                "Wskazany użytkownik nie istnieje lub jest niezgodny zalogowanym użytkownikiem",
+                "principal",
+                ValidationStatus.BLOCKER
+            )
+        } else if (principal.status != EntityStatus.ACTIVE) {
+            validation.addValidation(
+                "Zamówienie klienta może być przypisane jedynie do aktywnego użytkownika",
+                "principal",
+                ValidationStatus.BLOCKER
+            )
+        }
+
         if (user.isAdmin()) {
             val location = locationRepository.findByIdOrNull(form.location)
             if (location == null || location.status != EntityStatus.ACTIVE) {
                 validation.addValidation(
-                        "Zamówienia można składać jedynie do aktywnych lokalizacji",
-                        "location",
-                        ValidationStatus.BLOCKER
-                )
-            }
-
-            val principal = userRepository.findByIdOrNull(form.principal)
-            if (principal == null) {
-                validation.addValidation(
-                        "Wskazany użytkownik nie istnieje",
-                        "principal",
-                        ValidationStatus.BLOCKER
-                )
-
-            } else if (!user.isAdmin() && principal.status != EntityStatus.ACTIVE) {
-                validation.addValidation(
-                        "Zamówienie klienta może być przypisane jedynie do aktywnego użytkownika",
-                        "principal",
-                        ValidationStatus.BLOCKER
-                )
-            } else if (!principal.isAdmin() && principal.organisation != location?.organisation) {
-                validation.addValidation(
-                        "Zamówienie klienta może być przypisane jedynie lokalizacji z tej samej organizacji",
-                        "principal",
-                        ValidationStatus.BLOCKER
+                    "Zamówienia można składać jedynie do aktywnych lokalizacji",
+                    "location",
+                    ValidationStatus.BLOCKER
                 )
             }
         } else {
@@ -161,28 +157,19 @@ class CommissionFormValidatorImpl(
             val location = organisation.locations.firstOrNull { it.id == form.location }
             if (location == null) {
                 validation.addValidation(
-                        "Użytkownik nie jest uprawniony do dodania zamówienia do lokalizacji spoza swojej organizacji",
-                        "user.authority",
-                        ValidationStatus.BLOCKER
+                    "Użytkownik nie jest uprawniony do dodania zamówienia do lokalizacji spoza swojej organizacji",
+                    "user.authority",
+                    ValidationStatus.BLOCKER
                 )
             } else if (location.status != EntityStatus.ACTIVE) {
                 validation.addValidation(
-                        "Zamówienia można składać jedynie do aktywnych lokalizacji",
-                        "location",
-                        ValidationStatus.BLOCKER
-                )
-            }
-
-            if (user.id != form.principal) {
-                validation.addValidation(
-                        "Klient może składać zamówienia jedynie w swoim własnym imieniu",
-                        "principal",
-                        ValidationStatus.BLOCKER
+                    "Zamówienia można składać jedynie do aktywnych lokalizacji",
+                    "location",
+                    ValidationStatus.BLOCKER
                 )
             }
         }
         return validation
     }
-
 
 }

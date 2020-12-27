@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component
 class CommissionBasicRecordFromCommissionEntityConverterImpl : RecordConverter<CommissionEntity, CommissionBasicRecord>() {
 
     override fun create(source: CommissionEntity): CommissionBasicRecord {
+        val location = source.location
+        val organisation = location.organisation
         return CommissionBasicRecord(
                 id = source.id,
                 orderDate = source.orderDate,
                 status = source.status,
-                organisationId = source.location.organisation.id,
-                organisation = source.location.organisation.name,
+                organisationId = organisation.id,
+                organisation = organisation.name,
+                location = location.name,
                 threaten = false
         )
     }

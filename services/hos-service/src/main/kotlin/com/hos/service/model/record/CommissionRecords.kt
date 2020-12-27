@@ -10,6 +10,7 @@ data class CommissionBasicRecord(
         val orderDate: LocalDate?,
         val status: CommissionStatus,
         val organisation: String,
+        val location: String,
         val threaten: Boolean,
         val organisationId: Long
 )

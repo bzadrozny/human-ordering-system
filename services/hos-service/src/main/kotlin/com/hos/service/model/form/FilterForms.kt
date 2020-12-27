@@ -1,16 +1,17 @@
 package com.hos.service.model.form
 
 import com.hos.service.model.enum.CommissionStatus
+import org.springframework.web.bind.annotation.RequestParam
 
 class CommissionFilterForm(
-        val id: Long? = null,
-        val organisation: Long? = null,
-        val location: Long? = null,
-        val status: CommissionStatus? = null
+        @RequestParam(required = false) val id: Long? = null,
+        @RequestParam(required = false) val organisation: Long? = null,
+        @RequestParam(required = false) val location: Long? = null,
+        @RequestParam(required = false) val status: CommissionStatus? = null
 )
 
 class CandidatesFilterForm(
-        val identificationNumber: String,
-        val name: String,
-        val surname: String
+        @RequestParam(required = false) val identificationNumber: String,
+        @RequestParam(required = false) val name: String,
+        @RequestParam(required = false) val surname: String
 )

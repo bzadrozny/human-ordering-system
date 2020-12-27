@@ -30,5 +30,6 @@ data class LocationRecord(
         var name: String,
         var registeredOffice: Boolean,
         val address: AddressRecord,
+        val organisation: Long,
         var status: EntityStatus
 )

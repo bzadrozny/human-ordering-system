@@ -18,23 +18,17 @@ class CommissionRecordFormValidatorImpl : FormValidator<CommissionRecordForm, Co
 
     override fun validateInitiallyBeforeRegistration(form: CommissionRecordForm): Validation {
         val validation = Validation("records")
-        val user = getCurrentUser()
 
         validation.addValidation(validateForbiddenField(form.id, "id", "id"))
-        validation.addValidation(validateRequiredNumberInRange(
-                form.ordered,
-                "zamówiona ilość",
-                1.0,
-                if (user.isAdmin()) 10000.0 else 200.0,
-                "ordered"
-        ))
         validation.addValidation(validateInitiallyCommon(form))
-        validation.addValidation(validateRequiredFieldWithValue(
+        validation.addValidation(
+            validateRequiredFieldWithValue(
                 form.status,
                 "status",
                 CommissionRecordStatus.CREATED,
                 "status"
-        ))
+            )
+        )
 
         return validation
     }
@@ -57,7 +51,7 @@ class CommissionRecordFormValidatorImpl : FormValidator<CommissionRecordForm, Co
         val validation = Validation("records")
         val user = getCurrentUser()
         if (user.isAdmin()) {
-            if (entity.status in listOf(CommissionStatus.DELETED, CommissionStatus.REJECTED, CommissionStatus.COMPLETED)) {
+            if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED, CommissionStatus.SENT, CommissionStatus.EXECUTION)) {
                 validation.addValidation(
                         "Brak możliwości edycji odrzuconego lub zamkniętego zamówienia",
                         "",
@@ -66,9 +60,9 @@ class CommissionRecordFormValidatorImpl : FormValidator<CommissionRecordForm, Co
             }
         } else if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED)) {
             validation.addValidation(
-                    "Brak możliwości edycji procesowanego lub zamkniętego zamówienia",
-                    "",
-                    ValidationStatus.BLOCKER
+                "Brak możliwości edycji procesowanego lub zamkniętego zamówienia",
+                "",
+                ValidationStatus.BLOCKER
             )
         }
         if (validation.hasBlocker()) return validation
@@ -86,26 +80,54 @@ class CommissionRecordFormValidatorImpl : FormValidator<CommissionRecordForm, Co
 
 fun validateInitiallyCommon(form: CommissionRecordForm): Validation {
     val validation = Validation("records")
+    val user = getCurrentUser()
+
     validation.addValidation(
-            validateRequiredStringWithSize(form.jobName, "nazwa stanowiska", 5, 20, "jobName")
+        validateRequiredNumberInRange(
+            form.ordered,
+            "zamówiona ilość",
+            1.0,
+            if (user.isAdmin()) 10000.0 else 200.0,
+            "ordered"
+        )
     )
     validation.addValidation(
-            validateRequiredDateNotBefore(form.startDate, "data rozpoczęcia umowy", LocalDate.now().plusWeeks(1), "data dzisiejsza + 7 dni", "startDate")
+        validateRequiredStringWithSize(form.jobName, "nazwa stanowiska", 5, 20, "jobName")
     )
     validation.addValidation(
-            validateElectiveDateNotBefore(form.endDate, "data zakończenia umowy", form.startDate, "data rozpoczęcia umowy", "endDate")
+        validateRequiredDateNotBefore(
+            form.startDate,
+            "data rozpoczęcia umowy",
+            LocalDate.now().plusWeeks(1),
+            "data dzisiejsza + 7 dni",
+            "startDate"
+        )
     )
     validation.addValidation(
-            validateRequiredNumberBiggerThan(form.wageRateMin, "płaca minimalna", 1.0, "wageRateMin")
+        validateElectiveDateNotBefore(
+            form.endDate,
+            "data zakończenia umowy",
+            form.startDate,
+            "data rozpoczęcia umowy",
+            "endDate"
+        )
     )
     validation.addValidation(
-            validateRequiredNumberBiggerThan(form.wageRateMax, "płaca maksymalna", form.wageRateMin?.toDouble(), "wageRateMax")
+        validateRequiredNumberBiggerThan(form.wageRateMin, "płaca minimalna", 1.0, "wageRateMin")
     )
     validation.addValidation(
-            validateRequiredField(form.settlementType, "forma rozliczenia", "settlementType")
+        validateRequiredNumberBiggerThan(
+            form.wageRateMax,
+            "płaca maksymalna",
+            form.wageRateMin?.toDouble(),
+            "wageRateMax"
+        )
     )
     validation.addValidation(
-            validateElectiveStringWithSize(form.description, "opis", 1, 255, "description")
+        validateRequiredField(form.settlementType, "forma rozliczenia", "settlementType")
+    )
+    validation.addValidation(
+        validateElectiveStringWithSize(form.description, "opis", 1, 255, "description")
     )
     return validation
 }
@@ -113,13 +135,13 @@ fun validateInitiallyCommon(form: CommissionRecordForm): Validation {
 fun validateComplexBeforeModificationNew(entity: CommissionEntity): Validation {
     val validation = Validation("")
     val activeRecordsAmount = entity.records
-            .filter { it.status !in listOf(CommissionRecordStatus.REJECTED, CommissionRecordStatus.CANCELED) }
-            .count()
+        .filter { it.status !in listOf(CommissionRecordStatus.REJECTED, CommissionRecordStatus.CANCELED) }
+        .count()
 
     if (activeRecordsAmount >= 10) validation.addValidation(
-            "Zamówienie może posiadać maksymalnie 10 rekordów",
-            "",
-            ValidationStatus.BLOCKER
+        "Zamówienie może posiadać maksymalnie 10 rekordów",
+        "",
+        ValidationStatus.BLOCKER
     )
 
     return validation
@@ -131,44 +153,71 @@ fun validateComplexBeforeModificationExisted(form: CommissionRecordForm, entity:
 
     val record = entity.records.firstOrNull { form.id == it.id }
     if (record == null) validation.addValidation(
-            "Brak rekordu zamówienia o wskazanym ID",
-            "id",
-            ValidationStatus.BLOCKER
+        "Brak rekordu zamówienia o wskazanym ID",
+        "id",
+        ValidationStatus.BLOCKER
     ) else {
-        validation.addValidation(validateElectiveFieldFromCollection(
+        validation.addValidation(
+            validateElectiveFieldFromCollection(
                 form.status,
                 "status",
                 when (entity.status) {
                     CommissionStatus.CREATED -> when (record.status) {
-                        CommissionRecordStatus.CREATED -> listOf(CommissionRecordStatus.CREATED, CommissionRecordStatus.CANCELED)
-                        CommissionRecordStatus.CANCELED -> listOf(CommissionRecordStatus.CANCELED)
+                        CommissionRecordStatus.CREATED -> listOf(
+                            CommissionRecordStatus.CREATED,
+                            CommissionRecordStatus.CANCELED
+                        )
+                        CommissionRecordStatus.CANCELED -> listOf(
+                            CommissionRecordStatus.CANCELED
+                        )
                         else -> listOf()
                     }
                     CommissionStatus.MODIFIED -> when (record.status) {
-                        CommissionRecordStatus.CREATED -> listOf(CommissionRecordStatus.CREATED)
-                        CommissionRecordStatus.ACCEPTED -> listOf(CommissionRecordStatus.MODIFIED, CommissionRecordStatus.CANCELED)
-                        CommissionRecordStatus.MODIFIED -> listOf(CommissionRecordStatus.MODIFIED)
-                        CommissionRecordStatus.REJECTED -> listOf(CommissionRecordStatus.MODIFIED, CommissionRecordStatus.CANCELED)
-                        CommissionRecordStatus.CANCELED -> listOf(CommissionRecordStatus.CANCELED)
+                        CommissionRecordStatus.CREATED -> listOf(
+                            CommissionRecordStatus.CREATED
+                        )
+                        CommissionRecordStatus.ACCEPTED -> listOf(
+                            CommissionRecordStatus.MODIFIED,
+                            CommissionRecordStatus.CANCELED
+                        )
+                        CommissionRecordStatus.MODIFIED -> listOf(
+                            CommissionRecordStatus.MODIFIED,
+                            CommissionRecordStatus.CANCELED
+                        )
+                        CommissionRecordStatus.REJECTED -> listOf(
+                            CommissionRecordStatus.MODIFIED,
+                            CommissionRecordStatus.CANCELED
+                        )
+                        CommissionRecordStatus.CANCELED -> listOf(
+                            CommissionRecordStatus.CANCELED
+                        )
                         else -> listOf()
                     }
                     CommissionStatus.SENT, CommissionStatus.EXECUTION -> when (record.status) {
-                        CommissionRecordStatus.CREATED -> listOf(CommissionRecordStatus.CREATED, CommissionRecordStatus.CANCELED)
-                        CommissionRecordStatus.ACCEPTED -> listOf(CommissionRecordStatus.ACCEPTED, CommissionRecordStatus.CANCELED)
-                        CommissionRecordStatus.MODIFIED -> listOf(CommissionRecordStatus.MODIFIED, CommissionRecordStatus.CANCELED)
+                        CommissionRecordStatus.ACCEPTED -> listOf(
+                            CommissionRecordStatus.ACCEPTED,
+                            CommissionRecordStatus.CANCELED
+                        )
+                        CommissionRecordStatus.MODIFIED -> listOf(
+                            CommissionRecordStatus.MODIFIED,
+                            CommissionRecordStatus.CANCELED
+                        )
                         else -> listOf(record.status)
                     }
                     else -> listOf()
                 },
                 "status"
-        ))
-        validation.addValidation(validateRequiredNumberInRange(
+            )
+        )
+        validation.addValidation(
+            validateRequiredNumberInRange(
                 form.ordered,
                 "zamówiona ilość",
                 record.acceptedOrdered?.toDouble() ?: 1.0,
                 if (user.isAdmin()) 10000.0 else 200.0,
                 "ordered"
-        ))
+            )
+        )
     }
 
     return validation

@@ -24,27 +24,27 @@ import org.springframework.stereotype.Service
 
 @Service
 class CommissionServiceImpl(
-        private val uc002: FindFilteredCommissions,
-        private val uc003: DeleteCommission,
-        private val uc004: SendCommission,
-        private val uc005: SendCommissionDecision,
-        private val uc006: CompleteCommission,
-        private val commissionValidator: FormValidator<CommissionForm, CommissionEntity>,
-        private val commissionConverter: Converter<CommissionForm, CommissionEntity>,
-        private val commissionBasicRecordConverter: Converter<CommissionEntity, CommissionBasicRecord>,
-        private val commissionDetailsRecordConverter: Converter<CommissionEntity, CommissionDetailsRecord>,
-        private val commissionRepository: CommissionRepository
+    private val uc002: FindFilteredCommissions,
+    private val uc003: DeleteCommission,
+    private val uc004: SendCommission,
+    private val uc005: SendCommissionDecision,
+    private val uc006: CompleteCommission,
+    private val commissionValidator: FormValidator<CommissionForm, CommissionEntity>,
+    private val commissionConverter: Converter<CommissionForm, CommissionEntity>,
+    private val commissionBasicRecordConverter: Converter<CommissionEntity, CommissionBasicRecord>,
+    private val commissionDetailsRecordConverter: Converter<CommissionEntity, CommissionDetailsRecord>,
+    private val commissionRepository: CommissionRepository
 ) : CommissionService {
 
     override fun findAllCommissions(filter: CommissionFilterForm): List<CommissionBasicRecord> {
         return uc002.findFilteredCommissions(filter)
-                .map { commissionBasicRecordConverter.create(it) }
+            .map { commissionBasicRecordConverter.create(it) }
     }
 
     override fun findCommissionDetailsById(id: Long): CommissionDetailsRecord {
         return commissionRepository.findByIdOrNull(id)
-                ?.let { commissionDetailsRecordConverter.create(it) }
-                ?: throw ResourceNotFoundException(Resource.COMMISSION, QualifierType.ID, "$id")
+            ?.let { commissionDetailsRecordConverter.create(it) }
+            ?: throw ResourceNotFoundException(Resource.COMMISSION, QualifierType.ID, "$id")
     }
 
     override fun createCommission(form: CommissionForm): CommissionDetailsRecord {
@@ -55,8 +55,8 @@ class CommissionServiceImpl(
             if (it.hasBlocker()) throw ValidationException(it)
         }
         return commissionConverter.create(form)
-                .let { commissionRepository.save(it) }
-                .let { commissionDetailsRecordConverter.create(it) }
+            .let { commissionRepository.save(it) }
+            .let { commissionDetailsRecordConverter.create(it) }
     }
 
     override fun modifyCommission(form: CommissionForm): CommissionDetailsRecord {
@@ -65,22 +65,18 @@ class CommissionServiceImpl(
         }
         val commission = commissionRepository.findById(form.id!!).orElseThrow {
             ResourceNotFoundException(
-                    Resource.COMMISSION,
-                    QualifierType.ID,
-                    "${form.id}"
+                Resource.COMMISSION,
+                QualifierType.ID,
+                "${form.id}"
             )
         }
         commissionValidator.validateComplexBeforeModification(form, commission).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
 
-        val savedCommission = commissionConverter.merge(form, commission)
-                .let { commissionRepository.save(it) }
-
-        //TODO: w przypadku edycji w statusie
-
-        return savedCommission
-                .let { commissionDetailsRecordConverter.create(it) }
+        return commissionConverter.merge(form, commission)
+            .let { commissionRepository.save(it) }
+            .let { commissionDetailsRecordConverter.create(it) }
     }
 
     override fun deleteCommission(id: Long): CommissionDetailsRecord {

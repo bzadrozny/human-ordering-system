@@ -19,6 +19,7 @@ class LocationRecordFromLocationEntityConverterImpl(
                 name = source.name,
                 registeredOffice = source.registeredOffice,
                 address = addressConverter.create(source.address),
+                organisation = source.organisation.id,
                 status = source.status
         )
     }

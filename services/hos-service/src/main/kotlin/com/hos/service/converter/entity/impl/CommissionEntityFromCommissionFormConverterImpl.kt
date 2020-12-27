@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component
 
 @Component
 class CommissionEntityFromCommissionFormConverterImpl(
-        private val userRepository: UserRepository,
-        private val locationRepository: LocationRepository,
-        private val recordConverter: MultiConverter<CommissionRecordForm, CommissionEntity, CommissionRecordEntity>
+    private val userRepository: UserRepository,
+    private val locationRepository: LocationRepository,
+    private val recordConverter: MultiConverter<CommissionRecordForm, CommissionEntity, CommissionRecordEntity>
 ) : Converter<CommissionForm, CommissionEntity> {
 
     override fun create(source: CommissionForm): CommissionEntity {
         val target = CommissionEntity(
-                status = source.status!!,
-                principal = userRepository.getOne(source.principal!!),
-                location = locationRepository.getOne(source.location!!),
-                description = source.description
+            status = source.status!!,
+            principal = userRepository.getOne(source.principal!!),
+            location = locationRepository.getOne(source.location!!),
+            description = source.description
         )
         source.records?.forEach {
             target.records.add(recordConverter.create(it, target))
@@ -43,6 +43,17 @@ class CommissionEntityFromCommissionFormConverterImpl(
             }
         }
         target.description = source.description
+
+        target.records.removeIf {
+            source.records!!.none { record -> record.id == it.id }
+        }
+        target.records.forEach {
+            recordConverter.merge(source.records!!.first { source -> source.id == it.id }, target, it)
+        }
+        source.records?.filter { it.id == null }?.forEach {
+            target.records.add(recordConverter.create(it, target))
+        }
+
         return target
     }
 
