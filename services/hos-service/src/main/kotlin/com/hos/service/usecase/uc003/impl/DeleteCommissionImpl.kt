@@ -30,10 +30,10 @@ class DeleteCommissionImpl(
 
         return if (commission.status == CommissionStatus.CREATED) {
             commissionRepository.delete(commission)
-            commission.status = CommissionStatus.DELETED
+            commission.status = CommissionStatus.CANCELED
             commissionDetailsRecordConverter.create(commission)
         } else {
-            commission.status = CommissionStatus.DELETED
+            commission.status = CommissionStatus.CANCELED
             commission.let { commissionRepository.save(it) }
                 .let { commissionDetailsRecordConverter.create(it) }
         }

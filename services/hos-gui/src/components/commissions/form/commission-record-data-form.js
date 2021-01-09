@@ -54,6 +54,7 @@ const CommissionRecordDataForm = (props) => {
           }
           break;
         case "wageRateMax":
+          value = parseInt(value, 10)
           if (value == null || value === '' || value < 1 || value > 1000000 || value < wageRateMin) {
             validation.wageRateMax = "Pole jest obowiązkowe i musi się mieścić 1 do 1.000.000 i być większe od stawki minimalnej"
             hasError = true
@@ -86,8 +87,8 @@ const CommissionRecordDataForm = (props) => {
     setStartDate(minStartDate)
     setEndDate(undefined)
     setDescription('')
-    if (props.editRecord !== null) {
-      props.editRecord({
+    if (record !== null) {
+      props.saveRecord({
         ...record,
         commission: props.commission,
         jobName,
@@ -103,7 +104,7 @@ const CommissionRecordDataForm = (props) => {
         description: description === '' ? null : description
       })
     } else {
-      props.addRecord({
+      props.saveRecord({
         commission: props.commission,
         jobName,
         ordered,
@@ -121,8 +122,6 @@ const CommissionRecordDataForm = (props) => {
   }
 
   return <Card className='commission-new-card mt-3'>
-    <Card.Header className='card-header-custom'><b>Rekordy zamówienia</b></Card.Header>
-    <br/>
     <Form.Row>
       <Form.Group as={Col} controlId="formJobName">
         <Form.Label>Stanowisko</Form.Label>

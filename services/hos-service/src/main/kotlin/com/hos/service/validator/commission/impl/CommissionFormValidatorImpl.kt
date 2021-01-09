@@ -88,7 +88,7 @@ class CommissionFormValidatorImpl(
         val user = getCurrentUser()
 
         if (user.isAdmin()) {
-            if (entity.status in listOf(CommissionStatus.DELETED, CommissionStatus.COMPLETED)) {
+            if (entity.status in listOf(CommissionStatus.CANCELED, CommissionStatus.COMPLETED)) {
                 validation.addValidation(
                     "Brak możliwości edycji zamkniętego zamówienia",
                     "status",

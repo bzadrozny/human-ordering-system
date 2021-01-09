@@ -1,11 +1,11 @@
 import {Button, Modal} from "react-bootstrap";
 import React from "react";
 
-const CommissionDeleteModal = props => {
+const CommissionSendModal = props => {
   const show = props.show
   const close = () => props.setShow(false)
-  const removeCommission = () => {
-    props.handleRemoveCommission()
+  const sendCommission = () => {
+    props.handleSendCommission()
     close()
   }
 
@@ -16,20 +16,20 @@ const CommissionDeleteModal = props => {
       keyboard={false}
   >
     <Modal.Header closeButton>
-      <Modal.Title>Potwierdzenie usunięcia</Modal.Title>
+      <Modal.Title>Potwierdzenie wysłania zamówienia </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      Czy na pewno chcesz usunąć zamówienie: {props.commission}
+      Czy na pewno chcesz wysłać zamówienie: {props.commission}
     </Modal.Body>
     <Modal.Footer>
       <Button variant="secondary" onClick={close}>
         Anuluj
       </Button>
-      <Button variant="primary" onClick={removeCommission}>
-        Usuń
+      <Button variant="primary" onClick={sendCommission}>
+        Wyślij
       </Button>
     </Modal.Footer>
   </Modal>
 }
 
-export default CommissionDeleteModal
+export default CommissionSendModal

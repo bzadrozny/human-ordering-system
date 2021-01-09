@@ -32,3 +32,19 @@
     vertical-align: top;
 }
 
+.commission-icon-white {
+    float: right;
+    align-items: start;
+    font-size: 28px;
+    max-height: 28px;
+    color: rgba(255,255,255,.5)
+}
+
+.commission-icon-white:hover  {
+    color: white;
+}
+
+.commission-icon-white svg {
+    margin-left: 10px;
+    vertical-align: top;
+}

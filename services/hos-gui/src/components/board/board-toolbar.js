@@ -43,7 +43,7 @@ const Toolbar = (props) => {
   )
 
   const cancel = props.cancel && (
-      <ToolbarIcon icon={RiCloseFill} label="Anuluj" onClick={props.cancel}/>
+      <ToolbarIcon icon={RiCloseFill} label={props.cancelLabel || "Anuluj"} onClick={props.cancel}/>
   )
 
   const back = props.back && (

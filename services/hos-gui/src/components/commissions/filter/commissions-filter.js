@@ -1,8 +1,11 @@
 import React, {Component} from "react";
 import {Accordion, Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import {OrganisationApi} from '../../../api/hos-service-api'
+import {OrganisationAPI} from '../../../api/hos-service-api'
+import UserContext from "../../../context/user-context";
+import AuthService from "../../../services/authentication/auth-service";
 
 export default class CommissionsFilter extends Component {
+  static contextType = UserContext
 
   constructor(props) {
     super(props);
@@ -16,12 +19,25 @@ export default class CommissionsFilter extends Component {
     }
   }
 
-  componentDidMount = () => {
-    OrganisationApi.allOrganisations()
-        .then(resp => resp.data)
-        .then(organisations =>
-            this.setState({organisations: organisations})
-        )
+  componentDidMount = async () => {
+    const user = this.context || await AuthService.me()
+    const isClient = user.authorities.some(auth => auth.id === 4)
+    if (isClient) {
+      this.setState({
+        organisation: user.organisation.id,
+        organisations: [user.organisation]
+      })
+      OrganisationAPI.organisationById(user.organisation.id)
+          .then(resp => resp.data)
+          .then(organisation => organisation.locations)
+          .then(locations => this.setState({locations: locations}))
+    } else {
+      OrganisationAPI.allOrganisations()
+          .then(resp => resp.data)
+          .then(organisations =>
+              this.setState({organisations: organisations})
+          )
+    }
   }
 
   setId = (event) => {
@@ -49,7 +65,7 @@ export default class CommissionsFilter extends Component {
       organisation: organisation === '...' ? undefined : organisation,
     })
 
-    let locations = organisation !== '...' ? await OrganisationApi.organisationById(organisation)
+    let locations = organisation !== '...' ? await OrganisationAPI.organisationById(organisation)
             .then(resp => resp.data)
             .then(organisation => organisation.locations)
         : []
@@ -74,6 +90,7 @@ export default class CommissionsFilter extends Component {
   }
 
   render() {
+    const oneOrganisation = this.state.organisations.length === 1
     const locationsEmpty = this.state.locations.length === 0
     return (
         <Accordion className='col-9 mx-auto' defaultActiveKey="0">
@@ -129,23 +146,24 @@ export default class CommissionsFilter extends Component {
                   </Form.Row>
 
                   <Form.Row>
-                    <Form.Group as={Col} controlId="formGridCity">
+                    <Form.Group as={Col}>
                       <Form.Label>Organizacja</Form.Label>
                       <Form.Control
                           as="select"
-                          defaultValue={this.state.organisation}
+                          value={this.state.organisation}
                           onChange={this.setOrganisation}
+                          disabled={oneOrganisation}
                       >
-                        <option value={undefined}>...</option>
+                        {!oneOrganisation && <option value={undefined}>...</option>}
                         {this.state.organisations.map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
                       </Form.Control>
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridState">
+                    <Form.Group as={Col}>
                       <Form.Label>Lokalizacja</Form.Label>
                       <Form.Control
                           as="select"
-                          defaultValue={this.state.location}
+                          value={this.state.location}
                           onChange={this.setLocation}
                           disabled={locationsEmpty}
                       >

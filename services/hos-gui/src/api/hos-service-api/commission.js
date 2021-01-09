@@ -25,6 +25,20 @@ export default class Commission extends HosServiceApi {
     })
   }
 
+  static async send(id) {
+    const SPEC_URL = '/' + id + '/send'
+    return await axios.post(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, null,{
+      headers: this._.createHeaders()
+    })
+  }
+
+  static async decision(decision) {
+    const SPEC_URL = '/' + decision.id + '/decision'
+    return await axios.post(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, decision,{
+      headers: this._.createHeaders()
+    })
+  }
+
   static async allCommissions(filter) {
     return await axios.get(this.BASE_HOST + this.CONTEXT_URL, {
       params: filter,

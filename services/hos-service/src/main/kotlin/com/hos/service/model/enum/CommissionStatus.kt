@@ -12,7 +12,7 @@ enum class CommissionStatus(val id: Int, val desc: String) {
     MODIFIED(1, "Zmodyfikowano"),
     SENT(2, "Wysłano"),
     REJECTED(-1, "Zastrzeżono"),
-    DELETED(-2, "Anulowano"),
+    CANCELED(-2, "Anulowano"),
     EXECUTION(3, "Realizacja"),
     COMPLETED(4, "Zakończone");
 

@@ -35,12 +35,12 @@ class CommissionController(private val commissionService: CommissionService) {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     fun modifyCommission(@PathVariable id: Long, @RequestBody body: CommissionForm): CommissionDetailsRecord {
         val commissionForm = CommissionForm(
-                id = id,
-                principal = body.principal,
-                location = body.location,
-                description = body.description,
-                status = body.status,
-                records = body.records
+            id = id,
+            principal = body.principal,
+            location = body.location,
+            description = body.description,
+            status = body.status,
+            records = body.records
         )
         return commissionService.modifyCommission(commissionForm)
     }
@@ -52,7 +52,7 @@ class CommissionController(private val commissionService: CommissionService) {
     }
 
     @PostMapping("{id}/send")
-    @PreAuthorize("hasAnyAuthority('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     fun sendCommission(@PathVariable id: Long): CommissionDetailsRecord {
         return commissionService.sendCommission(id)
     }
@@ -60,16 +60,10 @@ class CommissionController(private val commissionService: CommissionService) {
     @PostMapping("{id}/decision")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
     fun sendCommissionDecision(
-            @PathVariable id: Long,
-            @RequestBody body: CommissionDecisionForm
+        @PathVariable id: Long,
+        @RequestBody body: CommissionDecisionForm
     ): CommissionDetailsRecord {
-        val commissionDecisionForm = CommissionDecisionForm(
-                id = id,
-                decision = body.decision,
-                description = body.description,
-                records = body.records
-        )
-        return commissionService.sendCommissionDecision(commissionDecisionForm)
+        return commissionService.sendCommissionDecision(body)
     }
 
     @PostMapping("{id}/complete")

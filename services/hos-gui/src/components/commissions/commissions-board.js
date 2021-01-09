@@ -22,9 +22,13 @@ class CommissionsBoard extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const location = this.props.location
-    const deletedCommission = location.state ? location.state.deletedCommission : false
-    if (deletedCommission && this.state.commissions.filter(c => c.id === deletedCommission).length > 0) {
+    const refresh = location.state ? location.state.refresh : false
+    if (refresh) {
       this.uploadCommissions({})
+      this.props.history.replace({
+        pathname: '/board/commission',
+        state: null
+      })
     }
   }
 

@@ -2,16 +2,15 @@ import React, {Component, useState} from 'react'
 import Toolbar from "../../board/board-toolbar";
 import {Accordion, Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import UserContext from "../../../context/user-context";
-import {OrganisationApi, CommissionAPI} from "../../../api/hos-service-api";
+import {OrganisationAPI, CommissionAPI} from "../../../api/hos-service-api";
 import AuthService from "../../../services/authentication/auth-service";
 import CommissionDataForm from "./commission-data-form";
-import CommissionRecordDataForm from "./commission-record-data-form";
 import DetailsRow from "../../common/details-row";
 import ShowHideToggle from "../../common/show-hide-toggle";
-import {RiDeleteBinLine, RiEditLine} from "react-icons/ri";
+import {RiAddLine, RiDeleteBinLine, RiEditLine} from "react-icons/ri";
 import OverlayTriggerIcon from "../../common/overlay-trigger-icon";
 import CommissionRecordDeleteModal from "../modal/commission-record-delete-modal";
-import CommissionRecordEditModal from "../modal/commission-record-edit-modal";
+import CommissionRecordDataFormModal from "../modal/commission-record-data-form-modal";
 
 class CommissionForm extends Component {
   static contextType = UserContext
@@ -38,11 +37,11 @@ class CommissionForm extends Component {
   async componentDidMount() {
     const user = this.context || await AuthService.me()
     const organisations = user.authorities.some(auth => auth.id === 0) ?
-        await OrganisationApi.allOrganisations().then(resp => resp.data) :
+        await OrganisationAPI.allOrganisations().then(resp => resp.data) :
         [user.organisation];
     const organisation = organisations[0]
 
-    const locations = await OrganisationApi.organisationById(organisation.id)
+    const locations = await OrganisationAPI.organisationById(organisation.id)
         .then(resp => resp.data)
         .then(organisation => organisation.locations)
     const location = locations[0]
@@ -108,7 +107,7 @@ class CommissionForm extends Component {
     }
 
     let organisation = event.target.value
-    const locations = await OrganisationApi.organisationById(organisation)
+    const locations = await OrganisationAPI.organisationById(organisation)
         .then(resp => resp.data)
         .then(organisation => organisation.locations)
 
@@ -210,7 +209,7 @@ class CommissionForm extends Component {
                   validations: data.validationExceptions.map(ex => ex.message)
                 })
               } else {
-                this.props.history.push('/board/commission/' + data.id)
+                this.props.history.replace('/board/commission/' + data.id)
               }
             })
         :
@@ -223,7 +222,7 @@ class CommissionForm extends Component {
                   validations: data.validationExceptions.map(ex => ex.message)
                 })
               } else {
-                this.props.history.push('/board/commission/' + data.id)
+                this.props.history.replace('/board/commission/' + data.id)
               }
             })
   }
@@ -253,17 +252,11 @@ class CommissionForm extends Component {
                   handleFormChangeDescription={this.handleFormChangeDescription}
               />
 
-              <CommissionRecordDataForm
-                  isAdmin={isAdmin}
-                  commission={this.state.form.id}
-                  editRecord={null}
-                  addRecord={this.handleAddRecord}
-              />
-
               <RecordsList
                   isAdmin={isAdmin}
                   commission={this.state.form.id}
                   records={this.state.form.records}
+                  addRecord={this.handleAddRecord}
                   editRecord={this.handleEditRecord}
                   removeRecord={this.handleRemoveRecord}
               />
@@ -287,68 +280,107 @@ class CommissionForm extends Component {
 
 const RecordsList = props => {
   const [recordToDelete, setRecordToDelete] = useState(null)
+  const [showRecordAddForm, setShowRecordAddForm] = useState(false)
+  const [showRecordEditForm, setShowRecordEditForm] = useState(false)
   const [recordToEdit, setRecordToEdit] = useState(null)
 
+  const deleteRecord = (idx, record) => {
+    setRecordToDelete([idx, record.id])
+  }
+
+  const addRecord = () => {
+    setShowRecordAddForm(true)
+  }
+
+  const editRecord = (idx, record) => {
+    setRecordToEdit([idx, record])
+    setShowRecordEditForm(true)
+  }
+
   return <>
+
     <CommissionRecordDeleteModal
         recordToDelete={recordToDelete}
         setRecordToDelete={setRecordToDelete}
         handleRemoveRecord={props.removeRecord}
     />
-    <CommissionRecordEditModal
+    <CommissionRecordDataFormModal
+        show={showRecordAddForm}
+        setShow={setShowRecordAddForm}
         isAdmin={props.isAdmin}
-        recordToEdit={recordToEdit}
-        setRecordToEdit={setRecordToEdit}
-        handleEditRecord={props.editRecord}
+        commission={props.commission}
+        record={null}
+        setRecord={null}
+        handleSaveRecord={props.addRecord}
     />
-    {props.records.map((record, idx) => (
-        <Accordion key={idx}>
-          <Card>
-            <Card.Header>
-              <Card.Title className='mb-1'>
-                Rekord {record.id || '#' + (idx + 1)}
-              </Card.Title>
-              <Row className='mt-3' style={{fontSize: '1.2em'}}>
-                <Col xs={12} md={3} className='pt-xs-3'><b>Zamówiono:</b> {record.ordered}</Col>
-                <Col xs={12} md={6} className='pt-xs-3'><b>Stanowisko:</b> {record.jobName}</Col>
-                <Col sm={12} md={3} className='pt-xs-4'>
-                  <OverlayTriggerIcon
-                      overlay='Usuń'
-                      icon={<RiDeleteBinLine onClick={() => setRecordToDelete([idx, record.id])}/>}
-                  />
-                  <OverlayTriggerIcon
-                      overlay='Edytuj'
-                      icon={<RiEditLine onClick={() => setRecordToEdit([idx, record])}/>}
-                  />
-                  <ShowHideToggle eventKey={idx + 1}/>
-                </Col>
-              </Row>
-            </Card.Header>
-            <Accordion.Collapse eventKey={idx + 1}>
-              <Card.Body>
-                <Container as={Row} className='p-0 m-auto w-100'>
-                  <DetailsRow name='Pensja minimalna' value={record.wageRateMin}/>
-                  <DetailsRow name='Pensja maksymalna' value={record.wageRateMax}/>
-                  <DetailsRow
-                      name='Data rozpoczęcia'
-                      value={record.startDate}/>
-                  <DetailsRow
-                      name='Data zakończenia'
-                      value={record.endDate}/>
-                  <DetailsRow name='Rozliczenie' value={record.settlementType.desc}/>
-                  <DetailsRow name='Uwagi' value={record.description}/>
-                </Container>
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-    ))}
+    <CommissionRecordDataFormModal
+        show={showRecordEditForm}
+        setShow={setShowRecordEditForm}
+        isAdmin={props.isAdmin}
+        commission={props.commission}
+        record={recordToEdit}
+        setRecord={setRecordToEdit}
+        handleSaveRecord={props.editRecord}
+    />
+
+    <Card className='commission-new-card mt-3'>
+      <Card.Header className='card-header-custom'>
+        <b>Rekordy zamówienia</b>
+        <OverlayTriggerIcon
+            overlay='Dodaj'
+            theme='commission-icon-white'
+            icon={<RiAddLine onClick={addRecord}/>}
+        />
+      </Card.Header>
+      {props.records.map((record, idx) => (
+          <Accordion key={idx}>
+            <Card>
+              <Card.Header>
+                <Card.Title className='mb-1'>
+                  Rekord {record.id || '#' + (idx + 1)}
+                </Card.Title>
+                <Row className='mt-3' style={{fontSize: '1.2em'}}>
+                  <Col xs={12} md={3} className='pt-xs-3'><b>Zamówiono:</b> {record.ordered}</Col>
+                  <Col xs={12} md={6} className='pt-xs-3'><b>Stanowisko:</b> {record.jobName}</Col>
+                  <Col sm={12} md={3} className='pt-xs-4'>
+                    <OverlayTriggerIcon
+                        overlay='Usuń'
+                        icon={<RiDeleteBinLine onClick={() => deleteRecord(idx, record)}/>}
+                    />
+                    <OverlayTriggerIcon
+                        overlay='Edytuj'
+                        icon={<RiEditLine onClick={() => editRecord(idx, record)}/>}
+                    />
+                    <ShowHideToggle eventKey={idx + 1}/>
+                  </Col>
+                </Row>
+              </Card.Header>
+              <Accordion.Collapse eventKey={idx + 1}>
+                <Card.Body>
+                  <Container as={Row} className='p-0 m-auto w-100'>
+                    <DetailsRow name='Pensja minimalna' value={record.wageRateMin}/>
+                    <DetailsRow name='Pensja maksymalna' value={record.wageRateMax}/>
+                    <DetailsRow
+                        name='Data rozpoczęcia'
+                        value={record.startDate}/>
+                    <DetailsRow
+                        name='Data zakończenia'
+                        value={record.endDate}/>
+                    <DetailsRow name='Rozliczenie' value={record.settlementType.desc}/>
+                    <DetailsRow name='Uwagi' value={record.description}/>
+                  </Container>
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+      ))}
+    </Card>
   </>;
 }
 
 const ValidationErrors = props => {
   return <>
-    {props.validations.map(validation => <ValidationError validation={validation}/>)}
+    {props.validations.map((validation, idx) => <ValidationError key={idx} validation={validation}/>)}
   </>
 }
 

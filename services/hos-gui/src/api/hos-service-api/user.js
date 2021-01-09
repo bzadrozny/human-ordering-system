@@ -1,22 +1,21 @@
 import HosServiceApi from "./hos-api";
+import axios from "axios";
 
 export default class User extends HosServiceApi {
 
+  static CONTEXT_URL = '/user'
+
   static async allUsers() {
-    const URL = '/user';
-    return await fetch(this.BASE_HOST + URL, {
-      method: 'GET',
+    return await axios.get(this.BASE_HOST + this.CONTEXT_URL, {
       headers: this._.createHeaders()
-    });
+    })
   }
 
   static async userByID(id) {
-    const URL = '/user';
-    const ID = '/' + id
-    return await fetch(this.BASE_HOST + URL + ID, {
-      method: 'GET',
+    const SPEC_URL = '/' + id
+    return await axios.get(this.BASE_HOST + this.CONTEXT_URL + SPEC_URL, {
       headers: this._.createHeaders()
-    });
+    })
   }
 
 }

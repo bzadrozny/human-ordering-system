@@ -68,7 +68,7 @@ class Application(
                     )
             )
 
-            val user = UserEntity(
+            val admin = UserEntity(
                     login = adminlogin,
                     email = adminemail,
                     password = adminpassw,
@@ -80,13 +80,35 @@ class Application(
                     department = department,
                     location = location
             )
-            user.authorities.addAll(listOf(
+            admin.authorities.addAll(listOf(
                     AuthorityRoleEntity(
-                            user = user,
+                            user = admin,
                             role = Authority.ADMIN
                     )
             ))
-            userRepo.save(user)
+            userRepo.save(admin)
+
+            val client = UserEntity(
+                    login = "client",
+                    email = "client@email.com",
+                    password = adminpassw,
+                    status = EntityStatus.ACTIVE,
+                    name = "clientName",
+                    surname = "clientSurname",
+                    phone1 = "phone1",
+                    organisation = organisation,
+                    department = department,
+                    location = location
+            )
+            client.authorities.addAll(listOf(
+                    AuthorityRoleEntity(
+                            user = client,
+                            role = Authority.CLIENT
+                    )
+            ))
+            userRepo.save(client)
+
+
         }
     }
 

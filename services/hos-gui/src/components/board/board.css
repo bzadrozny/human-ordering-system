@@ -33,7 +33,7 @@
     width: 50px;
     padding-block: 5px;
 
-    border-top: 1px solid #444b4f ;
+    border-top: 1px solid #444b4f;
     border-bottom-right-radius: 15px;
 
     background: #343a40;
@@ -52,6 +52,10 @@
 .card-header-custom {
     color: white;
     background-color: #238A91;
+}
+
+.card-header-custom b {
+    vertical-align: middle;
 }
 
 button[type=submit] {
