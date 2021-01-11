@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Modal, Row} from "react-bootstrap";
-import {UserAPI} from "../../../api/hos-service-api";
+import {CommissionAPI, UserAPI} from "../../../api/hos-service-api";
 import DatePicker from "react-datepicker";
 import DetailsRow from "../../common/details-row";
+import ValidationErrors from "../../common/validation-errors";
 
 const CommissionAcceptModal = props => {
   const show = props.show
-  const close = () => props.setShow(false)
+  const close = () => {
+    setValidations([])
+    setError({description: ''})
+    props.setShow(false)
+  }
 
   const commission = props.commission
   const minRealisationDate = new Date()
@@ -18,13 +23,16 @@ const CommissionAcceptModal = props => {
     id: commission.id,
     decision: {id: 0},
     realisationDate: maxRealisationDate,
-    executor: null,
-    description: null
+    executor: undefined,
+    description: undefined
+  })
+  const [error, setError] = useState({
+    description: ''
   })
 
   const [executors, setExecutors] = useState([])
   useEffect(() => {
-    UserAPI.allUsers()
+    UserAPI.allManagers()
         .then(resp => resp.data)
         .then(executors => setExecutors([...executors]))
   }, [])
@@ -46,25 +54,41 @@ const CommissionAcceptModal = props => {
 
   const setDescription = event => {
     const value = event.target.value
+    if (value != null && value !== '' && (value.length < 5 || value.length > 250)) setError({
+      description: "Pole musi mieć od 5 do 250 znaków"
+    })
+    else setError({
+      description: ''
+    })
     setDecision({
       ...decision,
       description: value
     })
   }
 
-  const acceptCommission = () => {
+  const [validations, setValidations] = useState([])
+  const acceptCommission = async () => {
+    const validations = []
+    if (decision.executor == null) {
+      validations.push("Przed akceptają konieczne jest wybranie opiekuna zamówienia")
+    }
+    if (decision.realisationDate == null) {
+      validations.push("Ackeptowana data realizacji jest wymagana")
+    }
+    setValidations(validations)
+    if (validations.length) return
+
     const decisionForm = {...decision}
     decisionForm.realisationDate = decisionForm.realisationDate.toISOString().substr(0, 10)
-    decisionForm.records = commission.records
-        .filter(rec => rec.status.id !== 4)
-        .map(rec => ({
-          id: rec.id,
-          decision: {id: 0},
-          accepted: rec.ordered,
-          startDate: rec.startDate
-        }))
-    props.handleAcceptCommission(decisionForm)
-    close()
+    CommissionAPI.decision(decisionForm)
+        .then(resp => {
+          if (resp.status !== 200) {
+            setValidations(resp.data.validationExceptions.map(ex => ex.message))
+          } else {
+            props.setCommission(resp.data)
+            close()
+          }
+        })
   }
 
   return <Modal
@@ -109,6 +133,7 @@ const CommissionAcceptModal = props => {
             onChange={setExecutor}
             disabled={executors.length === 0}
         >
+          <option/>
           {executors.length > 0 && executors.map(executor =>
               <option key={executor.id} value={executor.id}>{executor.email}</option>
           )}
@@ -123,10 +148,11 @@ const CommissionAcceptModal = props => {
             onChange={setDescription}
             maxLength={255}
         />
+        <span style={{color: "red"}}>{error.description}</span>
       </Form.Group>
 
-      {commission.records.map((record, idx) => (
-          <Card key={idx} className='my-3'>
+      {commission.records.map(record => (
+          <Card key={record.id} className='my-3'>
             <Card.Header>
               <Card.Title className='mb-0'>
                 {record.ordered} x {record.jobName.toUpperCase()}
@@ -142,6 +168,10 @@ const CommissionAcceptModal = props => {
             </Card.Body>
           </Card>
       ))}
+
+      <ValidationErrors
+          validations={validations}
+      />
 
     </Modal.Body>
     <Modal.Footer>

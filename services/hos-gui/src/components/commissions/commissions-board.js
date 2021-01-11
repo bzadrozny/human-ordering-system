@@ -5,8 +5,10 @@ import {RiMoreFill, RiShareForwardFill} from "react-icons/ri";
 import Toolbar from "../board/board-toolbar";
 import CommissionsFilter from "./filter/commissions-filter";
 import {CommissionAPI} from "../../api/hos-service-api";
+import UserContext from "../../context/user-context";
 
 class CommissionsBoard extends Component {
+  static contextType = UserContext
 
   constructor(props) {
     super(props);
@@ -51,6 +53,11 @@ class CommissionsBoard extends Component {
   }
 
   render() {
+    const user = this.context
+    const canAddCommission = user && user.authorities.some(auth => {
+      return auth.id === 0 || auth.id === 4
+    })
+
     const commissions = this.state.commissions.size ? (
         <tr>
           <td colSpan="4">Brak zamówień</td>
@@ -75,7 +82,9 @@ class CommissionsBoard extends Component {
 
     return (
         <>
-          <Toolbar create={() => this.props.history.push('/board/commission/new')}/>
+          <Toolbar
+              create={canAddCommission && (() => this.props.history.push('/board/commission/new'))}
+          />
           <CommissionsFilter handleFilter={this.handleSubmitFilter}/>
           <div style={{marginLeft: '50px'}}>
             <Table className='col-md-11 my-3 mx-auto' size="sm" responsive="sm" striped hover>

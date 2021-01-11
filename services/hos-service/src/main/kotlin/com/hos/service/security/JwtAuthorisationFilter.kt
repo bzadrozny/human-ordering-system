@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Slf4j
 class JwtAuthorisationFilter(
-        private val userDetailsService: UserDetailsServiceImpl
+    private val userDetailsService: UserDetailsServiceImpl
 ) : OncePerRequestFilter() {
 
     @Autowired
@@ -36,8 +36,7 @@ class JwtAuthorisationFilter(
 
         val requestTokenHeader = req.getHeader("Authorization") ?: req.getHeader("authorization")
         if (requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer ")) {
-            log.warn("For request: ${req.requestURI}")
-            log.warn("JWT Token does not begin with Bearer String | Header: $requestTokenHeader")
+            log.warn("For request: ${req.requestURI} JWT Token does not begin with Bearer String | Header: $requestTokenHeader")
             chain.doFilter(req, resp)
             return
         }
@@ -59,11 +58,16 @@ class JwtAuthorisationFilter(
         chain.doFilter(req, resp)
     }
 
-    private fun createAuthentication(jwtSubject: String?, jwtToken: String, authorities: List<GrantedAuthority>, req: HttpServletRequest): Authentication {
+    private fun createAuthentication(
+        jwtSubject: String?,
+        jwtToken: String,
+        authorities: List<GrantedAuthority>,
+        req: HttpServletRequest
+    ): Authentication {
         val auth = UsernamePasswordAuthenticationToken(
-                userDetailsService.loadUserByUsername(jwtSubject),
-                jwtToken,
-                authorities
+            userDetailsService.loadUserByUsername(jwtSubject),
+            jwtToken,
+            authorities
         )
         auth.details = WebAuthenticationDetailsSource().buildDetails(req)
         return auth

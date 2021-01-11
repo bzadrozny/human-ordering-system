@@ -20,6 +20,7 @@ class CommissionEntity(
     val version: Int = 0,
     var orderDate: LocalDate? = null,
     var decisionDate: LocalDate? = null,
+    var realisationDate: LocalDate? = null,
     var completedDate: LocalDate? = null,
     var description: String?,
     var decisionDescription: String? = null,

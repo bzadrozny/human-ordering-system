@@ -4,7 +4,7 @@ import React from "react";
 const CommissionDeleteModal = props => {
   const show = props.show
   const close = () => props.setShow(false)
-  const removeCommission = () => {
+  const handleSubmit = () => {
     props.handleRemoveCommission()
     close()
   }
@@ -25,7 +25,7 @@ const CommissionDeleteModal = props => {
       <Button variant="secondary" onClick={close}>
         Anuluj
       </Button>
-      <Button variant="primary" onClick={removeCommission}>
+      <Button variant="primary" onClick={handleSubmit}>
         Usuń
       </Button>
     </Modal.Footer>

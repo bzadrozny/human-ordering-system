@@ -11,8 +11,8 @@ enum class CommissionRecordStatus(val id: Int, val desc: String) {
     CREATED(0, "Utworzono"),
     ACCEPTED(1, "Zaakceptowano"),
     MODIFIED(2, "Zmodyfikowano"),
-    REJECTED(3, "Odrzucono"),
-    CANCELED(4, "Anulowano"),
+    REJECTED(3, "Zastrzeżono"),
+    CANCELED(4, "Odrzucono"),
     COMPLETED(5, "Zrealizowano");
 
     companion object {

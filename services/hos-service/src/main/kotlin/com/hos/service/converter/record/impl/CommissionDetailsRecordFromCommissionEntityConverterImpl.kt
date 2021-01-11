@@ -11,23 +11,25 @@ import org.springframework.stereotype.Component
 
 @Component
 class CommissionDetailsRecordFromCommissionEntityConverterImpl(
-        private val userConverter: Converter<UserEntity, UserBasicRecord>,
-        private val locationConverter: Converter<LocationEntity, LocationRecord>,
-        private val recordConverter: Converter<CommissionRecordEntity, CommissionRecordDetailsRecord>
+    private val userConverter: Converter<UserEntity, UserBasicRecord>,
+    private val locationConverter: Converter<LocationEntity, LocationRecord>,
+    private val recordConverter: Converter<CommissionRecordEntity, CommissionRecordDetailsRecord>
 ) : RecordConverter<CommissionEntity, CommissionDetailsRecord>() {
 
     override fun create(source: CommissionEntity): CommissionDetailsRecord {
         return CommissionDetailsRecord(
-                id = source.id,
-                status = source.status,
-                orderDate = source.orderDate,
-                decisionDate = source.decisionDate,
-                completedDate = source.completedDate,
-                principal = userConverter.create(source.principal),
-                location = locationConverter.create(source.location),
-                executor = source.executor?.let { userConverter.create(it) },
-                records = source.records.map(recordConverter::create),
-                description = source.description
+            id = source.id,
+            status = source.status,
+            orderDate = source.orderDate,
+            decisionDate = source.decisionDate,
+            decisionDescription = source.decisionDescription,
+            realisationDate = source.realisationDate,
+            completedDate = source.completedDate,
+            principal = userConverter.create(source.principal),
+            location = locationConverter.create(source.location),
+            executor = source.executor?.let { userConverter.create(it) },
+            records = source.records.map(recordConverter::create),
+            description = source.description
         )
     }
 

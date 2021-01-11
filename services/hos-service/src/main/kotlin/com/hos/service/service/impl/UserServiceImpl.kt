@@ -2,6 +2,7 @@ package com.hos.service.service.impl
 
 import com.hos.service.converter.Converter
 import com.hos.service.model.entity.UserEntity
+import com.hos.service.model.enum.Authority
 import com.hos.service.model.enum.QualifierType
 import com.hos.service.model.enum.Resource
 import com.hos.service.model.exception.ResourceNotFoundException
@@ -18,12 +19,12 @@ import javax.transaction.Transactional
 
 @Service
 class UserServiceImpl(
-        private val uc001: LoginUser,
-        private val userFormValidator: FormValidator<UserForm, UserEntity>,
-        private val userConverter: Converter<UserForm, UserEntity>,
-        private val userBasicConverter: Converter<UserEntity, UserBasicRecord>,
-        private val userDetailsConverter: Converter<UserEntity, UserDetailsRecord>,
-        private val userRepository: UserRepository
+    private val uc001: LoginUser,
+    private val userFormValidator: FormValidator<UserForm, UserEntity>,
+    private val userConverter: Converter<UserForm, UserEntity>,
+    private val userBasicConverter: Converter<UserEntity, UserBasicRecord>,
+    private val userDetailsConverter: Converter<UserEntity, UserDetailsRecord>,
+    private val userRepository: UserRepository
 ) : UserService {
 
     override fun loginUser(login: String?, password: String?): String? {
@@ -34,10 +35,15 @@ class UserServiceImpl(
         return userRepository.findAll().map(userBasicConverter::create)
     }
 
+    override fun findAllManagers(): List<UserBasicRecord> {
+        return userRepository.findAllWithAuthority(Authority.MANAGER)
+            .map(userBasicConverter::create)
+    }
+
     override fun findUserById(id: Long): UserDetailsRecord? {
         return userRepository.findById(id)
-                .map(userDetailsConverter::create)
-                .orElseThrow { ResourceNotFoundException(Resource.USER, QualifierType.ID, "$id") }
+            .map(userDetailsConverter::create)
+            .orElseThrow { ResourceNotFoundException(Resource.USER, QualifierType.ID, "$id") }
     }
 
     @Transactional
@@ -49,8 +55,8 @@ class UserServiceImpl(
             if (it.hasBlocker() || (it.hasWarning() && !userForm.acceptWarning)) throw ValidationException(it)
         }
         return userConverter.create(userForm)
-                .let { userRepository.save(it) }
-                .let { userDetailsConverter.create(it) }
+            .let { userRepository.save(it) }
+            .let { userDetailsConverter.create(it) }
     }
 
     @Transactional
@@ -62,9 +68,9 @@ class UserServiceImpl(
         }
         val userEntity = userRepository.findById(userForm.id!!).orElseThrow {
             ResourceNotFoundException(
-                    Resource.USER,
-                    QualifierType.ID,
-                    "${userForm.id}"
+                Resource.USER,
+                QualifierType.ID,
+                "${userForm.id}"
             )
         }
         userFormValidator.validateComplexBeforeModification(userForm, userEntity).let {
@@ -73,8 +79,8 @@ class UserServiceImpl(
             }
         }
         return userConverter.merge(userForm, userEntity)
-                .let { userRepository.save(it) }
-                .let { userDetailsConverter.create(it) }
+            .let { userRepository.save(it) }
+            .let { userDetailsConverter.create(it) }
     }
 
 }

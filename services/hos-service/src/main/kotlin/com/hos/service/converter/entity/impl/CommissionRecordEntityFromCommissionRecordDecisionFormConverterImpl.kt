@@ -9,21 +9,31 @@ import org.springframework.stereotype.Component
 import javax.transaction.NotSupportedException
 
 @Component
-class CommissionRecordEntityFromCommissionRecordDecisionFormConverterImpl : Converter<CommissionRecordDecisionForm, CommissionRecordEntity> {
+class CommissionRecordEntityFromCommissionRecordDecisionFormConverterImpl :
+    Converter<CommissionRecordDecisionForm, CommissionRecordEntity> {
 
     override fun create(source: CommissionRecordDecisionForm): CommissionRecordEntity {
         throw NotSupportedException("Decision can not be converted to new independent entity")
     }
 
     override fun merge(source: CommissionRecordDecisionForm, target: CommissionRecordEntity): CommissionRecordEntity {
-        target.status = when (source.decision) {
-            CommissionDecision.ACCEPTED -> CommissionRecordStatus.ACCEPTED
-            CommissionDecision.MODIFIED -> CommissionRecordStatus.MODIFIED
-            CommissionDecision.REJECTED -> CommissionRecordStatus.REJECTED
-            else -> target.status
+        when (source.decision) {
+            CommissionDecision.ACCEPTED -> {
+                target.status = CommissionRecordStatus.ACCEPTED
+                target.acceptedOrdered = target.ordered
+                target.acceptedStartDate = target.startDate
+            }
+            CommissionDecision.REJECTED -> {
+                target.status = CommissionRecordStatus.REJECTED
+                target.acceptedOrdered = source.accepted
+                target.acceptedStartDate = source.startDate
+            }
+            CommissionDecision.CANCELED -> {
+                target.status = CommissionRecordStatus.CANCELED
+                target.acceptedOrdered = null
+                target.acceptedStartDate = null
+            }
         }
-        target.acceptedOrdered = source.accepted ?: target.ordered
-        target.acceptedStartDate = source.startDate ?: target.startDate
         return target
     }
 

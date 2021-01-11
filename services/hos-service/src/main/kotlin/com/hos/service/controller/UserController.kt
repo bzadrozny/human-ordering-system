@@ -19,9 +19,15 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')") //TODO do zrobienia metoda wyszukująca jedynie managerów
+    @PreAuthorize("hasAuthority('ADMIN')")
     fun allUsers(): List<UserBasicRecord> {
         return userService.findAllUsers()
+    }
+
+    @GetMapping("/managers")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'MANAGER')")
+    fun allManagers(): List<UserBasicRecord> {
+        return userService.findAllManagers()
     }
 
     @GetMapping("/{id}")

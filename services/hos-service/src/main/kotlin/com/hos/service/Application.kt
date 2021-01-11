@@ -108,7 +108,25 @@ class Application(
             ))
             userRepo.save(client)
 
-
+            val manager = UserEntity(
+                    login = "manager",
+                    email = "manager@email.com",
+                    password = adminpassw,
+                    status = EntityStatus.ACTIVE,
+                    name = "managerName",
+                    surname = "managerSurname",
+                    phone1 = "phone1",
+                    organisation = organisation,
+                    department = department,
+                    location = location
+            )
+            manager.authorities.addAll(listOf(
+                    AuthorityRoleEntity(
+                            user = manager,
+                            role = Authority.MANAGER
+                    )
+            ))
+            userRepo.save(manager)
         }
     }
 

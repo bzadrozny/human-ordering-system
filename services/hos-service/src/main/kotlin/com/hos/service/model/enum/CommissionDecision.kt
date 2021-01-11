@@ -9,8 +9,8 @@ import com.hos.service.model.exception.ResourceNotFoundException
 enum class CommissionDecision(val id: Int, val desc: String) {
 
     ACCEPTED(0, "Zaakceptowano"),
-    MODIFIED(1, "Zmodyfikowano"),
-    REJECTED(2, "Odrzucono");
+    REJECTED(1, "Zastrzeżono"),
+    CANCELED(2, "Odrzucono");
 
     companion object {
         @JvmStatic
@@ -25,7 +25,11 @@ enum class CommissionDecision(val id: Int, val desc: String) {
 
         private fun getById(id: Int): CommissionDecision {
             return values().find { it.id == id }
-                    ?: throw  ResourceNotFoundException(Resource.ENUM, QualifierType.ID, "'CommissionDecision' with id: $id does not exist")
+                ?: throw  ResourceNotFoundException(
+                    Resource.ENUM,
+                    QualifierType.ID,
+                    "'CommissionDecision' with id: $id does not exist"
+                )
         }
     }
 

@@ -10,7 +10,7 @@ const CommissionRecordDataForm = (props) => {
   const record = props.record
 
   const [jobName, setJobName] = useState((record && record.jobName) || '')
-  const [ordered, setOrdered] = useState((record && record.ordered) || null)
+  const [ordered, setOrdered] = useState((record && record.ordered) || undefined)
   const [wageRateMin, setWageRateMin] = useState((record && record.wageRateMin) || undefined)
   const [wageRateMax, setWageRateMax] = useState((record && record.wageRateMax) || undefined)
   const [startDate, setStartDate] = useState((record && new Date(record.startDate)) || minStartDate)

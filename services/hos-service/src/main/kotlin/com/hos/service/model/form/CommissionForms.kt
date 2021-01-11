@@ -29,7 +29,8 @@ class CommissionRecordForm(
 class CommissionDecisionForm(
     var id: Long? = null,
     var decision: CommissionDecision? = null,
-    var executor: Long,
+    var executor: Long? = null,
+    var realisationDate: LocalDate? = null,
     var records: Set<CommissionRecordDecisionForm>? = null,
     var description: String? = null
 )

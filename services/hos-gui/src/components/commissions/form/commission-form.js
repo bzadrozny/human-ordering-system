@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react'
 import Toolbar from "../../board/board-toolbar";
-import {Accordion, Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Accordion, Button, Card, Col, Container, Row} from "react-bootstrap";
 import UserContext from "../../../context/user-context";
 import {OrganisationAPI, CommissionAPI} from "../../../api/hos-service-api";
 import AuthService from "../../../services/authentication/auth-service";
@@ -11,6 +11,7 @@ import {RiAddLine, RiDeleteBinLine, RiEditLine} from "react-icons/ri";
 import OverlayTriggerIcon from "../../common/overlay-trigger-icon";
 import CommissionRecordDeleteModal from "../modal/commission-record-delete-modal";
 import CommissionRecordDataFormModal from "../modal/commission-record-data-form-modal";
+import ValidationErrors from "../../common/validation-errors";
 
 class CommissionForm extends Component {
   static contextType = UserContext
@@ -325,7 +326,7 @@ const RecordsList = props => {
 
     <Card className='commission-new-card mt-3'>
       <Card.Header className='card-header-custom'>
-        <b>Rekordy zamówienia</b>
+        <b>Zamawiane stanowiska</b>
         <OverlayTriggerIcon
             overlay='Dodaj'
             theme='commission-icon-white'
@@ -376,27 +377,6 @@ const RecordsList = props => {
       ))}
     </Card>
   </>;
-}
-
-const ValidationErrors = props => {
-  return <>
-    {props.validations.map((validation, idx) => <ValidationError key={idx} validation={validation}/>)}
-  </>
-}
-
-const ValidationError = props => {
-  const [show, setShow] = useState(true)
-  return (
-      <Alert
-          variant="danger"
-          show={show}
-          onClose={() => setShow(false)}
-          className='mt-3'
-          dismissible
-      >
-        <p>{props.validation}</p>
-      </Alert>
-  )
 }
 
 export default CommissionForm

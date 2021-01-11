@@ -23,7 +23,7 @@ class SendCommissionDecisionImpl(
 ) : SendCommissionDecision {
 
     override fun sendCommissionDecision(form: CommissionDecisionForm): CommissionDetailsRecord {
-        decisionValidator.validateInitiallyBeforeRegistration(form).let {
+        decisionValidator.validateInitiallyBeforeModification(form).let {
             if (it.hasBlocker()) throw ValidationException(it)
         }
 
