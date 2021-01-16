@@ -58,7 +58,7 @@ class CommissionRecordFormValidatorImpl : FormValidator<CommissionRecordForm, Co
                         ValidationStatus.BLOCKER
                 )
             }
-        } else if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED)) {
+        } else if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED, CommissionStatus.REJECTED)) {
             validation.addValidation(
                 "Brak możliwości edycji procesowanego lub zamkniętego zamówienia",
                 "",
@@ -86,8 +86,8 @@ fun validateInitiallyCommon(form: CommissionRecordForm): Validation {
         validateRequiredNumberInRange(
             form.ordered,
             "zamówiona ilość",
-            1.0,
-            if (user.isAdmin()) 10000.0 else 200.0,
+            1,
+            if (user.isAdmin()) 10000 else 200,
             "ordered"
         )
     )
@@ -172,11 +172,13 @@ fun validateComplexBeforeModificationExisted(form: CommissionRecordForm, entity:
                         )
                         else -> listOf()
                     }
+                    CommissionStatus.REJECTED,
                     CommissionStatus.MODIFIED -> when (record.status) {
                         CommissionRecordStatus.CREATED -> listOf(
                             CommissionRecordStatus.CREATED
                         )
                         CommissionRecordStatus.ACCEPTED -> listOf(
+                            CommissionRecordStatus.ACCEPTED,
                             CommissionRecordStatus.MODIFIED,
                             CommissionRecordStatus.CANCELED
                         )
@@ -198,10 +200,6 @@ fun validateComplexBeforeModificationExisted(form: CommissionRecordForm, entity:
                             CommissionRecordStatus.ACCEPTED,
                             CommissionRecordStatus.CANCELED
                         )
-                        CommissionRecordStatus.MODIFIED -> listOf(
-                            CommissionRecordStatus.MODIFIED,
-                            CommissionRecordStatus.CANCELED
-                        )
                         else -> listOf(record.status)
                     }
                     else -> listOf()
@@ -213,8 +211,8 @@ fun validateComplexBeforeModificationExisted(form: CommissionRecordForm, entity:
             validateRequiredNumberInRange(
                 form.ordered,
                 "zamówiona ilość",
-                record.acceptedOrdered?.toDouble() ?: 1.0,
-                if (user.isAdmin()) 10000.0 else 200.0,
+                record.acceptedOrdered ?: 1,
+                if (user.isAdmin()) 10000 else 200,
                 "ordered"
             )
         )

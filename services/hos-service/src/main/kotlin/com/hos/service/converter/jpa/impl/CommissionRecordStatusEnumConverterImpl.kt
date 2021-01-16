@@ -1,7 +1,6 @@
 package com.hos.service.converter.jpa.impl
 
 import com.hos.service.model.enum.CommissionRecordStatus
-import com.hos.service.model.enum.CommissionStatus
 import javax.persistence.AttributeConverter
 import javax.persistence.Converter
 

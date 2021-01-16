@@ -1,7 +1,8 @@
 import React from 'react'
 import {Accordion, Card, Col, Container, Row} from "react-bootstrap";
-import DetailsRow from "../../common/details-row";
 import ShowHideToggle from "../../common/show-hide-toggle";
+import DecisionRecordCard from "./decision-record-card";
+import DetailsRecordCard from "./commission-record-details";
 
 const CommissionRecordDetails = (props) => {
   const records = props.records
@@ -27,10 +28,10 @@ const CommissionRecordDetails = (props) => {
                     </Card.Header>
                     <Accordion.Collapse eventKey={record.id}>
                       <Card.Body>
-                        <DetailsRecordCard
+                        <DecisionRecordCard
                             record={record}
                         />
-                        <DecisionRecordCard
+                        <DetailsRecordCard
                             record={record}
                         />
                       </Card.Body>
@@ -41,36 +42,6 @@ const CommissionRecordDetails = (props) => {
         )}
       </Card>
   )
-}
-
-const DetailsRecordCard = props => {
-  const record = props.record
-  return <>
-    <Card.Title className='mb-1'>Szczegóły</Card.Title>
-    <Container as={Row} className='p-0 m-auto w-100'>
-      <DetailsRow name='Pensja minimalna' value={record.wageRateMin} zł/>
-      <DetailsRow name='Pensja maksymalna' value={record.wageRateMax} zł/>
-      <DetailsRow name='Data rozpoczęcia' value={record.startDate}/>
-      <DetailsRow name='Data zakończenia' value={record.endDate}/>
-      <DetailsRow name='Rozliczenie' value={record.settlementType.desc}/>
-      <DetailsRow name='Uwagi' value={record.description}/>
-    </Container>
-    <br/>
-  </>
-}
-
-const DecisionRecordCard = props => {
-  const record = props.record
-  if (record.status.id === 0) {
-    return <></>
-  }
-  return <>
-    <Card.Title className='mb-1'>Decyzja: {record.status.desc}</Card.Title>
-    <Container as={Row} className='p-0 m-auto w-100'>
-      <DetailsRow name='Zaakceptopwano' value={record.acceptedOrdered}/>
-      <DetailsRow name='Zaakceptowane rozpoczęcie' value={record.acceptedStartDate}/>
-    </Container>
-  </>;
 }
 
 export default CommissionRecordDetails

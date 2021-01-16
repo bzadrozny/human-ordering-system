@@ -27,21 +27,25 @@ const CommissionRejectModal = props => {
     decision: {id: 1},
     executor: undefined,
     description: undefined,
-    records: [...commission.records.map(rec => ({
-      id: rec.id,
-      decision: 0,
-      accepted: undefined,
-      startDate: undefined
-    }))]
+    records: [...commission.records
+        .filter(record => record.status.id !== 4)
+        .map(rec => ({
+          id: rec.id,
+          decision: 0,
+          accepted: undefined,
+          startDate: undefined
+        }))]
   })
   const [error, setError] = useState({
     executor: '',
     description: '',
-    records: commission.records.map(rec => ({
-      id: rec.id,
-      accepted: '',
-      startDate: ''
-    }))
+    records: commission.records
+        .filter(record => record.status.id !== 4)
+        .map(rec => ({
+          id: rec.id,
+          accepted: '',
+          startDate: ''
+        }))
   })
 
   const [executors, setExecutors] = useState([])
@@ -155,15 +159,21 @@ const CommissionRejectModal = props => {
       })
       return
     }
+    setValidations([])
     const decisionForm = {...decision}
-    console.log(decisionForm)
     decisionForm.executor = parseInt(decisionForm.executor)
-    decisionForm.records = decisionForm.records.map(rec => ({
-      id: rec.id,
-      decision: {id: rec.decision},
-      accepted: rec.accepted,
-      startDate: rec.startDate != null ? rec.startDate.toISOString().substr(0, 10) : null,
-    }))
+    decisionForm.records = decisionForm.records.map(rec => {
+      const startDate = rec.startDate != null ? () => {
+        const dateF = rec.startDate.toLocaleDateString().split('.')
+        return dateF[2] + '-' + dateF[1] + '-' + dateF[0];
+      } : () => null;
+      return {
+        id: rec.id,
+        decision: {id: rec.decision},
+        accepted: rec.accepted,
+        startDate: startDate(),
+      }
+    })
     CommissionAPI.decision(decisionForm)
         .then(resp => {
           if (resp.status !== 200) {
@@ -222,73 +232,76 @@ const CommissionRejectModal = props => {
         <span style={{color: "red"}}>{error.description}</span>
       </Form.Group>
 
-      {commission.records.map(record => {
-        const recordDecision = decision.records.find(rec => rec.id === record.id)
-        const minDate = new Date(record.startDate)
-        return (
-            <Card key={record.id} className='my-3'>
-              <Card.Header>
-                <Card.Title className='mb-0'>
-                  {record.ordered} x {record.jobName.toUpperCase()}
-                </Card.Title>
-              </Card.Header>
-              <Card.Body>
+      {commission.records
+          .filter(record => record.status.id !== 4)
+          .map(record => {
+            const recordDecision = decision.records.find(rec => rec.id === record.id)
+            const minDate = new Date(record.startDate)
+            return (
+                <Card key={record.id} className='my-3'>
+                  <Card.Header>
+                    <Card.Title className='mb-0'>
+                      ID {record.id}: {record.ordered} x {record.jobName.toUpperCase()}
+                    </Card.Title>
+                  </Card.Header>
+                  <Card.Body>
 
-                <Container as={Row} className='p-0 m-auto w-100' style={{fontSize: '0.8em'}}>
-                  <DetailsRow name='Start' value={record.startDate}/>
-                  <DetailsRow name='Koniec' value={record.endDate}/>
-                  <DetailsRow name='Pensja minimalna' value={record.wageRateMin + 'zł'}/>
-                  <DetailsRow name='Forma rozliczenia' value={record.settlementType.desc}/>
-                </Container>
+                    <Container as={Row} className='p-0 m-auto w-100' style={{fontSize: '0.8em'}}>
+                      <DetailsRow name='Start' value={record.startDate}/>
+                      <DetailsRow name='Koniec' value={record.endDate}/>
+                      <DetailsRow name='Pensja minimalna' value={record.wageRateMin + 'zł'}/>
+                      <DetailsRow name='Forma rozliczenia' value={record.settlementType.desc}/>
+                    </Container>
 
-                <Container className='p-0 mx-auto mt-3 w-100' style={{fontSize: '0.8em'}}>
+                    <Container className='p-0 mx-auto mt-3 w-100' style={{fontSize: '0.8em'}}>
 
-                  <Form.Group controlId={"formDecision" + record.id}>
-                    <Form.Label>Decyzja:</Form.Label>
-                    <Form.Control
-                        as="select"
-                        value={recordDecision.decision}
-                        onChange={e => setRecordDecision(recordDecision.id, parseInt(e.target.value))}
-                    >
-                      <option value={0}>Akceptacja</option>
-                      <option value={1}>Zatrzeżenie</option>
-                      <option value={2}>Odrzucenie</option>
-                    </Form.Control>
-                  </Form.Group>
+                      <Form.Group controlId={"formDecision" + record.id}>
+                        <Form.Label>Decyzja:</Form.Label>
+                        <Form.Control
+                            as="select"
+                            value={recordDecision.decision}
+                            onChange={e => setRecordDecision(recordDecision.id, parseInt(e.target.value))}
+                        >
+                          <option value={0}>Akceptacja</option>
+                          <option value={1}>Zatrzeżenie</option>
+                          <option value={2}>Odrzucenie</option>
+                        </Form.Control>
+                      </Form.Group>
 
-                  {recordDecision.decision === 1 && <Form.Row>
-                    <Form.Group as={Col} md={6} lg={4} controlId="formAccepted">
-                      <Form.Label>Ilość:</Form.Label>
-                      <Form.Control
-                          type='number'
-                          placeholder="Ilość"
-                          value={recordDecision.accepted}
-                          onChange={e => setRecordAccepted(recordDecision.id, e.target.value)}
-                          min={1}
-                          max={record.ordered}
-                      />
-                      <span style={{color: "red"}}>{error.records.find(rec => record.id === rec.id).accepted}</span>
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formStartDate">
-                      <Form.Label>Data rozpoczęcia:</Form.Label><br/>
-                      <Form.Control
-                          placeholder="Data rozpoczęcia"
-                          as={DatePicker}
-                          selected={recordDecision.startDate}
-                          onChange={date => setRecordStartDate(recordDecision.id, date)}
-                          minDate={minDate}
-                          dateFormat='yyyy-MM-dd'
-                      />
-                      <span style={{color: "red"}}>{error.records.find(rec => record.id === rec.id).startDate}</span>
-                    </Form.Group>
-                  </Form.Row>}
+                      {recordDecision.decision === 1 && <Form.Row>
+                        <Form.Group as={Col} md={6} lg={4} controlId="formAccepted">
+                          <Form.Label>Ilość:</Form.Label>
+                          <Form.Control
+                              type='number'
+                              placeholder="Ilość"
+                              value={recordDecision.accepted}
+                              onChange={e => setRecordAccepted(recordDecision.id, e.target.value)}
+                              min={1}
+                              max={record.ordered}
+                          />
+                          <span style={{color: "red"}}>{error.records.find(rec => record.id === rec.id).accepted}</span>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formStartDate">
+                          <Form.Label>Data rozpoczęcia:</Form.Label><br/>
+                          <Form.Control
+                              placeholder="Data rozpoczęcia"
+                              as={DatePicker}
+                              selected={recordDecision.startDate}
+                              onChange={date => setRecordStartDate(recordDecision.id, date)}
+                              minDate={minDate}
+                              dateFormat='yyyy-MM-dd'
+                          />
+                          <span
+                              style={{color: "red"}}>{error.records.find(rec => record.id === rec.id).startDate}</span>
+                        </Form.Group>
+                      </Form.Row>}
 
-                </Container>
+                    </Container>
 
-              </Card.Body>
-            </Card>
-        )
-      })}
+                  </Card.Body>
+                </Card>
+            )
+          })}
 
       <ValidationErrors
           validations={validations}

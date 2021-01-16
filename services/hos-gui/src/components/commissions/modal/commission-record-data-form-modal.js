@@ -1,15 +1,17 @@
 import React from "react";
-import {Modal} from "react-bootstrap";
+import {Card, Modal} from "react-bootstrap";
 import CommissionRecordDataForm from "../form/commission-record-data-form";
+import DecisionRecordCard from "../details/decision-record-card";
 
 const CommissionRecordDataFormModal = props => {
   const showModal = props.show
   const handleCloseModal = () => props.setShow(false)
-  const record = props.record != null ? props.record[1] : null
+  const recordForm = props.recordForm != null ? props.recordForm[1] : null
+  const decision = props.decision
   const saveRecord = (newRecord) => {
-    record == null ?
+    recordForm == null ?
         props.handleSaveRecord(newRecord) :
-        props.handleSaveRecord(props.record[0], newRecord)
+        props.handleSaveRecord(props.recordForm[0], newRecord)
     handleCloseModal()
   }
 
@@ -23,14 +25,18 @@ const CommissionRecordDataFormModal = props => {
   >
     <Modal.Header closeButton>
       <Modal.Title>
-        {props.record != null ? ("Edycja rekordu " + props.record[1].id) : "Nowy rekord"}
+        {recordForm != null ? ("Edycja rekordu " + recordForm.id) : "Nowy rekord"}
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
+      <DecisionRecordCard
+          record={decision}
+      />
       <CommissionRecordDataForm
           isAdmin={props.isAdmin}
-          commission={props.commission}
-          record={record}
+          commissionId={props.commissionId}
+          record={recordForm}
+          decision={decision}
           saveRecord={saveRecord}
       />
     </Modal.Body>

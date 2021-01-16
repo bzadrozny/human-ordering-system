@@ -19,11 +19,17 @@ const Toolbar = (props) => {
   )
 
   const edit = props.edit && (
-      <ToolbarIcon icon={RiEditLine} label="Edytuj" onClick={props.edit}/>
+      <ToolbarIcon
+          icon={RiEditLine}
+          label={props.editLabel || "Edytuj"}
+          onClick={props.edit}/>
   )
 
   const remove = props.remove && (
-      <ToolbarIcon icon={RiDeleteBinLine} label="Usuń" onClick={props.remove}/>
+      <ToolbarIcon
+          icon={RiDeleteBinLine}
+          label={props.removeLabel || "Usuń"}
+          onClick={props.remove}/>
   )
 
   const sent = props.send && (
@@ -43,7 +49,10 @@ const Toolbar = (props) => {
   )
 
   const cancel = props.cancel && (
-      <ToolbarIcon icon={RiCloseFill} label={props.cancelLabel || "Anuluj"} onClick={props.cancel}/>
+      <ToolbarIcon
+          icon={RiCloseFill}
+          label={props.cancelLabel || "Anuluj"}
+          onClick={props.cancel}/>
   )
 
   const back = props.back && (

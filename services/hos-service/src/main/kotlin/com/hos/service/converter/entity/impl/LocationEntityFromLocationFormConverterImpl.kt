@@ -6,7 +6,6 @@ import com.hos.service.model.entity.AddressEntity
 import com.hos.service.model.entity.LocationEntity
 import com.hos.service.model.entity.OrganisationEntity
 import com.hos.service.model.form.AddressForm
-import com.hos.service.model.form.DepartmentForm
 import com.hos.service.model.form.LocationForm
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component

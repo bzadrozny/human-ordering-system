@@ -10,6 +10,7 @@ import CommissionAcceptModal from "../modal/commission-accept-modal";
 import UserContext from "../../../context/user-context";
 import CommissionRejectModal from "../modal/commission-reject-modal";
 import CommissionCancelModal from "../modal/commission-cancel-modal";
+import DecisionCard from "./decision-card";
 
 const CommissionsDetails = (props) => {
   const {id} = props.match.params;
@@ -23,14 +24,14 @@ const CommissionsDetails = (props) => {
   const user = useContext(UserContext)
 
   const editable = commission
-      && commission.status.id in [0, 1]
-      && user
-      && (user.authorities.some(auth => auth.id === 0) || user.id === commission.principal.id)
-  const removable = commission && commission.status.id in [0, 1]
+      && [-1, 0, 1].some(id => id === commission.status.id)
+      && user && (user.authorities.some(auth => auth.id === 0) || user.id === commission.principal.id)
   const sendable = commission
       && user && user.authorities.some(auth => auth.id === 4)
       && (commission.status.id === 0 || (
-          commission.status.id === 1 && !commission.records.some(record => record.status.id === 3)
+          commission.status.id === 1
+          && !commission.records.some(record => record.status.id === 3)
+          && commission.records.some(record => record.status.id in [0, 1, 2])
       ))
   const decision = commission
       && user && user.authorities.some(auth => auth.id in [0, 1, 2])
@@ -52,19 +53,23 @@ const CommissionsDetails = (props) => {
       <>
         <Toolbar
             edit={editable ? () => props.history.push(props.location.pathname + '/edit') : null}
-            remove={removable ? () => setShowDeleteModal(true) : null}
+            editLabel={editable && [-1, 1].some(id => id === commission.status.id) && 'Popraw'}
+            remove={editable ? () => setShowDeleteModal(true) : null}
+            removeLabel={editable && [-1, 1].some(id => id === commission.status.id) && 'Odrzuć'}
             send={sendable ? () => setShowSendModal(true) : null}
             accept={decision ? () => setShowAcceptModal(true) : null}
             reject={decision ? () => setShowRejectModal(true) : null}
-            cancel={decision ? () => setShowCancelModal(true) : null} cancelLabel={'Odrzuć'}
+            cancel={decision ? () => setShowCancelModal(true) : null}
+            cancelLabel={'Odrzuć'}
             complete={completable ? () => console.log('zakończenie') : null}
             back={() => props.history.goBack()}
         />
 
-        {removable && <CommissionDeleteModal
+        {editable && <CommissionDeleteModal
             commission={id}
             show={showDeleteModal}
             setShow={setShowDeleteModal}
+            commissionStatus={commission.status.id}
             handleRemoveCommission={
               () => CommissionAPI.delete(id).then(props.history.push({
                 pathname: '/board/commission',
@@ -135,22 +140,6 @@ const DetailsCard = props => {
       <DetailsRow name='Opis' value={commission.description}/>
     </Container>
   </ListGroup.Item>
-}
-
-const DecisionCard = props => {
-  const commission = props.commission
-  if (commission.status.id === 0 || commission.decisionDate == null) {
-    return <></>
-  }
-  return <ListGroup.Item>
-    <Card.Title className='mb-1'>Decyzja</Card.Title>
-    <Container as={Row} className='p-0 m-auto w-100'>
-      <DetailsRow name='Data decyzji' value={commission.decisionDate}/>
-      <DetailsRow name='Data realizacji' value={commission.realisationDate}/>
-      <DetailsRow name='Opiekun' value={commission.executor.email}/>
-      <DetailsRow name='Uwagi' value={commission.decisionDescription}/>
-    </Container>
-  </ListGroup.Item>;
 }
 
 export default CommissionsDetails

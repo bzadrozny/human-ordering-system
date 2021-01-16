@@ -95,15 +95,21 @@ class CommissionFormValidatorImpl(
                     ValidationStatus.BLOCKER
                 )
             }
-        } else if (entity.status !in listOf(CommissionStatus.CREATED, CommissionStatus.MODIFIED)) {
+        } else if (entity.status !in listOf(
+                CommissionStatus.CREATED,
+                CommissionStatus.MODIFIED,
+                CommissionStatus.REJECTED
+            )
+        ) {
             validation.addValidation(
-                "Brak możliwości edycji procesowanego lub zakończonego zamówienia",
+                "Brak możliwości edycji procesowanego lub zamkniętego zamówienia",
                 "status",
                 ValidationStatus.BLOCKER
             )
         }
 
         val availableStatuses = mutableListOf(entity.status)
+        if (entity.status == CommissionStatus.REJECTED) availableStatuses.add(CommissionStatus.MODIFIED)
         validation.addValidation(
             validateRequiredFieldFromCollection(
                 form.status,

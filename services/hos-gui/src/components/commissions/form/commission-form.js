@@ -1,17 +1,18 @@
 import React, {Component, useState} from 'react'
 import Toolbar from "../../board/board-toolbar";
-import {Accordion, Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Accordion, Button, Card, Col, Container, Modal, Row} from "react-bootstrap";
 import UserContext from "../../../context/user-context";
 import {OrganisationAPI, CommissionAPI} from "../../../api/hos-service-api";
 import AuthService from "../../../services/authentication/auth-service";
 import CommissionDataForm from "./commission-data-form";
-import DetailsRow from "../../common/details-row";
 import ShowHideToggle from "../../common/show-hide-toggle";
 import {RiAddLine, RiDeleteBinLine, RiEditLine} from "react-icons/ri";
 import OverlayTriggerIcon from "../../common/overlay-trigger-icon";
 import CommissionRecordDeleteModal from "../modal/commission-record-delete-modal";
 import CommissionRecordDataFormModal from "../modal/commission-record-data-form-modal";
 import ValidationErrors from "../../common/validation-errors";
+import DecisionRecordCard from "../details/decision-record-card";
+import DetailsRecordCard from "../details/commission-record-details";
 
 class CommissionForm extends Component {
   static contextType = UserContext
@@ -31,7 +32,8 @@ class CommissionForm extends Component {
       organisations: [],
       locations: [],
       processing: false,
-      validations: []
+      validations: [],
+      commission: null
     }
   }
 
@@ -78,7 +80,8 @@ class CommissionForm extends Component {
             },
             organisations: organisations,
             locations: locations,
-            user
+            user,
+            commission: commission
           }))
     }
   }
@@ -143,6 +146,7 @@ class CommissionForm extends Component {
 
   handleAddRecord = record => {
     const form = this.state.form
+    record.status = {id: 0, desc: 'Nowe'}
     this.setState({
       form: {
         ...form,
@@ -153,21 +157,35 @@ class CommissionForm extends Component {
 
   handleRemoveRecord = idx => {
     const form = this.state.form
+    const record = form.records[idx]
     const records = [...form.records]
-    records.splice(idx, 1)
+    if (form.status && form.status.id !== 0 && record.status && record.status.id !== 0) {
+      record.status = {id: 4, desc: 'Anulowano'}
+      records[idx] = record
+    } else {
+      records.splice(idx, 1)
+    }
     this.setState({
-      form: {...form, records}
+      form: {
+        ...form,
+        records: records
+      }
     })
   }
 
   handleEditRecord = (idx, record) => {
     const form = this.state.form
     const records = form.records
+    if (form.status && form.status.id !== 0 && record.status && record.status.id !== 0) {
+      record.status = {id: 2, desc: 'Zmodyfikowano'}
+    } else {
+      record.status = {id: 0, desc: 'Nowe'}
+    }
     records[idx] = record
     this.setState({
       form: {
         ...form,
-        records: [...form.records]
+        records: records
       }
     })
   }
@@ -189,17 +207,23 @@ class CommissionForm extends Component {
       return
     }
 
+    const status = form.status ?
+        (form.status.id === -1 ?
+            {id: 1} :
+            form.status) :
+        {id: 0}
     const preparedForm = {
       ...form,
-      status: form.status ? form.status : {id: 0},
+      status: status,
       principal: form.principal.id,
       records: form.records.map(record => ({
         ...record,
-        status: record.status ? record.status : {id: 0},
+        status: record.status,
         settlementType: record.settlementType
       }))
     }
 
+    console.log(preparedForm)
     form.id == null ?
         CommissionAPI.create(preparedForm)
             .then(response => {
@@ -250,13 +274,16 @@ class CommissionForm extends Component {
                   handleFormChangeLocation={this.handleFormChangeLocation}
 
                   description={this.state.form.description}
+
+                  commission={this.state.commission}
                   handleFormChangeDescription={this.handleFormChangeDescription}
               />
 
               <RecordsList
                   isAdmin={isAdmin}
-                  commission={this.state.form.id}
-                  records={this.state.form.records}
+                  commissionId={this.state.form.id}
+                  recordsForm={this.state.form.records}
+                  commission={this.state.commission}
                   addRecord={this.handleAddRecord}
                   editRecord={this.handleEditRecord}
                   removeRecord={this.handleRemoveRecord}
@@ -298,6 +325,7 @@ const RecordsList = props => {
     setShowRecordEditForm(true)
   }
 
+  const decision = recordToEdit && props.commission && props.commission.records.find(rec => rec.id === recordToEdit[1].id)
   return <>
 
     <CommissionRecordDeleteModal
@@ -309,18 +337,18 @@ const RecordsList = props => {
         show={showRecordAddForm}
         setShow={setShowRecordAddForm}
         isAdmin={props.isAdmin}
-        commission={props.commission}
-        record={null}
-        setRecord={null}
+        commissionId={props.commissionId}
+        recordForm={null}
+        decision={null}
         handleSaveRecord={props.addRecord}
     />
     <CommissionRecordDataFormModal
         show={showRecordEditForm}
         setShow={setShowRecordEditForm}
         isAdmin={props.isAdmin}
-        commission={props.commission}
-        record={recordToEdit}
-        setRecord={setRecordToEdit}
+        commissionId={props.commissionId}
+        recordForm={recordToEdit}
+        decision={decision}
         handleSaveRecord={props.editRecord}
     />
 
@@ -333,48 +361,43 @@ const RecordsList = props => {
             icon={<RiAddLine onClick={addRecord}/>}
         />
       </Card.Header>
-      {props.records.map((record, idx) => (
-          <Accordion key={idx}>
-            <Card>
-              <Card.Header>
-                <Card.Title className='mb-1'>
-                  Rekord {record.id || '#' + (idx + 1)}
-                </Card.Title>
-                <Row className='mt-3' style={{fontSize: '1.2em'}}>
-                  <Col xs={12} md={3} className='pt-xs-3'><b>Zamówiono:</b> {record.ordered}</Col>
-                  <Col xs={12} md={6} className='pt-xs-3'><b>Stanowisko:</b> {record.jobName}</Col>
-                  <Col sm={12} md={3} className='pt-xs-4'>
-                    <OverlayTriggerIcon
-                        overlay='Usuń'
-                        icon={<RiDeleteBinLine onClick={() => deleteRecord(idx, record)}/>}
-                    />
-                    <OverlayTriggerIcon
-                        overlay='Edytuj'
-                        icon={<RiEditLine onClick={() => editRecord(idx, record)}/>}
-                    />
-                    <ShowHideToggle eventKey={idx + 1}/>
-                  </Col>
-                </Row>
-              </Card.Header>
-              <Accordion.Collapse eventKey={idx + 1}>
-                <Card.Body>
-                  <Container as={Row} className='p-0 m-auto w-100'>
-                    <DetailsRow name='Pensja minimalna' value={record.wageRateMin}/>
-                    <DetailsRow name='Pensja maksymalna' value={record.wageRateMax}/>
-                    <DetailsRow
-                        name='Data rozpoczęcia'
-                        value={record.startDate}/>
-                    <DetailsRow
-                        name='Data zakończenia'
-                        value={record.endDate}/>
-                    <DetailsRow name='Rozliczenie' value={record.settlementType.desc}/>
-                    <DetailsRow name='Uwagi' value={record.description}/>
-                  </Container>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-      ))}
+      {props.recordsForm.map((recordForm, idx) => {
+        return <Accordion key={idx}>
+          <Card>
+            <Card.Header>
+              <Card.Title className='mb-1'>
+                Rekord {recordForm.id || '#' + (idx + 1)}
+              </Card.Title>
+              <Row className='mt-3' style={{fontSize: '1.2em'}}>
+                <Col xs={12} md={3} className='pt-xs-3'><b>Status:</b> {recordForm.status.desc}</Col>
+                <Col xs={12} md={3} className='pt-xs-3'><b>Zamówiono:</b> {recordForm.ordered}</Col>
+                <Col xs={12} md={3} className='pt-xs-3'><b>Stanowisko:</b> {recordForm.jobName}</Col>
+                {recordForm.status.id !== 4 && <Col sm={12} md={3} className='pt-xs-4'>
+                  <OverlayTriggerIcon
+                      overlay='Usuń'
+                      icon={<RiDeleteBinLine onClick={() => deleteRecord(idx, recordForm)}/>}
+                  />
+                  <OverlayTriggerIcon
+                      overlay='Edytuj'
+                      icon={<RiEditLine onClick={() => editRecord(idx, recordForm)}/>}
+                  />
+                  <ShowHideToggle eventKey={idx + 1}/>
+                </Col>}
+              </Row>
+            </Card.Header>
+            <Accordion.Collapse eventKey={idx + 1}>
+              <Card.Body>
+                <DecisionRecordCard
+                    record={props.commission && props.commission.records.find(rec => rec.id === recordForm.id)}
+                />
+                <DetailsRecordCard
+                    record={recordForm}
+                />
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+      })}
     </Card>
   </>;
 }

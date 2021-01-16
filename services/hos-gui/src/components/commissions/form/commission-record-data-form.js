@@ -8,6 +8,7 @@ const CommissionRecordDataForm = (props) => {
   minStartDate.setDate(minStartDate.getDate() + 7)
   const isAdmin = props.isAdmin
   const record = props.record
+  const decision = props.decision
 
   const [jobName, setJobName] = useState((record && record.jobName) || '')
   const [ordered, setOrdered] = useState((record && record.ordered) || undefined)
@@ -87,16 +88,22 @@ const CommissionRecordDataForm = (props) => {
     setStartDate(minStartDate)
     setEndDate(undefined)
     setDescription('')
+
+    let startDate_ = startDate != null ? startDate.toLocaleDateString().split('.') : null
+    startDate_ =  startDate != null ? startDate_[2] + '-' + startDate_[1] + '-' + startDate_[0] : undefined
+    let endDate_ = endDate != null ? endDate.toLocaleDateString().split('.') : null
+    endDate_ =  endDate != null ? endDate_[2] + '-' + endDate_[1] + '-' + endDate_[0] : undefined
+
     if (record !== null) {
       props.saveRecord({
         ...record,
-        commission: props.commission,
+        commission: props.commissionId,
         jobName,
         ordered,
         wageRateMin: wageRateMin === '' ? null : wageRateMin,
         wageRateMax: wageRateMax === '' ? null : wageRateMax,
-        startDate: startDate != null ? startDate.toISOString().substr(0, 10) : undefined,
-        endDate: endDate != null ? endDate.toISOString().substr(0, 10) : undefined,
+        startDate: startDate_,
+        endDate: endDate_,
         settlementType: {
           id: settlementType,
           desc: settlementType === 0 ? 'per godzina' : settlementType === 1 ? 'per miesiąc' : 'per zlecenie'
@@ -105,13 +112,13 @@ const CommissionRecordDataForm = (props) => {
       })
     } else {
       props.saveRecord({
-        commission: props.commission,
+        commission: props.commissionId,
         jobName,
         ordered,
         wageRateMin: wageRateMin === '' ? null : wageRateMin,
         wageRateMax: wageRateMax === '' ? null : wageRateMax,
-        startDate: startDate != null ? startDate.toISOString().substr(0, 10) : undefined,
-        endDate: endDate != null ? endDate.toISOString().substr(0, 10) : undefined,
+        startDate: startDate_,
+        endDate: endDate_,
         settlementType: {
           id: settlementType,
           desc: settlementType === 0 ? 'per godzina' : settlementType === 1 ? 'per miesiąc' : 'per zlecenie'

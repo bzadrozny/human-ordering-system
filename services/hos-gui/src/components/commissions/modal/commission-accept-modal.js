@@ -79,7 +79,8 @@ const CommissionAcceptModal = props => {
     if (validations.length) return
 
     const decisionForm = {...decision}
-    decisionForm.realisationDate = decisionForm.realisationDate.toISOString().substr(0, 10)
+    let realisationDate_ = decisionForm.realisationDate.split('.')
+    decisionForm.realisationDate = realisationDate_[2] + '-' + realisationDate_[1] + '-' + realisationDate_[0]
     CommissionAPI.decision(decisionForm)
         .then(resp => {
           if (resp.status !== 200) {
@@ -151,23 +152,25 @@ const CommissionAcceptModal = props => {
         <span style={{color: "red"}}>{error.description}</span>
       </Form.Group>
 
-      {commission.records.map(record => (
-          <Card key={record.id} className='my-3'>
-            <Card.Header>
-              <Card.Title className='mb-0'>
-                {record.ordered} x {record.jobName.toUpperCase()}
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <Container as={Row} className='p-0 m-auto w-100' style={{fontSize: '0.8em'}}>
-                <DetailsRow name='Start' value={record.startDate}/>
-                <DetailsRow name='Koniec' value={record.endDate}/>
-                <DetailsRow name='Pensja minimalna' value={record.wageRateMin + 'zł'}/>
-                <DetailsRow name='Forma rozliczenia' value={record.settlementType.desc}/>
-              </Container>
-            </Card.Body>
-          </Card>
-      ))}
+      {commission.records
+          .filter(record => record.status.id !== 4)
+          .map(record => (
+              <Card key={record.id} className='my-3'>
+                <Card.Header>
+                  <Card.Title className='mb-0'>
+                    {record.ordered} x {record.jobName.toUpperCase()}
+                  </Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <Container as={Row} className='p-0 m-auto w-100' style={{fontSize: '0.8em'}}>
+                    <DetailsRow name='Start' value={record.startDate}/>
+                    <DetailsRow name='Koniec' value={record.endDate}/>
+                    <DetailsRow name='Pensja minimalna' value={record.wageRateMin + 'zł'}/>
+                    <DetailsRow name='Forma rozliczenia' value={record.settlementType.desc}/>
+                  </Container>
+                </Card.Body>
+              </Card>
+          ))}
 
       <ValidationErrors
           validations={validations}

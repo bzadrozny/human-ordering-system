@@ -2,10 +2,8 @@ package com.hos.service.model.entity
 
 import com.hos.service.converter.jpa.impl.CommissionRecordStatusEnumConverterImpl
 import com.hos.service.converter.jpa.impl.CommissionStatusEnumConverterImpl
-import com.hos.service.converter.jpa.impl.EntityStatusEnumConverterImpl
 import com.hos.service.converter.jpa.impl.SettlementTypeEnumConverterImpl
 import com.hos.service.model.enum.*
-import lombok.Data
 import java.io.Serializable
 import java.time.LocalDate
 import javax.persistence.*

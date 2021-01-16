@@ -21,7 +21,7 @@ export default class CommissionsFilter extends Component {
 
   componentDidMount = async () => {
     const user = this.context || await AuthService.me()
-    const isClient = user.authorities.some(auth => auth.id === 4)
+    const isClient = user && user.authorities.some(auth => auth.id === 4)
     if (isClient) {
       this.setState({
         organisation: user.organisation.id,

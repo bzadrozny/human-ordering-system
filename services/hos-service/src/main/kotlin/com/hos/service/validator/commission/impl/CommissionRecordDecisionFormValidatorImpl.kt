@@ -83,7 +83,7 @@ class CommissionRecordDecisionFormValidatorImpl : FormValidator<CommissionRecord
             return validation
         }
 
-        if (record.status !in listOf(CommissionRecordStatus.CREATED, CommissionRecordStatus.MODIFIED)) {
+        if (record.status !in listOf(CommissionRecordStatus.CREATED, CommissionRecordStatus.ACCEPTED, CommissionRecordStatus.MODIFIED)) {
             validation.addValidation(
                 "Brak możliwości wystawienia decyzji dla zablokowanego rekordu o id: '${record.id}'",
                 "records.id",

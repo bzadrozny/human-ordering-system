@@ -1,13 +1,18 @@
 import React from "react";
 import {Card, Col, Form} from "react-bootstrap";
+import DecisionCard from "../details/decision-card";
 
 const CommissionDataForm = (props) => {
   return <Card className='commission-new-card'>
     <Card.Header className='card-header-custom'>
       <b>{props.commissionId ? 'Edycja zlecenia: ' + props.commissionId : 'Nowe zlecenie'}</b>
     </Card.Header>
-    <br/>
-    <Form.Group controlId="formPrincipal">
+
+    <DecisionCard
+        commission={props.commission}
+    />
+
+    <Form.Group controlId="formPrincipal" className='mt-3'>
       <Form.Label>Zamawiający</Form.Label>
       <Form.Control
           value={(props.principal && props.principal.email) || (props.user && props.user.email)}
