@@ -19,7 +19,7 @@ class ContractEntityFromContractFormConverterImpl(
                 code = source1.code!!,
                 contractDate = source1.contractDate!!,
                 startDate = source1.startDate!!,
-                endDate = source1.endDate!!,
+                endDate = source1.endDate,
                 salary = source1.salary!!,
                 contractType = source1.contractType!!,
                 description = source1.description,

@@ -43,7 +43,7 @@ class ContractController(private val contractService: ContractService) {
         body.id = contractId
         body.commission = commissionId
         body.commissionRecord = recordId
-        return contractService.registerContract(body)
+        return contractService.modifyContract(body)
     }
 
 }

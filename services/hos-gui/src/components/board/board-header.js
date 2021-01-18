@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {Nav, Navbar, Dropdown, NavDropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Nav, Navbar, Dropdown, NavDropdown, OverlayTrigger, Tooltip, Container} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {RiBriefcaseLine, RiBarChartFill, RiGovernmentLine, RiUserSettingsLine} from "react-icons/ri"
 import logo from "../../resources/hos-200x75.png";
@@ -28,12 +28,22 @@ let Header = () => {
             <NavLinkIcon link='setting' label='Ustawienia' icon={<RiUserSettingsLine size={21}/>}/>
             <NavDropdown
                 id='basic-nav-dropdown'
-                className='mr-lg-5 col-md-5'
+                className='mr-lg-6 col-md-6'
                 title={user ? user.email : 'email'}
             >
-              <Dropdown.Item onClick={AuthService.logout} className='text-center'>
+              <Container><b>ID:</b> {user && user.id}</Container>
+              <NavDropdown.Divider/>
+              <Container><b>Login:</b> {user && user.login}</Container>
+              <NavDropdown.Divider/>
+              <Container><b>Organizacja:</b> {user && user.organisation.name}</Container>
+              <NavDropdown.Divider/>
+              <Container><b>Uprawnienia:</b>
+                {user && user.authorities.map((auth, idx) => (idx === 0 ? '' : ', ') + auth.desc)}
+              </Container>
+              <NavDropdown.Divider/>
+              <NavDropdown.Item onClick={AuthService.logout} className='text-center'>
                 Wyloguj
-              </Dropdown.Item>
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

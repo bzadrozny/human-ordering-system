@@ -7,6 +7,7 @@ const OverlayTriggerIcon = props => {
   const overlay = props.overlay
   const icon = props.icon
   const theme = props.theme || 'commission-icon'
+  const fontSize = props.fontSize
   return (
       <OverlayTrigger
           placement={placement}
@@ -14,7 +15,7 @@ const OverlayTriggerIcon = props => {
             <Tooltip id="button-tooltip">{overlay}</Tooltip>
           }
       >
-        <div className={theme}>
+        <div className={theme} style={{fontSize}}>
           {icon}
         </div>
       </OverlayTrigger>

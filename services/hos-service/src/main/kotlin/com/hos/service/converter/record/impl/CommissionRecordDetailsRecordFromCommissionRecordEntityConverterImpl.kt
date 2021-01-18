@@ -6,11 +6,12 @@ import com.hos.service.model.entity.CommissionRecordEntity
 import com.hos.service.model.entity.ContractEntity
 import com.hos.service.model.record.CommissionRecordDetailsRecord
 import com.hos.service.model.record.ContractBasicRecord
+import com.hos.service.model.record.ContractDetailsRecord
 import org.springframework.stereotype.Component
 
 @Component
 class CommissionRecordDetailsRecordFromCommissionRecordEntityConverterImpl(
-        private val contractConverter: Converter<ContractEntity, ContractBasicRecord>
+        private val contractConverter: Converter<ContractEntity, ContractDetailsRecord>
 ) : RecordConverter<CommissionRecordEntity, CommissionRecordDetailsRecord>() {
 
     override fun create(source: CommissionRecordEntity): CommissionRecordDetailsRecord {

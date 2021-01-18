@@ -48,3 +48,23 @@
     margin-left: 10px;
     vertical-align: top;
 }
+
+.commission-icon-table {
+    float: right;
+    align-items: start;
+    font-size: 21px;
+    color: #6c757d
+}
+
+.commission-icon-table:hover {
+    color: #238A91;
+}
+
+.commission-icon-table svg {
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+.danger-on-hover:hover {
+    color: #dc3545;
+}

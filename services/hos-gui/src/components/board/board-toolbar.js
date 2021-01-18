@@ -8,7 +8,7 @@ import {
   RiCloseFill,
   RiArrowGoBackLine,
   RiDeleteBinLine,
-  RiLockLine,
+  RiLockLine, RiLockPasswordLine,
 } from "react-icons/ri";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
@@ -59,6 +59,10 @@ const Toolbar = (props) => {
       <ToolbarIcon icon={RiArrowGoBackLine} label="Wróć" onClick={props.back} ToolbarIcon/>
   )
 
+  const changePass = props.changePass && (
+      <ToolbarIcon icon={RiLockPasswordLine} label="Zmiań hasło" onClick={props.changePass} ToolbarIcon/>
+  )
+
   return (
       <div className='toolbar mx-auto align-content-center'>
         {create}
@@ -70,6 +74,8 @@ const Toolbar = (props) => {
         {complete}
         {cancel}
         {back}
+
+        {changePass}
       </div>
   )
 }

@@ -18,7 +18,7 @@ class ContractEntity(
         var code: String,
         var contractDate: LocalDate,
         var startDate: LocalDate,
-        var endDate: LocalDate,
+        var endDate: LocalDate?,
         var salary: Float,
         @Convert(converter = ContractTypeEnumConverterImpl::class)
         var contractType: ContractType,

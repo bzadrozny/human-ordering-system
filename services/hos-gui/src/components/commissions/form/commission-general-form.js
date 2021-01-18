@@ -1,14 +1,14 @@
 import React from "react";
 import {Card, Col, Form} from "react-bootstrap";
-import DecisionCard from "../details/decision-card";
+import CommissionDecisionDetails from "../details/commission-decision-details";
 
-const CommissionDataForm = (props) => {
+const CommissionGeneralForm = (props) => {
   return <Card className='commission-new-card'>
     <Card.Header className='card-header-custom'>
       <b>{props.commissionId ? 'Edycja zlecenia: ' + props.commissionId : 'Nowe zlecenie'}</b>
     </Card.Header>
 
-    <DecisionCard
+    <CommissionDecisionDetails
         commission={props.commission}
     />
 
@@ -61,4 +61,4 @@ const CommissionDataForm = (props) => {
   </Card>
 }
 
-export default CommissionDataForm
+export default CommissionGeneralForm

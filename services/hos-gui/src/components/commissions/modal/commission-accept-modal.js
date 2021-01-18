@@ -4,6 +4,7 @@ import {CommissionAPI, UserAPI} from "../../../api/hos-service-api";
 import DatePicker from "react-datepicker";
 import DetailsRow from "../../common/details-row";
 import ValidationErrors from "../../common/validation-errors";
+import {dateToString} from "../../../services/utils/common-utils";
 
 const CommissionAcceptModal = props => {
   const show = props.show
@@ -53,7 +54,7 @@ const CommissionAcceptModal = props => {
   }
 
   const setDescription = event => {
-    const value = event.target.value
+    const value = event.target.value || undefined
     if (value != null && value !== '' && (value.length < 5 || value.length > 250)) setError({
       description: "Pole musi mieć od 5 do 250 znaków"
     })
@@ -79,8 +80,7 @@ const CommissionAcceptModal = props => {
     if (validations.length) return
 
     const decisionForm = {...decision}
-    let realisationDate_ = decisionForm.realisationDate.split('.')
-    decisionForm.realisationDate = realisationDate_[2] + '-' + realisationDate_[1] + '-' + realisationDate_[0]
+    decisionForm.realisationDate = dateToString(decisionForm.realisationDate)
     CommissionAPI.decision(decisionForm)
         .then(resp => {
           if (resp.status !== 200) {

@@ -9,9 +9,9 @@ import com.hos.service.model.exception.ResourceNotFoundException
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 enum class SettlementType(val id: Int, val desc: String) {
 
-    PER_HOUR(0, "/godz."),
-    PER_MONTH(1, "/msc."),
-    PER_JOB(2, "/contract");
+    PER_HOUR(0, "per godzina"),
+    PER_MONTH(1, "per miesiąc"),
+    PER_JOB(2, "per zlecenie");
 
     companion object {
         @JvmStatic

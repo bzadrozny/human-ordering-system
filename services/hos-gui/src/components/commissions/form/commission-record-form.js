@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import {Button, Card, Col, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {dateToString} from "../../../services/utils/common-utils";
 
-const CommissionRecordDataForm = (props) => {
+const CommissionRecordForm = (props) => {
   let minStartDate = new Date()
   minStartDate.setDate(minStartDate.getDate() + 7)
   const isAdmin = props.isAdmin
   const record = props.record
-  const decision = props.decision
 
   const [jobName, setJobName] = useState((record && record.jobName) || '')
   const [ordered, setOrdered] = useState((record && record.ordered) || undefined)
@@ -72,7 +72,7 @@ const CommissionRecordDataForm = (props) => {
   }
 
   const handleSaveRecord = () => {
-    let hasError = validateField([
+    const hasError = validateField([
       {field: 'jobName', value: jobName},
       {field: 'ordered', value: ordered},
       {field: 'wageRateMin', value: wageRateMin},
@@ -89,11 +89,6 @@ const CommissionRecordDataForm = (props) => {
     setEndDate(undefined)
     setDescription('')
 
-    let startDate_ = startDate != null ? startDate.toLocaleDateString().split('.') : null
-    startDate_ =  startDate != null ? startDate_[2] + '-' + startDate_[1] + '-' + startDate_[0] : undefined
-    let endDate_ = endDate != null ? endDate.toLocaleDateString().split('.') : null
-    endDate_ =  endDate != null ? endDate_[2] + '-' + endDate_[1] + '-' + endDate_[0] : undefined
-
     if (record !== null) {
       props.saveRecord({
         ...record,
@@ -102,8 +97,8 @@ const CommissionRecordDataForm = (props) => {
         ordered,
         wageRateMin: wageRateMin === '' ? null : wageRateMin,
         wageRateMax: wageRateMax === '' ? null : wageRateMax,
-        startDate: startDate_,
-        endDate: endDate_,
+        startDate: dateToString(startDate),
+        endDate: dateToString(endDate),
         settlementType: {
           id: settlementType,
           desc: settlementType === 0 ? 'per godzina' : settlementType === 1 ? 'per miesiąc' : 'per zlecenie'
@@ -117,8 +112,8 @@ const CommissionRecordDataForm = (props) => {
         ordered,
         wageRateMin: wageRateMin === '' ? null : wageRateMin,
         wageRateMax: wageRateMax === '' ? null : wageRateMax,
-        startDate: startDate_,
-        endDate: endDate_,
+        startDate: dateToString(startDate),
+        endDate: dateToString(endDate),
         settlementType: {
           id: settlementType,
           desc: settlementType === 0 ? 'per godzina' : settlementType === 1 ? 'per miesiąc' : 'per zlecenie'
@@ -166,34 +161,44 @@ const CommissionRecordDataForm = (props) => {
     <Form.Row>
       <Form.Group as={Col} controlId="formWageRateMin">
         <Form.Label>Pensja minimalna</Form.Label>
-        <Form.Control
-            type='number'
-            placeholder="Pensja minimalna"
-            value={wageRateMin}
-            onChange={e => {
-              const value = e.target.value
-              validateField([{field: 'wageRateMin', value}])
-              setWageRateMin(value)
-            }}
-            min={1}
-            required
-        />
+        <InputGroup>
+          <Form.Control
+              type='number'
+              placeholder="Pensja minimalna"
+              value={wageRateMin}
+              onChange={e => {
+                const value = e.target.value
+                validateField([{field: 'wageRateMin', value}])
+                setWageRateMin(value)
+              }}
+              min={1}
+              required
+          />
+          <InputGroup.Append>
+            <InputGroup.Text>zł</InputGroup.Text>
+          </InputGroup.Append>
+        </InputGroup>
         <span style={{color: "red"}}>{error.wageRateMin}</span>
       </Form.Group>
       <Form.Group as={Col} controlId="formWageRateMax">
         <Form.Label>Pensja maksymalna</Form.Label>
-        <Form.Control
-            type='number'
-            placeholder="Pensja maksymalna"
-            value={wageRateMax}
-            onChange={e => {
-              const value = e.target.value
-              validateField([{field: 'wageRateMax', value}])
-              setWageRateMax(value)
-            }}
-            min={1}
-            required
-        />
+        <InputGroup>
+          <Form.Control
+              type='number'
+              placeholder="Pensja maksymalna"
+              value={wageRateMax}
+              onChange={e => {
+                const value = e.target.value
+                validateField([{field: 'wageRateMax', value}])
+                setWageRateMax(value)
+              }}
+              min={1}
+              required
+          />
+          <InputGroup.Append>
+            <InputGroup.Text>zł</InputGroup.Text>
+          </InputGroup.Append>
+        </InputGroup>
         <span style={{color: "red"}}>{error.wageRateMax}</span>
       </Form.Group>
     </Form.Row>
@@ -261,4 +266,4 @@ const CommissionRecordDataForm = (props) => {
   </Card>
 }
 
-export default CommissionRecordDataForm
+export default CommissionRecordForm

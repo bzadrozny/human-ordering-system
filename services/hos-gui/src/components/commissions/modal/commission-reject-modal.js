@@ -4,6 +4,7 @@ import {CommissionAPI, UserAPI} from "../../../api/hos-service-api";
 import DetailsRow from "../../common/details-row";
 import DatePicker from "react-datepicker";
 import ValidationErrors from "../../common/validation-errors";
+import {dateToString} from "../../../services/utils/common-utils";
 
 const CommissionRejectModal = props => {
   const show = props.show
@@ -163,15 +164,11 @@ const CommissionRejectModal = props => {
     const decisionForm = {...decision}
     decisionForm.executor = parseInt(decisionForm.executor)
     decisionForm.records = decisionForm.records.map(rec => {
-      const startDate = rec.startDate != null ? () => {
-        const dateF = rec.startDate.toLocaleDateString().split('.')
-        return dateF[2] + '-' + dateF[1] + '-' + dateF[0];
-      } : () => null;
       return {
         id: rec.id,
         decision: {id: rec.decision},
         accepted: rec.accepted,
-        startDate: startDate(),
+        startDate: dateToString(rec.startDate),
       }
     })
     CommissionAPI.decision(decisionForm)

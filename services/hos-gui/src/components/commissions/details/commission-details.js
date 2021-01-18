@@ -3,16 +3,16 @@ import Toolbar from "../../board/board-toolbar";
 import {CommissionAPI} from '../../../api/hos-service-api'
 import {Card, ListGroup, Container, Row} from "react-bootstrap";
 import DetailsRow from "../../common/details-row";
-import CommissionRecordDetails from "./commissions-record-details";
+import CommissionRecordsDetails from "./commission-records-details";
 import CommissionDeleteModal from "../modal/commission-delete-modal";
 import CommissionSendModal from "../modal/commission-send-modal";
 import CommissionAcceptModal from "../modal/commission-accept-modal";
 import UserContext from "../../../context/user-context";
 import CommissionRejectModal from "../modal/commission-reject-modal";
 import CommissionCancelModal from "../modal/commission-cancel-modal";
-import DecisionCard from "./decision-card";
+import CommissionDecisionDetails from "./commission-decision-details";
 
-const CommissionsDetails = (props) => {
+const CommissionDetails = (props) => {
   const {id} = props.match.params;
   const [commission, setCommission] = useState(null)
   useEffect(() => {
@@ -108,27 +108,31 @@ const CommissionsDetails = (props) => {
               setCommission={(commission) => setCommission(commission)}
           />
         </>}
-
         <Container>
-          <Card className='commission-details-card'>
-            <Card.Header className='card-header-custom'><b>Zlecenie {commission.id}</b></Card.Header>
-            <ListGroup variant="flush">
-              <DetailsCard
-                  commission={commission}
-              />
-              <DecisionCard
-                  commission={commission}
-              />
-            </ListGroup>
-          </Card>
-          <CommissionRecordDetails records={commission.records} status={commission.status}/>
+          <DetailsCard
+              commission={commission}
+          />
+          <CommissionRecordsDetails
+              commission={commission}
+              setCommission={(commission) => setCommission(commission)}
+          />
         </Container>
-
       </>
   )
 }
 
 const DetailsCard = props => {
+  const commission = props.commission
+  return <Card className='commission-details-card'>
+    <Card.Header className='card-header-custom'><b>Zlecenie {commission.id}</b></Card.Header>
+    <ListGroup variant="flush">
+      <CommissionDetailsCard commission={commission}/>
+      <CommissionDecisionDetails commission={commission}/>
+    </ListGroup>
+  </Card>
+}
+
+const CommissionDetailsCard = props => {
   const commission = props.commission
   return <ListGroup.Item>
     <Card.Title className='mb-1'>Szczegóły</Card.Title>
@@ -140,6 +144,8 @@ const DetailsCard = props => {
       <DetailsRow name='Opis' value={commission.description}/>
     </Container>
   </ListGroup.Item>
+
 }
 
-export default CommissionsDetails
+
+export default CommissionDetails

@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 enum class Authority(val id: Int, val desc: String) {
 
-    ANONYMOUS(-1, "Guest"),
+    ANONYMOUS(-1, "Gość"),
     ADMIN(0, "Administrator"),
-    DIRECTOR(1, "Director"),
+    DIRECTOR(1, "Dyrektor"),
     MANAGER(2, "Manager"),
     RECRUITER(3, "Recruter"),
     CLIENT(4, "Klinet"),

@@ -50,6 +50,21 @@ class CommissionsBoard extends Component {
               commissions: commissions
             })
         )
+    // this.setState({
+    //   uploading: false,
+    //   commissions: [
+    //     {id: 1001, orderDate: '2020-11-28', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Zakończone'}},
+    //     {id: 1002, orderDate: '2020-11-30', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Realizacja'}},
+    //     {id: 1004, orderDate: '2020-12-05', organisation: 'Buffalo project', location: 'Magazyn WAR05', status: {desc: 'Zmodyfikowano'}},
+    //     {id: 1005, orderDate: '2020-12-18', organisation: 'Buffalo project', location: 'Biuro Spire HOS', status: {desc: 'Wysłano'}},
+    //     {id: 1010, orderDate: '2020-12-20', organisation: 'Buffalo project', location: 'Biuro Spire HOS', status: {desc: 'Anulowano'}},
+    //     {id: 1011, orderDate: '2021-12-20', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Anulowano'}},
+    //     {id: 1018, orderDate: '2021-01-04', organisation: 'Buffalo project', location: 'Sortownia SKR02', status: {desc: 'Wysłano'}},
+    //     {id: 1020, orderDate: '', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Utworzono'}},
+    //     {id: 1021, orderDate: '2021-01-04', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Zmodyfikowano'}},
+    //     {id: 1021, orderDate: '2021-01-08', organisation: 'Buffalo project', location: 'Magazyn KAF15', status: {desc: 'Zastrzeżono'}},
+    //   ]
+    // })
   }
 
   render() {

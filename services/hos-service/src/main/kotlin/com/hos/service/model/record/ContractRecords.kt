@@ -14,7 +14,7 @@ data class ContractDetailsRecord(
         val code: String,
         val contractDate: LocalDate,
         val startDate: LocalDate,
-        val endDate: LocalDate,
+        val endDate: LocalDate?,
         val contractType: ContractType,
         val salary: Float,
         val recruiter: UserBasicRecord,

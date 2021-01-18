@@ -1,18 +1,18 @@
 import React, {Component, useState} from 'react'
 import Toolbar from "../../board/board-toolbar";
-import {Accordion, Button, Card, Col, Container, Modal, Row} from "react-bootstrap";
+import {Accordion, Button, Card, Col, Container, Row} from "react-bootstrap";
 import UserContext from "../../../context/user-context";
 import {OrganisationAPI, CommissionAPI} from "../../../api/hos-service-api";
 import AuthService from "../../../services/authentication/auth-service";
-import CommissionDataForm from "./commission-data-form";
+import CommissionGeneralForm from "./commission-general-form";
 import ShowHideToggle from "../../common/show-hide-toggle";
 import {RiAddLine, RiDeleteBinLine, RiEditLine} from "react-icons/ri";
 import OverlayTriggerIcon from "../../common/overlay-trigger-icon";
 import CommissionRecordDeleteModal from "../modal/commission-record-delete-modal";
-import CommissionRecordDataFormModal from "../modal/commission-record-data-form-modal";
+import CommissionRecordFormModal from "../modal/commission-record-form-modal";
 import ValidationErrors from "../../common/validation-errors";
-import DecisionRecordCard from "../details/decision-record-card";
-import DetailsRecordCard from "../details/commission-record-details";
+import CommissionRecordDecisionDetails from "../details/commission-record-decision-details";
+import CommissionRecordDetails from "../details/commission-record-details";
 
 class CommissionForm extends Component {
   static contextType = UserContext
@@ -223,7 +223,6 @@ class CommissionForm extends Component {
       }))
     }
 
-    console.log(preparedForm)
     form.id == null ?
         CommissionAPI.create(preparedForm)
             .then(response => {
@@ -260,7 +259,7 @@ class CommissionForm extends Component {
           <Toolbar cancel={this.cancel}/>
           <Container>
             <div className='commission-new-form'>
-              <CommissionDataForm
+              <CommissionGeneralForm
                   commissionId={this.state.form.id}
                   user={user}
                   principal={this.state.form.principal}
@@ -333,7 +332,7 @@ const RecordsList = props => {
         setRecordToDelete={setRecordToDelete}
         handleRemoveRecord={props.removeRecord}
     />
-    <CommissionRecordDataFormModal
+    <CommissionRecordFormModal
         show={showRecordAddForm}
         setShow={setShowRecordAddForm}
         isAdmin={props.isAdmin}
@@ -342,7 +341,7 @@ const RecordsList = props => {
         decision={null}
         handleSaveRecord={props.addRecord}
     />
-    <CommissionRecordDataFormModal
+    <CommissionRecordFormModal
         show={showRecordEditForm}
         setShow={setShowRecordEditForm}
         isAdmin={props.isAdmin}
@@ -387,10 +386,10 @@ const RecordsList = props => {
             </Card.Header>
             <Accordion.Collapse eventKey={idx + 1}>
               <Card.Body>
-                <DecisionRecordCard
+                <CommissionRecordDecisionDetails
                     record={props.commission && props.commission.records.find(rec => rec.id === recordForm.id)}
                 />
-                <DetailsRecordCard
+                <CommissionRecordDetails
                     record={recordForm}
                 />
               </Card.Body>

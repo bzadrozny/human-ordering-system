@@ -43,6 +43,6 @@ data class CommissionRecordDetailsRecord(
     val wageRateMin: Float,
     val wageRateMax: Float,
     val settlementType: SettlementType,
-    val contracts: List<ContractBasicRecord> = mutableListOf(),
+    val contracts: List<ContractDetailsRecord> = mutableListOf(),
     val description: String?
 )

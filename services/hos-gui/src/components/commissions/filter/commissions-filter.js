@@ -30,13 +30,20 @@ export default class CommissionsFilter extends Component {
       OrganisationAPI.organisationById(user.organisation.id)
           .then(resp => resp.data)
           .then(organisation => organisation.locations)
-          .then(locations => this.setState({locations: locations}))
+          .then(locations => this.setState({locations: [...locations]}))
     } else {
       OrganisationAPI.allOrganisations()
           .then(resp => resp.data)
-          .then(organisations =>
-              this.setState({organisations: organisations})
-          )
+          .then(organisations => {
+            this.setState({organisations: [...organisations]})
+            return [...organisations]
+          })
+          .then(organisations => {
+            if (organisations.length === 1) OrganisationAPI.organisationById(organisations[0].id)
+                .then(resp => resp.data)
+                .then(organisation => organisation.locations)
+                .then(locations => this.setState({locations: locations}))
+          })
     }
   }
 
@@ -138,7 +145,7 @@ export default class CommissionsFilter extends Component {
                         <option value='MODIFIED'>Zmodyfikowano</option>
                         <option value='SENT'>Wysłano</option>
                         <option value='REJECTED'>Zastrzeżono</option>
-                        <option value='DELETED'>Anulowano</option>
+                        <option value='CANCELED'>Anulowano</option>
                         <option value='EXECUTION'>Realizacja</option>
                         <option value='COMPLETED'>Zakończone</option>
                       </Form.Control>

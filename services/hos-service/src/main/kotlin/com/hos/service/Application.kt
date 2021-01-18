@@ -53,13 +53,27 @@ class Application(
                     )
             )
 
-            val location = locationRepository.save(
+            val location1 = locationRepository.save(
                     LocationEntity(
-                            name = "testLocation",
+                            name = "Biuro Spire HOS",
                             organisation = organisation,
                             registeredOffice = true,
                             address = AddressEntity(
                                     city = "Warsaw",
+                                    postalCode = "00000",
+                                    street = "Werbeny",
+                                    number = "2",
+                            ),
+                            status = EntityStatus.ACTIVE
+                    )
+            )
+            val location2 = locationRepository.save(
+                    LocationEntity(
+                            name = "Magazyn KAF15",
+                            organisation = organisation,
+                            registeredOffice = true,
+                            address = AddressEntity(
+                                    city = "Krakov",
                                     postalCode = "00000",
                                     street = "Werbeny",
                                     number = "2",
@@ -78,7 +92,7 @@ class Application(
                     phone1 = "phone1",
                     organisation = organisation,
                     department = department,
-                    location = location
+                    location = location1
             )
             admin.authorities.addAll(listOf(
                     AuthorityRoleEntity(
@@ -98,7 +112,7 @@ class Application(
                     phone1 = "phone1",
                     organisation = organisation,
                     department = department,
-                    location = location
+                    location = location2
             )
             client.authorities.addAll(listOf(
                     AuthorityRoleEntity(
@@ -118,7 +132,7 @@ class Application(
                     phone1 = "phone1",
                     organisation = organisation,
                     department = department,
-                    location = location
+                    location = location1
             )
             manager.authorities.addAll(listOf(
                     AuthorityRoleEntity(
@@ -127,6 +141,26 @@ class Application(
                     )
             ))
             userRepo.save(manager)
+
+            val recruiter = UserEntity(
+                    login = "recruiter",
+                    email = "recruiter@email.com",
+                    password = adminpassw,
+                    status = EntityStatus.ACTIVE,
+                    name = "recruiterName",
+                    surname = "recruiterSurname",
+                    phone1 = "phone1",
+                    organisation = organisation,
+                    department = department,
+                    location = location1
+            )
+            recruiter.authorities.addAll(listOf(
+                    AuthorityRoleEntity(
+                            user = recruiter,
+                            role = Authority.RECRUITER
+                    )
+            ))
+            userRepo.save(recruiter)
         }
     }
 
