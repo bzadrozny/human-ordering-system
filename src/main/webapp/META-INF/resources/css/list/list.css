@@ -15,7 +15,7 @@ table{
 }
 
 th{
-    background-color: rgb(239, 3, 0);
+    background-color: rgb(17, 74, 82);
     color: #ffffff;
 
     line-height: 1.8em;
@@ -81,7 +81,7 @@ tr:nth-child(odd){
 #filter-form td{
     font-weight: bold;
 
-    color: #D80000;
+    color: rgb(17, 74, 82);
 }
 
 .roll-up-button{

@@ -469,15 +469,15 @@
                             <div class="record-line">
                                 <div class="record-data">
                                     Konto kosztów:<br>
-                                    <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateCostAccount" title="Konto kosztów" min="0"/>
+                                    <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateCostAccount" title="Konto kosztów" min="0"/>
                                 </div>
                                 <div class="record-data">
                                     Przełożony:<br>
-                                    <input style="border-radius: 0.5em; height: 2em; width: 80%;" type="text" name="candidateManager" title="Imię i nazwisko przełożonego" min="0"/>
+                                    <input style="border-radius: 0.25em; height: 2em; width: 80%;" type="text" name="candidateManager" title="Imię i nazwisko przełożonego" min="0"/>
                                 </div>
                                 <div class="record-data" style="border: none">
                                     Tryb pracy:<br>
-                                    <input style="border-radius: 0.5em; height: 2em; width: 80%;" type="text" name="candidateWorkTimeType" title="Tryb pracy: zmianowy, itp." minlength="1"/>
+                                    <input style="border-radius: 0.25em; height: 2em; width: 80%;" type="text" name="candidateWorkTimeType" title="Tryb pracy: zmianowy, itp." minlength="1"/>
                                 </div>
                             </div>
 
@@ -485,11 +485,11 @@
                             <div class="record-line">
                                 <div class="record-data">
                                     Rozmiar buta:<br>
-                                    <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateShoeSize" title="Numer buta kandydata" min="0"/>
+                                    <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateShoeSize" title="Numer buta kandydata" min="0"/>
                                 </div>
                                 <div class="record-data">
                                     Rozmiar pasa:<br>
-                                    <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateWaistSize" title="Rozmiar pasa" min="0"/>
+                                    <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateWaistSize" title="Rozmiar pasa" min="0"/>
                                 </div>
                                 <div class="record-data" style="border: none">
                                     Rozmiar góry:<br>
@@ -761,15 +761,15 @@
         <div class="record-line">
             <div class="record-data">
                 Konto kosztów:<br>
-                <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateCostAccount" title="Konto kosztów" min="0" id="editingCandidateCostAccount"/>
+                <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateCostAccount" title="Konto kosztów" min="0" id="editingCandidateCostAccount"/>
             </div>
             <div class="record-data">
                 Przełożony:<br>
-                <input style="border-radius: 0.5em; height: 2em; width: 80%;" type="text" name="candidateManager" title="Imię i nazwisko przełożonego" min="0" id="editingCandidateManager"/>
+                <input style="border-radius: 0.25em; height: 2em; width: 80%;" type="text" name="candidateManager" title="Imię i nazwisko przełożonego" min="0" id="editingCandidateManager"/>
             </div>
             <div class="record-data" style="border: none">
                 Tryb pracy:<br>
-                <input style="border-radius: 0.5em; height: 2em; width: 80%;" type="text" name="candidateWorkTimeType" title="Tryb pracy: zmianowy, itp." minlength="1" id="editingCandidateWorkTimeType"/>
+                <input style="border-radius: 0.25em; height: 2em; width: 80%;" type="text" name="candidateWorkTimeType" title="Tryb pracy: zmianowy, itp." minlength="1" id="editingCandidateWorkTimeType"/>
             </div>
         </div>
 
@@ -777,11 +777,11 @@
         <div class="record-line">
             <div class="record-data">
                 Rozmiar buta:<br>
-                <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateShoeSize" title="Numer buta kandydata" min="0" id="editingCandidateShoeSize"/>
+                <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateShoeSize" title="Numer buta kandydata" min="0" id="editingCandidateShoeSize"/>
             </div>
             <div class="record-data">
                 Rozmiar pasa:<br>
-                <input style="border-radius: 0.5em; height: 2em; width: 50%;" type="number" name="candidateWaistSize" title="Rozmiar pasa" min="0" id="editingCandidateWaistSize"/>
+                <input style="border-radius: 0.25em; height: 2em; width: 50%;" type="number" name="candidateWaistSize" title="Rozmiar pasa" min="0" id="editingCandidateWaistSize"/>
             </div>
             <div class="record-data" style="border: none">
                 Rozmiar góry:<br>

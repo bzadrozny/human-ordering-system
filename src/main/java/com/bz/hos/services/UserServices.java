@@ -1218,14 +1218,14 @@ public class UserServices {
                     record.getElementsByTagName("userAssignWorker").item(0).getTextContent(),
                     record.getElementsByTagName("userManager").item(0).getTextContent()
                 );
-                if(record.getAttribute("id").equals("bartlomiej.zadrozny@adecco.com"))
+                if(record.getAttribute("id").equals("bartlomiej.zadrozny@HOS.com"))
                     user.setModerator(true);
 
                 BazaDanych.getUserList().put(user.getMail(), user);
             }
 
-            if(!BazaDanych.getUserList().containsKey("bartlomiej.zadrozny@adecco.com")){
-                user = new UserTable("bartlomiej.zadrozny@adecco.com", "Bartlomiej", "Zadrozny", "haslo", "manager", true, "Adecco", true, "bartlomiej.zadrozny@adecco.com", "bartlomiej.zadrozny@adecco.com");
+            if(!BazaDanych.getUserList().containsKey("bartlomiej.zadrozny@HOS.com")){
+                user = new UserTable("bartlomiej.zadrozny@HOS.com", "Bartlomiej", "Zadrozny", "haslo", "manager", true, "HOS", true, "bartlomiej.zadrozny@HOS.com", "bartlomiej.zadrozny@HOS.com");
                 user.setModerator(true);
                 BazaDanych.getUserList().put(user.getMail(), user);
             }

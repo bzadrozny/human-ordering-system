@@ -173,7 +173,7 @@
                         </div>
 
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div class="chapter-title" style="margin-top: 20px;">
                             Hasło tymczasowe
                         </div>
@@ -191,7 +191,7 @@
                         </div>
 
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div class="chapter-title" style="margin-top: 20px;">
                             Stanowisko i uprawnienia
                         </div>
@@ -226,7 +226,7 @@
                         </div>
 
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div class="chapter-title" style="margin-top: 20px;">
                             Obsługa zamówień
                         </div>
@@ -256,7 +256,7 @@
                         </div>
 
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div class="chapter-title" style="margin-top: 20px;">
                             Stauts użytkownika
                         </div>
@@ -274,7 +274,7 @@
                         </div>
 
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div style="margin-top: 20px;">
                             <input type="submit" value="Dodaj nowego użytkownika" name="addNewUser">
                         </div>
@@ -313,7 +313,7 @@
 
                 <c:if test="${not empty settingForm.selectedUser.mail}">
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;">
                         Zmiana danych osobistych
                     </div>
@@ -331,7 +331,7 @@
                         </form:form>
                     </div>
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;">
                         Zmiana organizacji użytkownika
                     </div>
@@ -347,7 +347,7 @@
                         </form:form>
                     </div>
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;">
                         Reset hasła wybranego użytkownika
                         <c:if test="${user.moderator}">
@@ -369,7 +369,7 @@
                     </div>
 
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;">
                         Zarządzanie lokalizacjami użytkownika
                     </div>
@@ -424,7 +424,7 @@
 
 
                     <c:if test="${!settingForm.selectedUser.role.equals('client')}">
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                         <div class="chapter-title" style="margin-top: 20px;">
                             Zarządzanie podwładnymi użytkownika
                         </div>
@@ -478,7 +478,7 @@
                     </c:if>
 
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;"> Obsługa dla złożonych zamówień </div>
                     <div>
 
@@ -515,7 +515,7 @@
                     </div>
 
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;"> Zmiana stanowika użytkownika </div>
                     <div>
                         <form:form modelAttribute="settingForm" method="post" action="/account-management">
@@ -549,7 +549,7 @@
                     </div>
 
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;"> Zmiana statusu użytkownika </div>
                     <div>
                         <form:form modelAttribute="settingForm" method="post" action="/account-management">
@@ -572,7 +572,7 @@
                         </form:form>
                     </div>
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="margin-top: 20px;">
                         <form modelAttribute="settingForm" method="post" action="/account-management">
                             <input type="submit" value="Zakończ edycję użytkownika" name="closeUserEditionCart" style="float: none;">
@@ -617,7 +617,7 @@
                             <input type="text" name="locationOrganization" value="${settingForm.locationOrganization}" style="float: left;" class="input-information" placeholder="Podaj nazwę organizacji lokalizacji" minlength="3" maxlength="50" required="required" />
                         <div style="clear: both"></div>
 
-                        <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em; margin-bottom: 1em;"></div>
+                        <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em; margin-bottom: 1em;"></div>
                             <input type="submit" value="Dodaj nową lokalizację" name="addNewLocation">
                         <div style="clear: both"></div>
 
@@ -647,7 +647,7 @@
                 </div>
 
                 <c:if test="${not empty settingForm.editingLocationId}">
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;">
                         Zmiana nazwy organizacji
                     </div>
@@ -660,7 +660,7 @@
                         </form:form>
                     </div>
 
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
                     <div class="chapter-title" style="margin-top: 20px;">
@@ -703,7 +703,7 @@
                     </div>
 
                     <div style="clear: both"></div>
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
                     <div class="chapter-title" style="margin-top: 20px;">
@@ -746,7 +746,7 @@
                     </div>
 
                     <div style="clear: both"></div>
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
                     <form style="margin-bottom: 0;" method="post" action="/account-management">
@@ -766,7 +766,7 @@
                         </form>
 
                     <div style="clear: both"></div>
-                    <div style="border-bottom: 2px solid #D80000; margin-left: 5%; width: 90%; height: 1em;"></div>
+                    <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
                     <form:form  style="margin-bottom: 0;" method="post" action="/setDataBase" enctype="multipart/form-data" modelAttribute="fileModel">

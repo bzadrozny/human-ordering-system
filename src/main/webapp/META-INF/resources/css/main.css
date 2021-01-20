@@ -36,7 +36,7 @@ button{
 }
 
 .logo{
-    background-color: rgb(239, 30, 30);
+    background-color: rgb(17, 74, 82);
 
     color: #ffffff;
     font-weight: bold;
@@ -46,6 +46,7 @@ button{
     width: 100%;
     min-width: 1000px;
     height: 66px;
+    padding-bottom: .5em;
 }
 
 .logo-Adecco-name{
@@ -169,13 +170,13 @@ button{
     height: 430px;
     width: 150px;
 
-    border-bottom: 1px solid rgb(239, 30, 30);
-    border-right: 1px solid rgb(239, 30, 30);
+    border-bottom: 1px solid rgb(17, 74, 82);
+    border-right: 1px solid rgb(17, 74, 82);
 
     border-bottom-right-radius:  20px;
 
     background: white;
-    color: rgb(239, 30, 30);
+    color: rgb(17, 74, 82);
 
     display: none;
 }
@@ -189,11 +190,11 @@ button{
     clear: both;
 
     border: none;
-    border-bottom: 1px solid rgb(191, 29, 29);
+    border-bottom: 1px solid rgb(17, 74, 82);
 
     background: none;
 
-    color: rgb(239, 30, 30);
+    color: rgb(17, 74, 82);
     font-size: 18px;
     text-align: center;
 
@@ -223,12 +224,12 @@ button{
     font-weight: bold;
     text-align: center;
 
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     width: 100%;
 }
 
 .chapter-border{
-    border: 2px solid rgb(239, 30, 30);
+    border: 2px solid rgb(17, 74, 82);
     border-radius: 5px;
 
     padding: 10px;
@@ -357,7 +358,7 @@ input[type=submit], input[type=reset], input[type=button]{
     float: right;
 
     text-align: center;
-    background-color: rgb(239, 3, 0);
+    background-color: rgb(17, 74, 82);
     color: #ffffff;
 
     line-height: 1.8em;
@@ -365,11 +366,11 @@ input[type=submit], input[type=reset], input[type=button]{
 
     margin: 0 5px;
 
-    border-radius: 1em;
+    border-radius: 0.5em;
 }
 
 .input-information{
-    border-radius: 0.5em;
+    border-radius: 0.25em;
 
     height: 3em;
     width: 50%;

@@ -11,7 +11,7 @@
 
     line-height: 20px;
 
-    border-radius: 10px;
+    border-radius: 5px;
 
     opacity: 1;
 }
@@ -20,5 +20,5 @@
     padding: 20px;
     font-size: 150%;
     font-weight: 900;
-    color: rgb(246, 3, 0);
+    color: rgb(17, 74, 82);
 }

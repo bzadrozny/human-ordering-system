@@ -15,7 +15,7 @@
 
     <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/newOrder.png');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/newOrder.jpg');background-size: cover;">
         <div class="menu-button">
             <form action="/newOrder" method="POST">
                 <input type="submit" value="Nowe"/>
@@ -29,7 +29,7 @@
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
             <form action="/list" method="POST">
-                <input type="submit" value="Lista" style="color: rgb(239, 30, 30); font-weight: bold;"/>
+                <input type="submit" value="Lista" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>
         <div class="menu-description" style="float: right; color: black;">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/contracts.png');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/contracts.jpg');background-size: cover;">
         <div class="menu-button">
             <form action="/contractManagement" method="POST">
                 <input type="submit" value="Kontrakty"/>
@@ -54,7 +54,7 @@
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
             <form action="/report" method="POST">
-                <input type="submit" value="Statystyki" style="color: rgb(239, 30, 30); font-weight: bold;"/>
+                <input type="submit" value="Statystyki" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>
         <div class="menu-description" style="float: right; color: black;">
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/setting.png');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/setting.jpg');background-size: cover;">
         <div class="menu-button">
             <form action="/account-management" method="POST">
                 <input type="submit" value="Ustawienia"/>
@@ -79,7 +79,7 @@
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
             <form action="/support" method="POST">
-                <input type="submit" value="Wsparcie" style="color: rgb(239, 30, 30); font-weight: bold;"/>
+                <input type="submit" value="Wsparcie" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>
         <div class="menu-description" style="float: right; color: black;">

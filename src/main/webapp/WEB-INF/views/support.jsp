@@ -67,19 +67,19 @@
                         <table>
                             <tr>
                                 <td>
-                                    <div style="color: #D80000; font-weight: bold;">Data dodania</div>
+                                    <div style="color: rgb(17, 74, 82); font-weight: bold;">Data dodania</div>
                                     <div class="bottom-cell">
                                             ${comment.inputDate}
                                     </div>
                                 </td>
                                 <td>
-                                    <div style="color: #D80000; font-weight: bold;">Status</div>
+                                    <div style="color: rgb(17, 74, 82); font-weight: bold;">Status</div>
                                     <div class="bottom-cell">
                                             ${comment.status}
                                     </div>
                                 </td>
                                 <td>
-                                    <div style="color: #D80000; font-weight: bold;">Użytkownik</div>
+                                    <div style="color: rgb(17, 74, 82); font-weight: bold;">Użytkownik</div>
                                     <div class="bottom-cell">
                                             ${comment.supplierMail}
                                     </div>
@@ -89,7 +89,7 @@
 
                         <textarea class="input-information" title="Opis" style="margin: 20px 15%; min-width: 70%; max-width: 70%; max-height: 8em;" disabled="disabled">${comment.description}</textarea>
 
-                        <div class="bottom-cell" style="text-align: center; font-size: 18px; border-top: 2px solid #D80000; width: 90%; margin-left: 5%"></div>
+                        <div class="bottom-cell" style="text-align: center; font-size: 18px; border-top: 2px solid rgb(17, 74, 82); width: 90%; margin-left: 5%"></div>
 
                     </c:forEach>
                 </c:if>

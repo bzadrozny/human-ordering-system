@@ -242,7 +242,7 @@
                     </tbody>
                 </table>
 
-                <div style="width: 100%; border-bottom: 2px solid #D80000"></div>
+                <div style="width: 100%; border-bottom: 2px solid rgb(17, 74, 82)"></div>
 
                 <div class="chapter-title" style="margin-top: 1em;">Daty zamówienia i realizacji</div>
 
@@ -279,7 +279,7 @@
 
                 <c:if test="${user.role.equals('recruiter') or ( user.role.equals('manager') and user.admin )}">
 
-                    <div style="width: 100%; border-bottom: 2px solid #D80000"></div>
+                    <div style="width: 100%; border-bottom: 2px solid rgb(17, 74, 82)"></div>
 
                     <div class="chapter-title" style="margin-top: 1em;"> Koordynacja wewnętrzna </div>
 

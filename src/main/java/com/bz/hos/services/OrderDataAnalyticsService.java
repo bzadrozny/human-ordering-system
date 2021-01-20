@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@Scope("prototype")
+//@Scope("prototype")
 public class OrderDataAnalyticsService extends Thread{
 
     private static int dayOfReport = 5;

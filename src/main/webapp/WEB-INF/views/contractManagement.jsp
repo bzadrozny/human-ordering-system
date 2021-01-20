@@ -153,7 +153,7 @@
                                     var contractTo = new Date(ct.getFullYear(), ct.getMonth(), ct.getDate(), 0);
 
                                     if(todayPlus14Days.getTime() > contractTo.getTime()){
-                                        document.getElementById(elementId).style.backgroundColor = 'rgb(239, 3, 0)';
+                                        document.getElementById(elementId).style.backgroundColor = 'rgb(17, 74, 82)';
                                         document.getElementById(elementId).style.color = '#ffffff';
                                     }
                                 }

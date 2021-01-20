@@ -6,7 +6,7 @@
     width: 90%;
     margin: 0 auto 40px;
 
-    border: 2px solid rgb(239, 30, 30);
+    border: 2px solid rgb(17, 74, 82);
     border-radius: 1em;
 }
 
@@ -26,7 +26,7 @@
     width: 96%;
     margin: 20px auto;
 
-    border-bottom: 2px solid rgb(239, 30, 30);
+    border-bottom: 2px solid rgb(17, 74, 82);
 }
 
 #contracts-view table caption, .contractsOptions .caption{

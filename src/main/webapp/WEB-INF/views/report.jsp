@@ -48,7 +48,7 @@
                         Wprowadź zakres raportu
                     </div>
 
-                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 10px;">
+                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 5px;">
                         <table style="border: none">
                             <tr>
                                 <td style="width: 50px;"> od: </td>
@@ -59,7 +59,7 @@
                         </table>
                         <table style="border: none">
                             <tr>
-                                <td style="width: 100%;"> <input type="submit" name="reportRange" value="Zatwierdź zakres" style="border-radius: 1em; background-color: rgb(239, 3, 0); "> </td>
+                                <td style="width: 100%;"> <input type="submit" name="reportRange" value="Zatwierdź zakres" style="border-radius: 0.5em; background-color: rgb(17, 74, 82); "> </td>
                             </tr>
                         </table>
                     </div>
@@ -246,7 +246,7 @@
                         Wprowadź zakres raportu
                     </div>
 
-                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 10px;">
+                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 5px;">
                         <table style="border: none; width: 50%; margin: 0 auto 10px;">
                             <tr>
                                 <td style="width: 33%;"> Lokalizacja: </td>
@@ -269,7 +269,7 @@
                         </table>
                         <table style="border: none">
                             <tr>
-                                <td style="width: 100%;"> <input type="submit" name="submitLocationReportRange" value="Zatwierdź zakres" style="border-radius: 1em; background-color: rgb(239, 3, 0); "> </td>
+                                <td style="width: 100%;"> <input type="submit" name="submitLocationReportRange" value="Zatwierdź zakres" style="border-radius: 0.5em; background-color: rgb(17, 74, 82); "> </td>
                             </tr>
                         </table>
                     </div>
@@ -452,7 +452,7 @@
                         Wprowadź zakres raportu
                     </div>
 
-                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 10px;">
+                    <div style="margin: 10px 0; background: white; padding: 15px; border-radius: 5px;">
                         <table style="border: none; width: 50%; margin: 0 auto 10px;">
                             <tr>
                                 <td style="width: 30%;"> Pracownik: </td>
@@ -475,7 +475,7 @@
                         </table>
                         <table style="border: none">
                             <tr>
-                                <td style="width: 100%;"> <input type="submit" name="submitStaffReportRange" value="Zatwierdź zakres" style="border-radius: 1em; background-color: rgb(239, 3, 0); "> </td>
+                                <td style="width: 100%;"> <input type="submit" name="submitStaffReportRange" value="Zatwierdź zakres" style="border-radius: 0.5em; background-color: rgb(17, 74, 82); "> </td>
                             </tr>
                         </table>
                     </div>
