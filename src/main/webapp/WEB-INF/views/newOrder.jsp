@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Adecco - nowe zamówienie</title>
+    <title>HOS - nowe zamówienie</title>
     <link href="<spring:url value="/resources/css/newOrder/newOrder.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/css/main.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/fontello/css/fontello.css"/>" rel="stylesheet" type="text/css"/>
@@ -23,7 +23,7 @@
 
 
         <div id="orderd-specyfication" class="chapter-title">Specyfika zamówienia</div>
-        <form:form method="POST" action="/newOrder" modelAttribute="order" >
+        <form:form method="POST" action="${pageContext.request.contextPath}/newOrder" modelAttribute="order" >
 
             <div class="chapter-border">
                 <div id="main-data">
@@ -125,7 +125,7 @@
 
         <c:if test="${ user.role == 'manager'}">
             <div class="chapter-title">Specyfika realizacji</div>
-            <form:form method="POST" action="/newOrder" modelAttribute="order" >
+            <form:form method="POST" action="${pageContext.request.contextPath}/newOrder" modelAttribute="order" >
             <div class="chapter-border">
                 <div style="height: 7em;">
 
@@ -175,7 +175,7 @@
 
         <div class="chapter-title">Nowi kandydaci</div>
 
-        <form:form method="POST" action="/newOrder" modelAttribute="order" >
+        <form:form method="POST" action="${pageContext.request.contextPath}/newOrder" modelAttribute="order" >
         <div class="chapter-border">
             <div id="new-record">
                 <div class="new-record-tile">
@@ -275,11 +275,11 @@
                                 <td>${record.qualification}</td>
                                 <td>${record.comment}</td>
                                 <td>
-                                    <form method="post" action="/newOrder" style="float: right; margin-top: 10px;">
+                                    <form method="post" action="${pageContext.request.contextPath}/newOrder" style="float: right; margin-top: 10px;">
                                         <input type="submit" name="deleteRecord" value="usuń">
                                         <input type="hidden" name="recordNo" value="<%=i%>">
                                     </form>
-                                    <form method="post" action="/newOrder" style="float: right; margin-top: 10px;">
+                                    <form method="post" action="${pageContext.request.contextPath}/newOrder" style="float: right; margin-top: 10px;">
                                         <input type="submit" name="editRecord" value="edytuj">
                                         <input type="hidden" name="recordNo" value="<%=i++%>">
                                     </form>
@@ -293,9 +293,9 @@
         </c:if>
 
         <br/>
-        <form:form action="/neworder-confirmation" method="POST" style="float: right; margin-right: 20px;"><input type="submit" value="Dalej"/></form:form>
-        <form:form action="/newOrder" method="post" style="float: right;"><input type="submit" value="Wyczyść" name="cancelOrder"></form:form>
-        <form:form action="/menu" method="post" style="float: right;"><input type="submit" value="Menu" name="goMenu"></form:form>
+        <form:form action="${pageContext.request.contextPath}/neworder-confirmation" method="POST" style="float: right; margin-right: 20px;"><input type="submit" value="Dalej"/></form:form>
+        <form:form action="${pageContext.request.contextPath}/newOrder" method="post" style="float: right;"><input type="submit" value="Wyczyść" name="cancelOrder"></form:form>
+        <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right;"><input type="submit" value="Menu" name="goMenu"></form:form>
         <div style="clear:both;"></div>
 
     </div>

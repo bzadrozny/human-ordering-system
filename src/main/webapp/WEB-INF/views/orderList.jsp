@@ -15,7 +15,7 @@
 
 <html>
 <head>
-    <title>Adecco - wszystkie zamowienia</title>
+    <title>HOS - wszystkie zamowienia</title>
     <link href="<spring:url value="/resources/css/list/list.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/css/main.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/fontello/css/fontello.css"/>" rel="stylesheet" type="text/css"/>
@@ -66,7 +66,7 @@
                             <td>${order.location}</td>
                             <td style="font-size: 12px;">${order.comment}</td>
                             <td>
-                                <form method="post" action="/showOrder" style="margin-bottom: 0;">
+                                <form method="post" action="${pageContext.request.contextPath}/showOrder" style="margin-bottom: 0;">
                                     <input type="submit" value="Pokaż">
                                     <input type="hidden" value="${order.id}" name="orderId">
                                 </form>
@@ -106,7 +106,7 @@
                             <td>${order.updateDate}</td>
                             <td>${order.location}</td>
                             <td>
-                                <form method="post" action="/showOrder" style="margin-bottom: 0;">
+                                <form method="post" action="${pageContext.request.contextPath}/showOrder" style="margin-bottom: 0;">
                                     <input type="submit" value="Pokaż">
                                     <input type="hidden" value="${order.id}" name="orderId">
                                 </form>
@@ -124,7 +124,7 @@
             <input class="input-information roll-up-button" type="button" value="+" id="find-ID-button" onclick="showAndHied(this)"/>
         </div>
         <div class="chapter-border" id="find-ID" style="display: none;">
-            <form method="post" action="/list" style="margin-bottom: 0; vertical-align: center;">
+            <form method="post" action="${pageContext.request.contextPath}/list" style="margin-bottom: 0; vertical-align: center;">
 
                 &nbsp; &nbsp; Wyszukaj zamówienie po ID: &nbsp;
                 <input type="text" style="width: 30%;" class="input-information" placeholder="#ZAM / 3 litery kodu / numer zamówienia" name="inputedId">
@@ -139,7 +139,7 @@
         </div>
         <div class="chapter-border" id="filter-form" style="display: none">
 
-            <form:form method="post" action="/list" modelAttribute="filterForm">
+            <form:form method="post" action="${pageContext.request.contextPath}/list" modelAttribute="filterForm">
 
                 <div class="chapter-title">
                     Specyfika zamówienia
@@ -416,7 +416,7 @@
                                 <td>${order.location}</td>
                                 <td style="font-size: 12px;">${order.comment}</td>
                                 <td>
-                                    <form method="post" action="/showOrder" style="margin-bottom: 0;">
+                                    <form method="post" action="${pageContext.request.contextPath}/showOrder" style="margin-bottom: 0;">
                                         <input type="submit" value="Pokaż">
                                         <input type="hidden" value="${order.id}" name="orderId">
                                     </form>
@@ -430,7 +430,7 @@
         </c:if>
 
         <br/>
-        <form:form action="/menu" method="post" style="float: right; margin: 20px;">
+        <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right; margin: 20px;">
             <input type="submit" value="Cofnij" style="width: 100px;">
         </form:form>
         <div style="clear:both;"></div>

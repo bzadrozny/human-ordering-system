@@ -117,7 +117,7 @@
             <c:if test="${settingForm.passwordChangeSucces}">Hasło zostało zmienione</c:if>
             <c:if test="${!settingForm.passwordChangeSucces}">Wprowadź poprawnie nowe dane</c:if>
 
-            <form method="post" action="/account-management">
+            <form method="post" action="${pageContext.request.contextPath}/account-management">
 
                 <div style="float: left; width: 200px;">Stare hasło:</div>
                 <input style="float: left;" class="input-information" type="password" name="oldPass" title="Stare hasło" required="required" value="${settingForm.oldPass}"/>
@@ -145,13 +145,13 @@
             <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%;">
 
                 <c:if test="${!settingForm.showNewUserCart}">
-                    <form method="post" action="/account-management" style="margin-bottom: 0">
+                    <form method="post" action="${pageContext.request.contextPath}/account-management" style="margin-bottom: 0">
                         <input type="submit" style="float: none;" name="displayNewUserCart" value="Wyświetl kartę nowego użytkownika"/>
                     </form>
                 </c:if>
 
                 <c:if test="${settingForm.showNewUserCart}">
-                    <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                    <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                         <div class="chapter-title" style="margin-top: 20px;">
                             Dane osobowe
                         </div>
@@ -281,7 +281,7 @@
                     </form:form>
 
                     <div style="clear: both"></div>
-                    <form method="post" action="/account-management" style="margin-bottom: 0">
+                    <form method="post" action="${pageContext.request.contextPath}/account-management" style="margin-bottom: 0">
                         <input type="submit" style="float: none"  name="hideNewUserCart" value="Ukryj kartę nowego użytkownika"/>
                     </form>
                 </c:if>
@@ -295,7 +295,7 @@
             <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%;">
 
                 <div> Wybrany użytkownik: ${settingForm.selectedUser.mail}
-                    <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                    <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                         <form:select path="selectedUser.mail" name="selectedUser" cssClass="input-information">
                             <c:forEach items="${settingForm.allClientList}" var="staff">
                                 <form:option value="${staff.mail.toString()}">${staff.mail}</form:option>
@@ -318,7 +318,7 @@
                         Zmiana danych osobistych
                     </div>
                     <div style="height: 10em;">
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <div style="float: left; width: 200px; margin-top: 15px;">Podaj nowe imię:</div>
                             <form:input path="name" style="float: left;" class="input-information" title="Nowe imię" placeholder="Podaj Imię" minlength="3" maxlength="20" />
                             <div style="clear: both"></div>
@@ -336,7 +336,7 @@
                         Zmiana organizacji użytkownika
                     </div>
                     <div style="height: 7em;">
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <div style="float: left; width: 200px; margin-top: 15px;">Wybierz organizację:</div>
                             <form:select path="organization" style="float: left;" cssClass="input-information" title="Podaj nazwę organizacji">
                                 <form:options items="${settingForm.organisationMap}"/>
@@ -355,7 +355,7 @@
                         </c:if>
                     </div>
                     <div style="height: 10em;">
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <div style="float: left; width: 200px; margin-top: 15px;">Podaj nowe hasło tymczasowe:</div>
                             <form:input path="tempPass" style="float: left;" class="input-information" title="Nowe imię"  minlength="3" maxlength="20" />
                             <div style="clear: both"></div>
@@ -398,7 +398,7 @@
                                             <c:if test="${loc.area.equals('W')}">Zachód</c:if>
                                         </td>
                                         <td>
-                                            <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                                            <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                                                 <input type="submit" style="float: none" value="Usuń" name="removeUsersLocation"/>
                                                 <input type="hidden" name="selectedUserLocationId" value="${loc.id}">
                                             </form:form>
@@ -410,7 +410,7 @@
                         </c:if>
 
                         <br/>
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <form:select path="selectedLocationId" cssClass="input-information" cssStyle="float: none;">
                                 <c:forEach items="${settingForm.allLocationList}" var="loc">
 
@@ -450,7 +450,7 @@
                                             <td>${staff.role}</td>
                                             <td>${staff.organization}</td>
                                             <td>
-                                                <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                                                <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                                                     <input type="submit" style="float: none" value="Usuń" name="removeMangersStaff"/>
                                                     <input type="hidden" name="selectedAssignWorker" value="${staff.mail}">
                                                 </form:form>
@@ -462,7 +462,7 @@
                             </c:if>
 
                             <br/>
-                            <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                            <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                                 <form:select path="selectedAssignWorker" cssClass="input-information" cssStyle="float: none;">
                                     <c:forEach items="${settingForm.allRecruiterList}" var="recruiter">
                                         <form:option value="${recruiter.mail}"> ${recruiter.mail} | ${recruiter.role} </form:option>
@@ -482,7 +482,7 @@
                     <div class="chapter-title" style="margin-top: 20px;"> Obsługa dla złożonych zamówień </div>
                     <div>
 
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
 
                             <div style="float: left; width: 300px; margin-top: 15px;">Przypisany opiekun zamówień:</div>
                             <form:select path="selectedUser.assignWorker" cssClass="input-information" cssStyle="float: left;">
@@ -518,7 +518,7 @@
                     <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;"> Zmiana stanowika użytkownika </div>
                     <div>
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
 
                             <div style="float: left; width: 300px; margin-top: 15px;">Stanowisko użytkownika:</div>
                             <form:select path="selectedUser.role" cssClass="input-information" cssStyle="float: left;">
@@ -552,7 +552,7 @@
                     <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div class="chapter-title" style="margin-top: 20px;"> Zmiana statusu użytkownika </div>
                     <div>
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
 
                             <div class="chapter-border-line-half">
                                 <div style="float: none; margin-top: 15px;">Użytkownik aktywny:</div>
@@ -574,7 +574,7 @@
 
                     <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="margin-top: 20px;">
-                        <form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <input type="submit" value="Zakończ edycję użytkownika" name="closeUserEditionCart" style="float: none;">
                         </form>
                     </div>
@@ -589,12 +589,12 @@
             <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%;">
 
                 <c:if test="${!settingForm.showNewLocationCart}">
-                    <form method="post" action="/account-management" style="margin-bottom: 0">
+                    <form method="post" action="${pageContext.request.contextPath}/account-management" style="margin-bottom: 0">
                         <input type="submit" style="float: none;" name="displayNewLocationCart" value="Wyświetl kartę nowej lokalizacji"/>
                     </form>
                 </c:if>
                 <c:if test="${settingForm.showNewLocationCart}">
-                    <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                    <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
 
                         <div style="float: left; width: 200px; margin-top: 15px;">Podaj kod nowej lokalizacji:</div>
                             <input type="text" name="locationId" value="${settingForm.locationId}" style="float: left;" class="input-information" placeholder="Podaj kod nowej lokalizacji" minlength="3" maxlength="5" required="required" />
@@ -623,7 +623,7 @@
 
                     </form:form>
 
-                    <form method="post" action="/account-management" style="margin-bottom: 0;">
+                    <form method="post" action="${pageContext.request.contextPath}/account-management" style="margin-bottom: 0;">
                         <input type="submit" style="float: none;" name="hideNewLocationCart" value="Ukryj kartę nowej lokalizacji"/>
                     </form>
                 </c:if>
@@ -636,7 +636,7 @@
             <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%;">
 
                 <div> Wybrana lokalizacja: ${settingForm.locationInstance.name}
-                <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                     <form:select path="editingLocationId" name="editingLocation" cssClass="input-information">
                         <c:forEach items="${settingForm.allLocationList}" var="loc">
                             <form:option value="${loc.locationId}">${loc.locationId} | ${loc.organization} | ${loc.locationName}</form:option>
@@ -652,7 +652,7 @@
                         Zmiana nazwy organizacji
                     </div>
                     <div style="height: 7em;">
-                        <form:form modelAttribute="settingForm" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" method="post" action="${pageContext.request.contextPath}/account-management">
                             <div style="float: left; width: 200px; margin-top: 15px;">Podaj nową organizację:</div>
                             <input name="editingLocationOrganization" value="${settingForm.editingLocationOrganization}" style="float: left;" class="input-information" title="Nowe organizacja" placeholder="Podaj organizacje" minlength="3" maxlength="30" required/>
                             <div style="clear: both"></div>
@@ -683,7 +683,7 @@
                     <div style="clear: both"></div>
 
                     <div class="chapter-border-line-half" style="border-right: 1px solid grey">
-                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                             <input type="text" name="selectedLocationDepartment" value="${settingForm.selectedLocationDepartment}"
                                    style="margin-bottom: 0;" class="input-information"
                                    placeholder="Podaj nazwę nowego obszaru" required="required" minlength="4" maxlength="70"/><br/>
@@ -692,7 +692,7 @@
                     </div>
 
                     <div class="chapter-border-line-half" style="width: 49%;">
-                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                             <form:select path="departmentToRemove" cssStyle="margin-bottom: 0;" class="input-information"><br/>
                                 <c:forEach items="${settingForm.locationInstance.department.values()}" var="dep">
                                     <form:option value="${dep}">${dep}</form:option>
@@ -726,7 +726,7 @@
                     <div style="clear: both"></div>
 
                     <div class="chapter-border-line-half" style="border-right: 1px solid grey">
-                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                             <input type="email" name="inputedEmail" value="${settingForm.inputedEmail}"
                                    style="margin-bottom: 0;" class="input-information"
                                    placeholder="Podaj email" required="required" minlength="5" maxlength="50"/><br/>
@@ -735,7 +735,7 @@
                     </div>
 
                     <div class="chapter-border-line-half" style="width: 49%;">
-                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="/account-management">
+                        <form:form modelAttribute="settingForm" cssStyle="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                             <form:select path="emailIdToRemove" cssStyle="margin-bottom: 0;" class="input-information"><br/>
                                 <c:forEach items="${settingForm.locationInstance.distributionList.keySet()}" var="emailId">
                                     <form:option value="${emailId}">${settingForm.locationInstance.distributionList.get(emailId)}</form:option>
@@ -749,7 +749,7 @@
                     <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
-                    <form style="margin-bottom: 0;" method="post" action="/account-management">
+                    <form style="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/account-management">
                         <input type="submit" value="Zakończ edycję lokalizacji" name="closeLocationEditionCart" style="float: none;">
                     </form>
                 </c:if>
@@ -761,7 +761,7 @@
                 </div>
                 <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%;">
 
-                        <form  style="margin-bottom: 0;" method="post" action="/getDataBase">
+                        <form  style="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/getDataBase">
                             <input type="submit" value="Pobierz bazę danych do pliku XML" name="getDataBase" style="float: none;">
                         </form>
 
@@ -769,7 +769,7 @@
                     <div style="border-bottom: 2px solid rgb(17, 74, 82); margin-left: 5%; width: 90%; height: 1em;"></div>
                     <div style="height: 1em;"></div>
 
-                    <form:form  style="margin-bottom: 0;" method="post" action="/setDataBase" enctype="multipart/form-data" modelAttribute="fileModel">
+                    <form:form  style="margin-bottom: 0;" method="post" action="${pageContext.request.contextPath}/setDataBase" enctype="multipart/form-data" modelAttribute="fileModel">
 
                         <form:input type="file" title="Plik XML" placeholder="Wprowadź plik XML" class="input-information" path="file" name="newDataBase" required="required"/>
                         <br/>
@@ -783,7 +783,7 @@
                     Reset Analityki Zamówień
                 </div>
                 <div class="chapter-border" style="text-align: center; width: 70%; margin-left: 15%; height: auto;">
-                    <form action="/account-management" method="post" style="height: auto; margin: 0">
+                    <form action="${pageContext.request.contextPath}/account-management" method="post" style="height: auto; margin: 0">
                         <input type="submit" value="RESET" name="analyticsReset" title="Uruchom ponownie wątek analityki biznesowej zamówień" style="float: none;"/>
                     </form>
                 </div>
@@ -791,7 +791,7 @@
 
         </c:if>
 
-        <form:form action="/menu" method="post" style="float: right; margin: 20px;"><input type="submit" value="Cofnij" style="width: 100px;"></form:form>
+        <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right; margin: 20px;"><input type="submit" value="Cofnij" style="width: 100px;"></form:form>
         <div style="clear:both;"></div>
     </div>
 

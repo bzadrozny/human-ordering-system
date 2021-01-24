@@ -11,7 +11,7 @@
 <head>
     <title>Zarządzanie kontraktami</title>
     <link href="<spring:url value="/resources/css/contractManagement/contractManagement.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<spring:url value="/resources/css/main.css"/>" rel="stylesheet" type="text/css"/>
+    <link href="<spring:url value="${pageContext.request.contextPath}"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/fontello/css/fontello.css"/>" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -28,7 +28,7 @@
         <div class="chapter-border">
             <div style="width: 50%; margin: auto; text-align: center;">
 
-                <form action="/contractManagement" method="post" style="margin: 0;">
+                <form action="${pageContext.request.contextPath}/contractManagement" method="post" style="margin: 0;">
                     <select name="selectedLocationId" title="Wybierz lokalizację" class="input-information" style="float: none;">
                         <c:forEach items="${user.locationList}" var="loc">
                             <option name="selectedLocation" value="${loc.value.id}">${loc.value.name}</option>
@@ -320,13 +320,13 @@
         </c:if>
     </c:if>
 
-    <form:form action="/menu" method="post" style="float: right; margin: 0 20px 20px;">
+    <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right; margin: 0 20px 20px;">
         <input type="submit" style="width: 100px;" value="Cofnij"/>
     </form:form>
     <div style="clear:both;"></div>
 
     <div style="display: none">
-        <form method="post" action="/showOrder" style="margin-bottom: 0;">
+        <form method="post" action="${pageContext.request.contextPath}/showOrder" style="margin-bottom: 0;">
             <input type="submit" value="Show Order" id="showOrder">
             <input type="hidden" value="" name="orderId" id="orderId">
         </form>

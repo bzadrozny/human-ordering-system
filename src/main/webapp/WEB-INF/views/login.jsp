@@ -27,7 +27,7 @@
         }
 
         body {
-            background-image: url("/resources/backgrounds/login/LoginBackground.png");
+            background-image: url("${pageContext.request.contextPath}/resources/backgrounds/login/LoginBackground.png");
             background-size: cover;
         }
 
@@ -59,7 +59,7 @@
             </div>
         </c:if>
 
-        <form:form method="post" action="/" modelAttribute="loginForm">
+        <form:form method="post" action="${pageContext.request.contextPath}/" modelAttribute="loginForm">
             <div>
                 Login: <form:input cssStyle="font-size: 16px; width: 40%; height: 2.5em;" cssClass="input-information"
                                    path="login"/> <br/><br/>

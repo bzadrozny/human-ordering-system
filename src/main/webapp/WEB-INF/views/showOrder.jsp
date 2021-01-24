@@ -57,7 +57,7 @@
             </div>
             <div style="clear:both"></div>
 
-            <form method="post" action="/showOrder">
+            <form method="post" action="${pageContext.request.contextPath}/showOrder">
                 <div class="chapter-border-line-half">
                     <div class="chapter-border-tile" style="width: 150px; margin-top: 5px;">Data realizacji:</div>
                     <div class="chapter-border-tile-data">
@@ -177,7 +177,7 @@
             </div>
             <div style="clear:both"></div>
 
-            <form method="post" action="/showOrder">
+            <form method="post" action="${pageContext.request.contextPath}/showOrder">
 
                 <div class="chapter-border-line-half">
                     <div class="chapter-border-tile" style="width: 165px; margin-top: 5px;">Kierownik Obszaru:</div>
@@ -254,7 +254,7 @@
                 </div>
 
                 <div class="record-line" style="height: 4.5em;">
-                    <form method="post" action="/showOrder">
+                    <form method="post" action="${pageContext.request.contextPath}/showOrder">
                         <table class="account">
                             <tr>
                                 <th>Ilość zamówiona</th>
@@ -297,7 +297,7 @@
                                 </c:if>
                                 <c:if test="${(user.role.equals('manager') or user.admin) and record.status.equals('W realizacji')}">
                                     <td>
-                                        <select class="input-information" name="accountAccepted" title="Zatwierdzona przez Adecco ilość">
+                                        <select class="input-information" name="accountAccepted" title="Zatwierdzona przez HOS ilość">
                                             <c:forEach var="i" begin="${record.accountDelivered}" end="${record.accountOrdered}">
                                                 <option value="${i}" <c:if test="${record.accountAccepted.equals(i)}">selected="selected"</c:if> > ${i} </option>
                                             </c:forEach>
@@ -419,7 +419,7 @@
                         Dodaj nowego kandydata +
                     </button>
                     <div id="${'info-'.concat(record.recordId)}" class="info-candidate-cart" style="display: none;">
-                        <form:form action="/showOrder" method="post" modelAttribute="contractForm">
+                        <form:form action="${pageContext.request.contextPath}/showOrder" method="post" modelAttribute="contractForm">
 
                         <div class="candidateAdvanceChapterName">Dane osobowe</div>
                         <table class="candidateTable">
@@ -703,8 +703,8 @@
             </div>
         </c:forEach>
 
-        <form:form action="/menu" method="post" style="float: right; margin-right: 20px; margin-bottom: 1em;"><input type="submit" value="Menu" name="cancelOrder" style="width: 100px!important;"></form:form>
-        <form:form action="/list" method="post" style="float: right; margin-right: 5px; margin-bottom: 1em;"><input type="submit" value="Cofnij" style="width: 100px!important;"></form:form>
+        <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right; margin-right: 20px; margin-bottom: 1em;"><input type="submit" value="Menu" name="cancelOrder" style="width: 100px!important;"></form:form>
+        <form:form action="${pageContext.request.contextPath}/list" method="post" style="float: right; margin-right: 5px; margin-bottom: 1em;"><input type="submit" value="Cofnij" style="width: 100px!important;"></form:form>
         <div style="clear:both;"></div>
 
     </div>
@@ -714,7 +714,7 @@
     <div id="shadowOnWindow" style="display: none;" onclick="hideEditeAndDeleteWindow()">  </div>
 
     <div id="editingCandidateForm" style="display: none;">
-        <form:form action="/showOrder" method="post" modelAttribute="contractForm">
+        <form:form action="${pageContext.request.contextPath}/showOrder" method="post" modelAttribute="contractForm">
 
         <div class="chapter-title" style="color: black; margin-top:10px;">Edycja kontraktu: <span id="showEditingContractId"></span></div>
 
@@ -856,7 +856,7 @@
         <div style="color: black;">Czy jesteś pewny, że chcesz usunąć kontrakt?</div>
 
         <div style="margin:1em auto; width: 400px;">
-            <form:form action="/showOrder" method="post" cssStyle="height: 3em;">
+            <form:form action="${pageContext.request.contextPath}/showOrder" method="post" cssStyle="height: 3em;">
                 <input type="submit" name="deleteContract" value="Usuń kontrakt"
                 style=" clear:both; width: 150px;">
                 <input type="button" name="deleteContract" value="Anuluj" onclick="hideEditeAndDeleteWindow()"

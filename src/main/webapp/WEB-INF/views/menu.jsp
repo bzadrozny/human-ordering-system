@@ -6,7 +6,7 @@
 
 <html lang="pl">
 <head>
-    <title>Adecco - menu</title>
+    <title>HOS - menu</title>
     <link href="<spring:url value="/resources/css/menu/menu-style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/css/main.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<spring:url value="/resources/fontello/css/fontello.css"/>" rel="stylesheet" type="text/css"/>
@@ -15,9 +15,9 @@
 
     <%@include file="../../META-INF/resources/htmlElements/header.html" %>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/newOrder.jpg');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('${pageContext.request.contextPath}/resources/backgrounds/menu/newOrder.jpg');background-size: cover;">
         <div class="menu-button">
-            <form action="/newOrder" method="POST">
+            <form action="${pageContext.request.contextPath}/newOrder" method="POST">
                 <input type="submit" value="Nowe"/>
             </form>
         </div>
@@ -28,7 +28,7 @@
 
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
-            <form action="/list" method="POST">
+            <form action="${pageContext.request.contextPath}/list" method="POST">
                 <input type="submit" value="Lista" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>
@@ -40,9 +40,9 @@
         </div>
     </div>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/contracts.jpg');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('${pageContext.request.contextPath}/resources/backgrounds/menu/contracts.jpg');background-size: cover;">
         <div class="menu-button">
-            <form action="/contractManagement" method="POST">
+            <form action="${pageContext.request.contextPath}/contractManagement" method="POST">
                 <input type="submit" value="Kontrakty"/>
             </form>
         </div>
@@ -53,21 +53,21 @@
 
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
-            <form action="/report" method="POST">
+            <form action="${pageContext.request.contextPath}/report" method="POST">
                 <input type="submit" value="Statystyki" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>
         <div class="menu-description" style="float: right; color: black;">
-            Statystyki pozwalają na podsumowanie działań wybranej lokalizacji i pracowników Adecco oraz kontrolować poziom ich obsługi.
+            Statystyki pozwalają na podsumowanie działań wybranej lokalizacji i pracowników HOS oraz kontrolować poziom ich obsługi.
         </div>
         <div class="menu-description" style="float: right; height: 300px; width: 20%; margin: 0 10% 0 0;">
                 <img src="<spring:url value="/resources/backgrounds/menu/stats.png"/>" style="height:300px !important; width: auto;"/>
         </div>
     </div>
 
-    <div class="menu-cart-box" style="background-image: url('/resources/backgrounds/menu/setting.jpg');background-size: cover;">
+    <div class="menu-cart-box" style="background-image: url('${pageContext.request.contextPath}/resources/backgrounds/menu/setting.jpg');background-size: cover;">
         <div class="menu-button">
-            <form action="/account-management" method="POST">
+            <form action="${pageContext.request.contextPath}/account-management" method="POST">
                 <input type="submit" value="Ustawienia"/>
             </form>
         </div>
@@ -78,7 +78,7 @@
 
     <div class="menu-cart-box">
         <div class="menu-button" style="float: right;">
-            <form action="/support" method="POST">
+            <form action="${pageContext.request.contextPath}/support" method="POST">
                 <input type="submit" value="Wsparcie" style="color: rgb(17, 74, 82); font-weight: bold;"/>
             </form>
         </div>

@@ -22,7 +22,7 @@
         <div class="chapter-title">Przekaż dalej swoje propozycje i uwagi!</div>
         <div class="chapter-border" style="margin-bottom: 0;">
 
-            <form method="post" action="/support">
+            <form method="post" action="$}support">
 
                 <div style="color: #000; font-size: 24px; font-weight: bold;">Temat: &nbsp;</div>
                 <select class="input-information" required="required" name="subject" >
@@ -96,7 +96,7 @@
             </div>
         </c:if>
 
-        <form:form action="/menu" method="post" style="float: right; margin: 20px;"><input type="submit" value="Cofnij" style="width: 100px;"></form:form>
+        <form:form action="${pageContext.request.contextPath}/menu" method="post" style="float: right; margin: 20px;"><input type="submit" value="Cofnij" style="width: 100px;"></form:form>
         <div style="clear:both;"></div>
 
     </div>

@@ -159,8 +159,8 @@
                     ${savedOrder.comment}
                 </c:if>
                 <br/><br/>
-                <form:form method="post" action="/newOrder" style="float: right"> <input type="submit" value="Zamów" name="saveOrder"> </form:form>
-                <form:form method="post" action="/newOrder" style="float: right"> <input type="submit" value="Edytuj" name="editFromConf"> </form:form>
+                <form:form method="post" action="${pageContext.request.contextPath}/newOrder" style="float: right"> <input type="submit" value="Zamów" name="saveOrder"> </form:form>
+                <form:form method="post" action="${pageContext.request.contextPath}/newOrder" style="float: right"> <input type="submit" value="Edytuj" name="editFromConf"> </form:form>
 
                 <div style="clear: both"></div>
             </div>

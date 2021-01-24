@@ -43,7 +43,7 @@
 
         <div class="chapter-border">
             <div class="chart-title" style="height: auto; border-bottom: none">
-                <form:form modelAttribute="rangesForReport" action="/report" method="post" style="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
+                <form:form modelAttribute="rangesForReport" action="${pageContext.request.contextPath}/report" method="post" style="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
                     <div style="text-align: center; font-size: 24px;">
                         Wprowadź zakres raportu
                     </div>
@@ -241,7 +241,7 @@
 
         <div class="chapter-border">
             <div class="chart-title" style="height: auto; border-bottom: none">
-                <form:form modelAttribute="rangesForReport" action="/report" method="post" style="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
+                <form:form modelAttribute="rangesForReport" action="${pageContext.request.contextPath}/report" method="post" style="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
                     <div style="text-align: center; font-size: 24px;">
                         Wprowadź zakres raportu
                     </div>
@@ -447,7 +447,7 @@
 
         <div class="chapter-border">
             <div class="chart-title" style="height: auto; border-bottom: none">
-                <form:form modelAttribute="rangesForReport" action="/report" method="post" cssStyle="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
+                <form:form modelAttribute="rangesForReport" action="${pageContext.request.contextPath}/report" method="post" cssStyle="width: 90%; margin-left: auto; margin-right: auto; margin-bottom: 0;">
                     <div style="text-align: center; font-size: 24px;">
                         Wprowadź zakres raportu
                     </div>
@@ -660,7 +660,7 @@
 
     <div class="main-container" style="height: auto; padding-bottom: 1em;">
         <div style="height: auto; width: 30%; margin: 0 auto;">
-            <form:form action="/menu" method="post" cssStyle="align-content: center; margin: 0;">
+            <form:form action="${pageContext.request.contextPath}/menu" method="post" cssStyle="align-content: center; margin: 0;">
                 <input type="submit" value="Powrót do menu" style="float: none; margin: 0; width: 100%;">
             </form:form>
         </div>
