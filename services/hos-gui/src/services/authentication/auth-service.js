@@ -4,7 +4,7 @@ export default class AuthService {
 
   static async login(loginForm) {
     let response = await AuthAPI.login(loginForm)
-    let status = await response.status
+    let status = response.status
     if (status === 200) {
       let token = await response.text()
       localStorage.setItem("jwtToken", token)
@@ -16,8 +16,7 @@ export default class AuthService {
 
   static async me() {
     let response = await AuthAPI.loggedInUser()
-    let status = await response.status
-    if (status === 200) {
+    if (response.status === 200) {
       return await response.json()
     } else {
       localStorage.removeItem("jwtToken")

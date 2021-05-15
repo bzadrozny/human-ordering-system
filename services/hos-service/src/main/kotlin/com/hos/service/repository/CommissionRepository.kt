@@ -2,6 +2,7 @@ package com.hos.service.repository
 
 import com.hos.service.model.entity.CommissionEntity
 import com.hos.service.model.enum.CommissionStatus
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
@@ -18,7 +19,7 @@ interface CommissionRepository : JpaRepository<CommissionEntity, Long>, JpaSpeci
             and (:location is null or l.id = :location) 
             and (:organisation is null or o.id = :organisation) 
     """)
-    fun findAllFiltered(status: CommissionStatus?, location: Long?, organisation: Long?): List<CommissionEntity>
+    fun findAllFiltered(status: CommissionStatus?, location: Long?, organisation: Long?, pageable: Pageable?): List<CommissionEntity>
 
 }
 

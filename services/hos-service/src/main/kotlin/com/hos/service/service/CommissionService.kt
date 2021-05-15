@@ -5,7 +5,6 @@ import com.hos.service.model.form.CommissionFilterForm
 import com.hos.service.model.form.CommissionForm
 import com.hos.service.model.record.CommissionBasicRecord
 import com.hos.service.model.record.CommissionDetailsRecord
-import com.hos.service.security.UserDetailsContainer
 
 interface CommissionService {
 

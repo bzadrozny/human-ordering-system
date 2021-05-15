@@ -1,7 +1,6 @@
 package com.hos.service.validator
 
 import com.hos.service.model.common.Validation
-import java.time.LocalDate
 
 interface FormValidator<F, E> {
 
